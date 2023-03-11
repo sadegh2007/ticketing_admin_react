@@ -1,0 +1,46 @@
+import { LoginUserApi } from './ApiService'
+
+export const IsLogin = () => {
+    return localStorage.getItem('token')
+}
+export const SetToken = (token) => {
+    localStorage.setItem('token', token);
+}
+
+// TODO check this async/await
+export const LoginUser = async (mobile, password) => {
+
+    const result = await LoginUserApi(mobile, password);
+
+    if (result.status === 200) {
+        const token = result.data['accessToken'];
+
+        let userData = result.data;
+        userData.mobile = mobile;
+
+        SetToken(token);
+        SetUserData(userData);
+    }
+
+    // return new Promise(resolve => setTimeout(() => {
+    //   SetToken(token);
+    //   SetUserData(data);
+    //   resolve();
+    // }, 3000))
+
+}
+
+export const Logout = () => {
+    // logout user
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    window.location.href = '/login';
+}
+
+export const SetUserData = (data) => {
+    // set user data to localStorage afdter login
+    localStorage.setItem('currentUser', JSON.stringify(data))
+}
+export const CurrentUser = () => {
+    return JSON.parse(localStorage.getItem('currentUser'))
+}

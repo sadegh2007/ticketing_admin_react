@@ -1,0 +1,37 @@
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+thead tr th {
+    /*border-top: 1px solid #dddddd;*/
+}
+
+td, th {
+    /*border: 1px solid #dddddd;*/
+    text-align: right;
+    /*padding: 8px;*/
+}
+
+td, th {
+    /*border: 1px solid #dddddd;*/
+    /*border-top: 0;*/
+    /*border-right: 0;*/
+    margin: 0;
+    padding: 0;
+    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+}
+
+td:first-child, th:first-child {
+    border-right: 0;
+}
+
+thead {
+    background: lightgray;
+    margin: 0;
+    position: sticky;
+    top: 0;
+}
