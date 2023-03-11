@@ -1,9 +1,12 @@
-import {useState} from "react"
+import {useContext, useState} from "react"
 import {Link, NavLink} from "react-router-dom";
 import {ReactSVG} from "react-svg";
 import DropDownMenu from "./menu/DropDownMenu.jsx";
+import {appContext} from "../../context/AppContext.js";
 
 const Sidebar = () => {
+
+    const {toggleSidebar} = useContext(appContext);
 
     const menus = [
         {
@@ -44,7 +47,7 @@ const Sidebar = () => {
                     <img src="/src/assets/react.svg" className="logo"/>
                     <Link to="/admin/dashboard" className="mr-2 font-bold">پنل مدیریت</Link>
                 </div>
-                <button click="globalState.toggleSideMenu" className="show-on-phone btn btn-ghost btn-sm">x</button>
+                <button onClick={() => toggleSidebar(false)} className="show-on-phone btn btn-ghost btn-sm">x</button>
             </div>
             <ul className="menu text-sm bg-base-100 p-2 rounded-box items-center text-gray-500">
                 <li className="w-60 mb-1">

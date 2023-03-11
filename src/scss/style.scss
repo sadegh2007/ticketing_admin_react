@@ -31,6 +31,10 @@ body {
 	//height: 100%;
 }
 
+.breadcrumbs a {
+	color: #212121;
+}
+
 .divider:before, .divider:after {
 	height: 0.075rem;
 }
@@ -222,6 +226,11 @@ body {
 	height: 18px;
 }
 
+.btn-svg svg {
+	width: 18px;
+	height: 18px;
+}
+
 .ltr {
 	direction: ltr;
 }
@@ -237,6 +246,14 @@ body {
 
 .main-loader-open {
 	margin-top: 0;
+}
+
+.ticketing-container {
+	//height: calc(100vh - #{$main_header_height} - 162px);
+
+	#messages {
+		height: calc(100vh - (108px + 162px) - #{$main_header_height} - 124px);
+	}
 }
 
 @keyframes ldio-zfz7t71i4qt {

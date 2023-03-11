@@ -10,7 +10,7 @@ const Login = () => {
 
     useEffect(() => {
         if (IsLogin()) {
-            navigate('/dashboard')
+            navigate('/admin/dashboard')
         }
     })
 
@@ -26,7 +26,7 @@ const Login = () => {
         }
 
         await LoginUser(mobile, password);
-        navigate('/dashboard')
+        navigate('/admin/dashboard')
     }
 
     return (

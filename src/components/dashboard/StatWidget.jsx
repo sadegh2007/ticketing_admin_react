@@ -2,7 +2,7 @@ import {ReactSVG} from "react-svg";
 
 const StatWidget = (props) => {
   return (
-      <div className="card shadow bg-base-100 p-0">
+      <div className="card rounded shadow bg-base-100 p-0">
           <div className="card-body text-center flex flex-row items-center p-4 pl-6">
               <div className={`p-5 rounded-lg ${props.iconBackground ? props.iconBackground : 'bg-gray-100'}`}>
                   {

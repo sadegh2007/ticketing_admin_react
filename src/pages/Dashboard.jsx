@@ -161,7 +161,7 @@ const Dashboard = () => {
             </div>
 
             <div className="mt-4 grid grid-flow-row-dense gap-3 lg:grid-cols-3 grid-rows-1 sm:grid-flow-row">
-                <div className="lg:col-span-2 sm:col-span-1 card shadow bg-base-100 p-0">
+                <div className="lg:col-span-2 sm:col-span-1 card rounded shadow bg-base-100 p-0">
                     <div className="text-center">
                         <p className="text-xs font-bold p-2 pt-4 pr-4 text-gray-500">فروش ۱۲ ماه گذشته</p>
                     </div>
@@ -171,7 +171,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="card shadow bg-base-100 p-0">
+                <div className="card rounded shadow bg-base-100 p-0">
                     <div className="text-center">
                         <p className="text-xs font-bold p-2 pt-4 pr-4 text-gray-500">تعداد فروش های هفته روز گذشته</p>
                     </div>
@@ -183,7 +183,7 @@ const Dashboard = () => {
             </div>
 
             <div className="mt-4 grid grid-flow-row-dense gap-3 lg:grid-cols-3 grid-rows-1 sm:grid-flow-row">
-                <div className="card shadow bg-base-100 p-0">
+                <div className="card shadow bg-base-100 p-0 rounded">
                     <div className="text-center">
                         <p className="text-xs font-bold p-2 pt-4 pr-4 text-gray-500">فروش ۷ روز گذشته</p>
                     </div>
@@ -198,7 +198,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-                <div className="lg:col-span-2 sm:col-span-1 card shadow bg-base-100">
+                <div className="lg:col-span-2 sm:col-span-1 card rounded shadow bg-base-100">
                     <div className="text-center">
                         <p className="text-xs font-bold p-2 pt-4 pr-4 text-gray-500">10 کاربر عضو شده اخیر</p>
                     </div>

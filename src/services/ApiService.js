@@ -84,19 +84,19 @@ export const LoginUserApi = (mobile, password) => {
 //   return axios.delete(url);
 // }
 
-axios.interceptors.response.use(
-    function (response) { return response },
-    function (error) {
-
-        if (error.response) {
-            // console.log(error.response)
-            const status = error.response.status;
-
-            if (status === 401 && window.location.pathname !== '/login') {
-                // logout user if session was expired on serverr and get 401
-                Logout();
-            }
-            return error.response
-        }
-
-    });
+// axios.interceptors.response.use(
+//     function (response) { return response },
+//     function (error) {
+//
+//         if (error.response) {
+//             // console.log(error.response)
+//             const status = error.response.status;
+//
+//             if (status === 401 && window.location.pathname !== '/login') {
+//                 // logout user if session was expired on serverr and get 401
+//                 Logout();
+//             }
+//             return error.response
+//         }
+//
+//     });

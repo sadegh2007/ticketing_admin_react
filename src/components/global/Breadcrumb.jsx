@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 const Breadcrumb = (props) => {
 
     return(
-        <div className="text-sm breadcrumbs mb-3">
+        <div className="text-sm breadcrumbs">
             <ul>
                 <li><Link to='/dashboard'>داشبورد</Link></li>
                 {

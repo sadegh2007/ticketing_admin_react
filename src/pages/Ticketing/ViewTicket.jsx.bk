@@ -1,0 +1,108 @@
+import {useParams} from "react-router-dom";
+import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
+import React, {useContext, useEffect, useState} from "react";
+import {GetTicketById} from "../../services/TicketingApiService.js";
+import {appContext} from "../../context/AppContext.js";
+import {ReactSVG} from "react-svg";
+import Breadcrumb from "../../components/global/Breadcrumb.jsx";
+import {CurrentUser} from "../../services/AuthService.js";
+import PersianDate from "../../components/global/PersianDate.jsx";
+import Card from "../../components/global/Card.jsx";
+import {handleError} from "../../services/GlobalService.js";
+
+const ViewTicket = () => {
+    const {ticketId} = useParams();
+    const {showMainLoader, toggleMainLoader} = useContext(appContext);
+    const [ticket, setTicket] = useState(null);
+
+    const currentUser = CurrentUser();
+
+    useEffect(() => {
+        loadTicket();
+    }, []);
+
+    const loadTicket = () => {
+        toggleMainLoader(true);
+
+        GetTicketById(ticketId).then(response => {
+            toggleMainLoader(false);
+            setTicket(response);
+        })
+        .catch((error) => {
+            toggleMainLoader(false);
+            handleError(error)
+        })
+    }
+
+    return (
+        <>
+            <Breadcrumb items={[{to: '/ticketing', title: 'فهرست تیکت ها'}, {to: '#', title: `تیکت شماره ${ticket?.number}`}]}/>
+
+            <div className="flex gap-2">
+                <div className="chat-container w-4/5">
+                    <div className="">
+                        <Card style={{height: '600px'}} className="card bg-base-100 shadow">
+                            <div className="card-header bg-gray-300 p-2 rounded-t border-b">
+                                <p className="pr-3">{ticket?.title}</p>
+                            </div>
+
+                            <div className="overflow-y-auto card-body p-4">
+
+                                {
+                                    ticket?.comments.map((comment) => {
+
+                                        return (
+                                            <div key={comment.id} className={`chat chat-${ comment.creator.id == currentUser.id ?  'start' : 'end'}`}>
+                                                <div className="chat-image avatar">
+                                                    <div className="w-10 rounded-full">
+                                                        <img src={comment.creator.picture ?? '/src/assets/user-placeholder.png'}/>
+                                                    </div>
+                                                </div>
+                                                <div className="chat-header">
+                                                    {comment.creator.fullName}
+                                                </div>
+                                                <div className="chat-bubble">
+                                                    {comment.message}
+                                                </div>
+                                                <div className="mt-1 chat-footer text-xs opacity-50">
+                                                    <PersianDate date={comment.createdAt} format='shortDateTime'/>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </Card>
+                        <Card className="card bg-base-100 shadow mt-2">
+                            <div className="card-body p-4">
+                                <textarea rows={3} className="w-full textarea textarea-bordered" placeholder="متن پیام..."></textarea>
+                                <div className="flex flex-row">
+                                    <button className="btn btn-square text-white btn-success">
+                                        <ReactSVG src="/src/assets/svgs/send.svg" />
+                                    </button>
+                                    <button className="btn btn-square mr-2">
+                                        <ReactSVG src="/src/assets/svgs/paperclip.svg" />
+                                    </button>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
+                </div>
+                <div className="chat-user-container w-1/5 h-full">
+                    <Card style={{minHeight: '600px'}} className="card bg-base-100 shadow">
+                        <div className="card-header bg-gray-300 p-2 rounded-t border-b">
+                            <p className="pr-3">کاربران</p>
+                        </div>
+                        <div className="card-body">
+                            <ul>
+                                <li>User 1</li>
+                            </ul>
+                        </div>
+                    </Card>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default ViewTicket;

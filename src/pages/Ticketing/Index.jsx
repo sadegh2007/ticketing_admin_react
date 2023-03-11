@@ -7,6 +7,7 @@ import Apis from "../../general/ApiConstants.js";
 import Breadcrumb from "../../components/global/Breadcrumb.jsx";
 import ServerSideSelect from "../../components/SelectBox/ServerSideSelect.jsx";
 import {useNavigate} from "react-router-dom";
+import Card from "../../components/global/Card.jsx";
 
 const Ticketing = () => {
     const columnHelper = createColumnHelper();
@@ -44,7 +45,7 @@ const Ticketing = () => {
             cell: info => {
                 return (
                     <>
-                        <button onClick={() => navigation(`/ticketing/${info.row.original.id}`)} className="table-action-button btn-square btn btn-sm btn-outline">
+                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="table-action-button btn-square btn btn-sm btn-outline">
                             <ReactSVG src="/src/assets/svgs/eye.svg" />
                         </button>
                     </>
@@ -113,18 +114,18 @@ const Ticketing = () => {
     return (
         <>
             <Breadcrumb items={[{to: '/ticketing', title: 'فهرست تیکت ها'}]}/>
-            <div className="card bg-base-100 shadow">
-                <div className="card-body">
+            <Card>
+                <div className="card-body p-3">
                     <form onSubmit={onFilterSubmit} action="#">
-                        <div className="grid grid-cols-3 grid-flow-col gap-3">
-                            <div className="form-control w-full max-w-xs">
+                        <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
+                            <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">عنوان</span>
                                 </label>
-                                <input style={{height: '38px'}} value={titleFilter} onInput={(e) => setTitleFilter(e.target.value)} type="text" placeholder="عنوان..." className="input input-sm input-bordered rounded-sm w-full max-w-xs"/>
+                                <input style={{height: '38px'}} value={titleFilter} onInput={(e) => setTitleFilter(e.target.value)} type="text" placeholder="عنوان..." className="input input-sm input-bordered rounded-sm"/>
                             </div>
 
-                            <div className="form-control w-full max-w-xs">
+                            <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">کاربر</span>
                                 </label>
@@ -134,7 +135,15 @@ const Ticketing = () => {
                                     formatData={formatUserSelect}
                                 />
                             </div>
+
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">عنوان</span>
+                                </label>
+                                <input style={{height: '38px'}} value={titleFilter} onInput={(e) => setTitleFilter(e.target.value)} type="text" placeholder="عنوان..." className="input input-sm input-bordered rounded-sm"/>
+                            </div>
                         </div>
+
 
                         <div className="mt-4">
                             <button className="btn-filter btn btn-sm gap-2" type="submit">
@@ -162,7 +171,7 @@ const Ticketing = () => {
                         filters={filters}
                     />
                 </div>
-            </div>
+            </Card>
         </>
     );
 }
