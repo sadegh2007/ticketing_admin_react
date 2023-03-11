@@ -25,13 +25,12 @@ axios.interceptors.request.use(request => {
     // Edit request config
     return request;
 }, error => {
-    console.log(error);
     if (error.response && error.response.status === 404) {
         notify('آیتم مورد نظر یافت نشد.');
     }
-    else if (error.response && error.response.message) {
-        notify(error.message);
-    }
+    // else if (error.response && error.response.message) {
+    //     notify(error.message);
+    // }
 
     return Promise.reject(error);
 });

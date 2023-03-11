@@ -11,12 +11,13 @@ const ServerSideSelect = (
         url,
         onSelect,
         formatData,
+        multiple = false
     }
 ) => {
     const [options, setOptions] = useState([]);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(multiple ? [] : '');
     const [loading, setLoading] = useState(false)
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState(multiple ? [] : '');
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -36,7 +37,7 @@ const ServerSideSelect = (
 
         try {
             result = await ApiRequest(`${url}?q=${searchValue}`);
-            if (formatData && result) {
+            if (formatData != undefined && result) {
                 result = formatData(result);
             }
         } catch {
@@ -60,6 +61,7 @@ const ServerSideSelect = (
             classNames={{
                 searchBox: ""
             }}
+            isMultiple={multiple}
             onSearchInputChange={onSearch}
             loading={loading}
             placeholder="جستجوی کاربر..."
@@ -69,6 +71,7 @@ const ServerSideSelect = (
             isSearchable={true}
             value={value}
             onChange={handleChange}
+
             options={options}
         />
     );

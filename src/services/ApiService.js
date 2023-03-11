@@ -28,6 +28,27 @@ export const ApiRequest = async (url, method = 'GET', formData = {}) => {
     return data;
 }
 
+export const PostApiRequest = async (url, data) => {
+    let requestConfig = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+
+    const token = IsLogin();
+    if (token) {
+        requestConfig.headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    // const formData = new FormData();
+    // Object.keys(data).forEach((key) => {
+    //    formData.set(key, data[key]);
+    // });
+
+    const response = await axios.post(url, data, requestConfig);
+    return response.data;
+}
+
 export const LoginUserApi = (mobile, password) => {
     const url = `${baseUrl}/api/Account/otp-verify`;
     return axios.post(url, {

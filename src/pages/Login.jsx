@@ -1,7 +1,8 @@
 import {useNavigate} from "react-router-dom";
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import { IsLogin, LoginUser } from "../services/AuthService"
 import {notify} from "../utilities/index.js";
+import Card from "../components/global/Card.jsx";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -30,28 +31,32 @@ const Login = () => {
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
-            <div className="card w-25">
-                <div className="card-body">
+        <div className="flex justify-center items-center" style={{ height: '100vh', width: '100vw' }}>
+            <Card className="w-75">
+                <div className="card-body p-4">
                     <h2 className="text-center">ورود به مدیریت</h2>
 
                     <form onSubmit={login} action="#" method="post">
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="mobile">موبایل</label>
-                            <input onInput={(e) => setMobile(e.target.value)} dir="ltr" id="mobile" type="tel" className="form-control" maxLength={11} minLength={11}/>
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">موبایل</span>
+                            </label>
+                            <input style={{height: '38px'}} value={mobile} onInput={(e) => setMobile(e.target.value)} type="text" placeholder="موبایل..." className="input input-sm input-bordered rounded-sm"/>
                         </div>
 
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="mobile">کلمه عبور</label>
-                            <input onInput={(e) => setPassword(e.target.value)} dir="ltr" id="password" type="password" className="form-control" minLength={6}/>
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">کلمه عبور</span>
+                            </label>
+                            <input style={{height: '38px'}} value={password} onInput={(e) => setPassword(e.target.value)} type="password" placeholder="کلمه عبور..." className="input input-sm input-bordered rounded-sm"/>
                         </div>
 
                         <div className="form-group mt-4 text-center">
-                            <button type="submit">ورود</button>
+                            <button className="btn btn-success text-white" type="submit">ورود</button>
                         </div>
                     </form>
                 </div>
-            </div>
+            </Card>
         </div>
     )
 }

@@ -1,9 +1,16 @@
 import { toast } from "react-toastify";
 
-export const notify = (message) => {
-    toast.error(message, {
-        position: toast.POSITION.BOTTOM_LEFT
-    });
+export const notify = (message, type = 'error') => {
+    if (type === 'error') {
+        toast.error(message, {
+            position: toast.POSITION.BOTTOM_LEFT
+        });
+    }
+    else if (type === 'success') {
+        toast.success(message, {
+            position: toast.POSITION.BOTTOM_LEFT
+        });
+    }
 };
 
 export const toEnglishDigits = () => {
