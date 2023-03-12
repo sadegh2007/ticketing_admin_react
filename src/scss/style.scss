@@ -231,6 +231,11 @@ body {
 	height: 18px;
 }
 
+.btn-sm-svg svg {
+	width: 14px;
+	height: 14px;
+}
+
 .ltr {
 	direction: ltr;
 }
@@ -289,3 +294,58 @@ body {
 	transform-origin: 0 0; /* see note above */
 }
 .ldio-zfz7t71i4qt div { box-sizing: content-box; }
+
+#react-confirm-alert {
+
+	.react-confirm-alert-overlay {
+		background: rgba(0, 0, 0, 0.8);
+		z-index: 999;
+		animation: react-confirm-alert-fadeIn 300ms 0ms forwards;
+	}
+
+	.react-confirm-alert {
+		.react-confirm-alert-body {
+			font-family: 'IRAN_SANS_X';
+			text-align: center;
+			font-size: 16px;
+		}
+
+		h1 {
+			font-weight: 700;
+			font-size: 25px;
+		}
+
+		.react-confirm-alert-button-group {
+			justify-content: center;
+			margin-top: $gap*2;
+
+			button {
+				margin-right: 0;
+				margin-left: $gap;
+				font-weight: 600;
+				width: 100px;
+				padding: $gap/2;
+				transition: all 300ms;
+				font-size: 16px;
+
+				&:first-child {
+					background: $green;
+
+					&:hover {
+						background: darken($green, 8%);
+					}
+				}
+				&:last-child {
+					background: $danger;
+					margin-left: 0;
+
+					&:hover {
+						background: darken($danger, 8%);
+					}
+				}
+			}
+		}
+
+	} // .react-confirm-alert
+
+} // #react-confirm-alert

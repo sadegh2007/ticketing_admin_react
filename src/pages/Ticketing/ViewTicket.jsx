@@ -1,5 +1,4 @@
 import {useParams} from "react-router-dom";
-import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {GetTicketById, SendNewComment} from "../../services/TicketingApiService.js";
 import {appContext} from "../../context/AppContext.js";
@@ -11,8 +10,9 @@ import Card from "../../components/global/Card.jsx";
 import {handleError} from "../../services/GlobalService.js";
 import {constants} from "../../general/constants.js";
 import {notify} from "../../utilities/index.js";
-import {flushSync} from "react-dom";
 import NewUserModal from "../../components/ticketing/NewUserModal.jsx";
+import { useForm } from "react-hook-form";
+import UsersSidebar from "../../components/ticketing/UsersSidebar.jsx";
 
 const ViewTicket = () => {
     const {ticketId} = useParams();
@@ -20,7 +20,7 @@ const ViewTicket = () => {
     const [ticket, setTicket] = useState(null);
     const [message, setMessage] = useState('');
     const [files, setFiles] = useState([]);
-    const [showNewUserModal, setShowNewUserModal] = useState(false);
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     let fileRef = useRef();
 
@@ -49,11 +49,10 @@ const ViewTicket = () => {
     }
 
     const sendMessage = () => {
-
-        if (!message || message.trim().length == 0) {
-            notify('لطفا پیام خود را وارد کنید.');
-            return;
-        }
+        // if (!message || message.trim().length === 0) {
+        //     notify('لطفا پیام خود را وارد کنید.');
+        //     return;
+        // }
 
         toggleMainLoader(true);
 
@@ -78,7 +77,7 @@ const ViewTicket = () => {
                 scrollToId(res.id);
             }
 
-            notify('با موفقیت ثبت شد.', 'success')
+            notify(constants.ADD_SUCCESS_TEXT, 'success')
         })
         .catch(e => {
             toggleMainLoader(false);
@@ -121,11 +120,13 @@ const ViewTicket = () => {
                         <div className="border-2 rounded mt-4 mx-4 p-3">
                             <span># {ticket?.number} - {ticket?.title}</span>
                             <div className="divider my-1"></div>
-                            <div className="flex text-sm text-gray-600 justify-between items-baseline">
+                            <div className="flex text-sm text-gray-600 justify-between items-center">
                                 <span
                                     className="px-2 py-1 border rounded bg-blue-400 text-white">وضعیت: {ticket?.status?.title ?? 'نامشخص'}</span>
-                                <span className="">{ticket?.creator.fullName} - <PersianDate date={ticket?.createdAt}
-                                                                                             format="shortDateTime"/></span>
+                                <div className="flex items-center flex-col">
+                                    <span className="mb-1">{ticket?.creator.fullName}</span>
+                                    <PersianDate className="text-xs" date={ticket?.createdAt} format="shortDateTime"/>
+                                </div>
                                 <div className="buttons justify-end">
                                     <button onClick={loadTicket}
                                             className="btn border-gray-400 rounded btn-sm btn-svg btn-outline btn-square">
@@ -182,17 +183,18 @@ const ViewTicket = () => {
                         </div>
 
                         <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-                            <div className="">
+                            <form onSubmit={handleSubmit(sendMessage)}>
                                 <textarea
                                     placeholder="پیام خود را اینجا بنویسید..."
+                                    {...register('message', {required: true, min: 3})}
                                     value={message}
                                     onInput={(e) => setMessage(e.target.value)}
-                                    className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pr-4 pl-12 bg-gray-200 rounded-md py-3">
+                                    className={`textarea rounded ${errors.message && 'textarea-error'} w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pr-4 pl-12 bg-gray-200 py-3`}>
                                 </textarea>
                                 <div className="mt-4 flex justify-between items-center">
                                     <div className="">
-                                        <button type="button"
-                                                onClick={sendMessage}
+                                        <button type="submit"
+                                                // onClick={sendMessage}
                                                 className="btn btn-success text-white">
                                             <ReactSVG src='/src/assets/svgs/send.svg'/>
                                             <span className="pr-2">ارسال</span>
@@ -220,37 +222,16 @@ const ViewTicket = () => {
                                         }
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </Card>
 
-                <Card className="hidden md:block">
-                    <div className="card-header flex justify-between items-center border-b rounded-t bg-gray-800 text-white p-3 text-center">
-                        <span>کاربران</span>
-                        <button onClick={() => setShowNewUserModal(true)} className="btn-svg btn-primary btn btn-sm btn-square">
-                            <ReactSVG src="/src/assets/svgs/plus.svg" />
-                        </button>
-                    </div>
-                    <div className="card-body p-3">
-                        <ul>
-                            {
-                                ticket?.users.map((userItem) => {
-                                    return (
-                                        <li key={userItem.id} className="flex items-center mb-2">
-                                            <img className="w-10 rounded-full border"
-                                                 src={userItem.user.picture ?? '/src/assets/user-placeholder.png'}
-                                                 alt="user"/>
-                                            <span className="mr-2 text-sm">{userItem.user.fullName}</span>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </div>
-                </Card>
+                <UsersSidebar
+                    ticket={ticket}
+                    loadTicket={loadTicket}
+                />
             </div>
-            <NewUserModal show={showNewUserModal} closeModal={() => setShowNewUserModal(false)}/>
         </>
     )
 }

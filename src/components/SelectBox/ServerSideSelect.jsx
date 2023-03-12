@@ -11,11 +11,13 @@ const ServerSideSelect = (
         url,
         onSelect,
         formatData,
-        multiple = false
+        value = null,
+        multiple = false,
+        method = 'GET'
     }
 ) => {
     const [options, setOptions] = useState([]);
-    const [value, setValue] = useState(multiple ? [] : '');
+    const [selectedValue, setSelectedValue] = useState(multiple ? (value ?? []) : (value ?? ''));
     const [loading, setLoading] = useState(false)
     const [searchValue, setSearchValue] = useState(multiple ? [] : '');
 
@@ -36,7 +38,7 @@ const ServerSideSelect = (
         let result = null;
 
         try {
-            result = await ApiRequest(`${url}?q=${searchValue}`);
+            result = await ApiRequest(`${url}?q=${searchValue}`, method);
             if (formatData != undefined && result) {
                 result = formatData(result);
             }
@@ -48,7 +50,7 @@ const ServerSideSelect = (
     }
 
     const handleChange = (value) => {
-        setValue(value);
+        setSelectedValue(value);
         onSelect(value);
     }
 
@@ -69,9 +71,8 @@ const ServerSideSelect = (
             noOptionsMessage="آیتمی یافت نشد."
             isClearable={true}
             isSearchable={true}
-            value={value}
+            value={selectedValue}
             onChange={handleChange}
-
             options={options}
         />
     );

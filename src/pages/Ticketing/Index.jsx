@@ -163,7 +163,7 @@ const Ticketing = () => {
                     <div className="divider"></div>
                     
                     <ServerSideTable
-                        url={Apis.Ticketing.list}
+                        url={Apis.Ticketing.List}
                         method='POST'
                         rowPerPage={15}
                         formatRowData={(data) => formatRowData(data)}

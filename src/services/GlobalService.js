@@ -9,10 +9,16 @@ export const handleArrayErrors = (errors) => {
     });
 }
 
-export const handleError = ({type, errors, status}) => {
+export const handleError = ({type, errors, status, data}) => {
 
     // console.log(type)
     // console.log(errors)
+    // console.log(status)
+
+    if (status === 500 && data.detail) {
+        toast.error(data.detail);
+        return false;
+    }
 
     // for server errors - 500
     if (status === 500) {

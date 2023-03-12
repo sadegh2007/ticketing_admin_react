@@ -1,7 +1,7 @@
 import moment from 'jalali-moment'
 import React from 'react';
 
-const PersianDate = ({ date, format }) => {
+const PersianDate = ({ date, format, className }) => {
 
   let jalaliDate = moment(date).locale('fa');
 
@@ -31,7 +31,7 @@ const PersianDate = ({ date, format }) => {
   }
 
   return (
-    <span dir="ltr">
+    <span className={className} dir="ltr">
       {formatedDate}
     </span>
   )
