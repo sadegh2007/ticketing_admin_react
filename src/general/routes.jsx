@@ -6,6 +6,7 @@ import Ticketing from "../pages/Ticketing/Index.jsx";
 import TicketingCategories from "../pages/TicketingCategories/Index.jsx";
 import ViewTicket from "../pages/Ticketing/ViewTicket.jsx";
 import DashboardLayout from "../components/layouts/DashboardLayout.jsx";
+import CreateTicket from "../pages/Ticketing/CreateTicket.jsx";
 
 export const AppRouter = () => {
     return (
@@ -16,6 +17,7 @@ export const AppRouter = () => {
               <Route path="dashboard" element={<Dashboard />} />
 
               <Route exact path="ticketing" element={<Ticketing />} />
+              <Route exact path="ticketing/create" element={<CreateTicket />} />
               <Route exact path="ticketing/categories" element={<TicketingCategories />} />
 
               <Route path="ticketing/:ticketId" element={<ViewTicket />} />

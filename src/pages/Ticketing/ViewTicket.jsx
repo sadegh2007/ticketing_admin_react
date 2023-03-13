@@ -10,7 +10,6 @@ import Card from "../../components/global/Card.jsx";
 import {handleError} from "../../services/GlobalService.js";
 import {constants} from "../../general/constants.js";
 import {notify} from "../../utilities/index.js";
-import NewUserModal from "../../components/ticketing/NewUserModal.jsx";
 import { useForm } from "react-hook-form";
 import UsersSidebar from "../../components/ticketing/UsersSidebar.jsx";
 
@@ -112,7 +111,7 @@ const ViewTicket = () => {
     return (
         <>
             <Breadcrumb
-                items={[{to: '/ticketing', title: 'فهرست تیکت ها'}, {to: '#', title: `تیکت شماره ${ticket?.number}`}]}/>
+                items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}, {to: '#', title: `تیکت شماره ${ticket?.number}`}]}/>
 
             <div className="ticketing-container grid grid-cols-1 md:grid-cols-5 md:gap-2">
                 <Card className="col-span-4">

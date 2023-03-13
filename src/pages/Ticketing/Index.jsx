@@ -6,8 +6,9 @@ import {ReactSVG} from "react-svg";
 import Apis from "../../general/ApiConstants.js";
 import Breadcrumb from "../../components/global/Breadcrumb.jsx";
 import ServerSideSelect from "../../components/SelectBox/ServerSideSelect.jsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Card from "../../components/global/Card.jsx";
+import ApiConstants from "../../general/ApiConstants.js";
 
 const Ticketing = () => {
     const columnHelper = createColumnHelper();
@@ -60,7 +61,6 @@ const Ticketing = () => {
 
         if (!rawData) rawData = [];
 
-        console.log(rawData);
         return rawData.map((info) => (
                 {
                     title: info.title,
@@ -93,6 +93,7 @@ const Ticketing = () => {
 
     const removeFilters = () => {
         setTitleFilter('');
+        setUsersFilter([]);
 
         let newFilters = {...filters}
 
@@ -102,20 +103,26 @@ const Ticketing = () => {
     }
 
     const formatUserSelect = (data) => {
-        return data.todos.map((x) => {
+        return data.items?.map((x) => {
             return {
-                label: x.todo,
+                label: x.fullName,
                 value: x.id,
             };
-        });
+        }) ?? [];
     }
 
 
     return (
         <>
-            <Breadcrumb items={[{to: '/ticketing', title: 'فهرست تیکت ها'}]}/>
+            <Breadcrumb items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}]}/>
             <Card>
                 <div className="card-body p-3">
+                    <div className="flex justify-end">
+                        <Link to='/admin/ticketing/create' className="btn btn-svg text-sm btn-primary">
+                            <ReactSVG src="/src/assets/svgs/plus.svg" />
+                            <span className="mr-1">ایجاد تیکت</span>
+                        </Link>
+                    </div>
                     <form onSubmit={onFilterSubmit} action="#">
                         <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
                             <div className="form-control">
@@ -130,7 +137,8 @@ const Ticketing = () => {
                                     <span className="label-text">کاربر</span>
                                 </label>
                                 <ServerSideSelect
-                                    url={'https://dummyjson.com/todos'}
+                                    url={ApiConstants.Users.List}
+                                    method={'POST'}
                                     onSelect={setUsersFilter}
                                     formatData={formatUserSelect}
                                 />
@@ -146,13 +154,13 @@ const Ticketing = () => {
 
 
                         <div className="mt-4">
-                            <button className="btn-filter btn btn-sm gap-2" type="submit">
+                            <button className="btn-filter btn gap-2" type="submit">
                                 <ReactSVG src="/src/assets/svgs/filter.svg" />
                                 فیلتر
                             </button>
 
                             {
-                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="mr-2 btn-filter btn btn-secondary btn-sm gap-2" type="button">
+                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="mr-2 btn-filter btn btn-secondary gap-2" type="button">
                                 <ReactSVG src="/src/assets/svgs/filter-off.svg" />
                                 حذف فیلتر
                                 </button> : null
@@ -165,6 +173,7 @@ const Ticketing = () => {
                     <ServerSideTable
                         url={Apis.Ticketing.List}
                         method='POST'
+                        value={usersFilter}
                         rowPerPage={15}
                         formatRowData={(data) => formatRowData(data)}
                         columns={columns}
