@@ -46,7 +46,7 @@ const Ticketing = () => {
             cell: info => {
                 return (
                     <>
-                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="table-action-button btn-square btn btn-sm btn-outline">
+                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="rounded table-action-button btn-square btn btn-sm btn-outline">
                             <ReactSVG src="/src/assets/svgs/eye.svg" />
                         </button>
                     </>
@@ -76,7 +76,7 @@ const Ticketing = () => {
 
     const [filters, setFilters] = useState({});
     const [titleFilter, setTitleFilter] = useState('');
-    const [usersFilter, setUsersFilter] = useState([]);
+    const [usersFilter, setUsersFilter] = useState();
 
     const onFilterSubmit = (e) => {
         e.preventDefault();
@@ -118,7 +118,7 @@ const Ticketing = () => {
             <Card>
                 <div className="card-body p-3">
                     <div className="flex justify-end">
-                        <Link to='/admin/ticketing/create' className="btn btn-svg text-sm btn-primary">
+                        <Link to='/admin/ticketing/create' className="rounded btn-svg btn-sm btn btn-svg text-sm btn-primary">
                             <ReactSVG src="/src/assets/svgs/plus.svg" />
                             <span className="mr-1">ایجاد تیکت</span>
                         </Link>
@@ -140,6 +140,7 @@ const Ticketing = () => {
                                     url={ApiConstants.Users.List}
                                     method={'POST'}
                                     onSelect={setUsersFilter}
+                                    value={usersFilter}
                                     formatData={formatUserSelect}
                                 />
                             </div>
@@ -154,13 +155,13 @@ const Ticketing = () => {
 
 
                         <div className="mt-4">
-                            <button className="btn-filter btn gap-2" type="submit">
+                            <button className="btn-filter rounded btn gap-2 btn-svg btn-sm" type="submit">
                                 <ReactSVG src="/src/assets/svgs/filter.svg" />
                                 فیلتر
                             </button>
 
                             {
-                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="mr-2 btn-filter btn btn-secondary gap-2" type="button">
+                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="btn-svg rounded btn-sm mr-2 btn-filter btn btn-secondary gap-2" type="button">
                                 <ReactSVG src="/src/assets/svgs/filter-off.svg" />
                                 حذف فیلتر
                                 </button> : null

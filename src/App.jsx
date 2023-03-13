@@ -2,6 +2,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 // import './scss/bootstrap-icons.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import 'react-quill/dist/quill.snow.css';
 import './scss/style.scss'
 import './App.css';
 import axios from 'axios';

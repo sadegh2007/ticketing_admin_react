@@ -5,10 +5,11 @@ const baseUrl = constants.BASE_URL;
 const Apis = {
     Ticketing: {
         List: `${baseUrl}/api/ticketing/list`,
+        Create: `${baseUrl}/api/ticketing`,
         Get: (id) => `${baseUrl}/api/ticketing/${id}`,
         Comments: (ticketId) => {
             return {
-                create: `${baseUrl}/api/ticketing/${ticketId}/comments`
+                Create: `${baseUrl}/api/ticketing/${ticketId}/comments`
             }
         },
         Users: (ticketId) => {

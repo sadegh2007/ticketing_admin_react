@@ -1,23 +1,20 @@
 import Select from "react-tailwindcss-select";
-import {useEffect, useState} from "react";
-import axios from "axios";
+import React, {useEffect, useState} from "react";
 import {ApiRequest} from "../../services/ApiService.js";
 import {notify} from "../../utilities/index.js";
 
-
-
-const ServerSideSelect = (
+const ServerSideSelect = React.forwardRef((
     {
         url,
+        placeholder = '',
         onSelect,
         formatData,
         value = null,
         multiple = false,
         method = 'GET'
-    }
-) => {
+    }, ref) => {
+
     const [options, setOptions] = useState([]);
-    const [selectedValue, setSelectedValue] = useState(multiple ? (value ?? []) : (value ?? ''));
     const [loading, setLoading] = useState(false)
     const [searchValue, setSearchValue] = useState(multiple ? [] : '');
 
@@ -49,33 +46,26 @@ const ServerSideSelect = (
         return result;
     }
 
-    const handleChange = (value) => {
-        setSelectedValue(value);
-        onSelect(value);
-    }
-
     const onSearch = (e) => {
         setSearchValue(e.target.value);
     }
 
     return (
         <Select
-            classNames={{
-                searchBox: ""
-            }}
+            ref={ref}
             isMultiple={multiple}
             onSearchInputChange={onSearch}
             loading={loading}
-            placeholder="جستجوی کاربر..."
-            searchInputPlaceholder="جستجوی کاربر..."
+            placeholder={placeholder}
+            searchInputPlaceholder="جستجو..."
             noOptionsMessage="آیتمی یافت نشد."
             isClearable={true}
             isSearchable={true}
-            value={selectedValue}
-            onChange={handleChange}
+            value={value}
+            onChange={onSelect}
             options={options}
         />
     );
-}
+});
 
 export default ServerSideSelect;

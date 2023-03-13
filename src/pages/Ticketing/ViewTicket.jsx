@@ -12,6 +12,7 @@ import {constants} from "../../general/constants.js";
 import {notify} from "../../utilities/index.js";
 import { useForm } from "react-hook-form";
 import UsersSidebar from "../../components/ticketing/UsersSidebar.jsx";
+import QuillEditor from "../../components/global/QuillEditor.jsx";
 
 const ViewTicket = () => {
     const {ticketId} = useParams();
@@ -22,6 +23,7 @@ const ViewTicket = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     let fileRef = useRef();
+    const quillRef = useRef(null);
 
     const currentUser = CurrentUser();
 
@@ -117,15 +119,16 @@ const ViewTicket = () => {
                 <Card className="col-span-4">
                     <div className="card-header">
                         <div className="border-2 rounded mt-4 mx-4 p-3">
-                            <span># {ticket?.number} - {ticket?.title}</span>
+                            <div className="flex justify-between items-center">
+                                <span># {ticket?.number} - {ticket?.title}</span>
+                                <span className="px-2 py-1 border rounded bg-blue-400 text-white text-xs">وضعیت: {ticket?.status?.title ?? 'نامشخص'}</span>
+                            </div>
                             <div className="divider my-1"></div>
                             <div className="flex text-sm text-gray-600 justify-between items-center">
-                                <span
-                                    className="px-2 py-1 border rounded bg-blue-400 text-white">وضعیت: {ticket?.status?.title ?? 'نامشخص'}</span>
-                                <div className="flex items-center flex-col">
-                                    <span className="mb-1">{ticket?.creator.fullName}</span>
-                                    <PersianDate className="text-xs" date={ticket?.createdAt} format="shortDateTime"/>
-                                </div>
+                                <span className="mb-1">{ticket?.creator.fullName}</span>
+
+                                <PersianDate className="text-xs" date={ticket?.createdAt} format="shortDateTime"/>
+
                                 <div className="buttons justify-end">
                                     <button onClick={loadTicket}
                                             className="btn border-gray-400 rounded btn-sm btn-svg btn-outline btn-square">
@@ -150,8 +153,10 @@ const ViewTicket = () => {
                                                     className={`flex flex-col space-y-2 text-sm max-w-xs mx-2 ${!isCurrentUser ? 'order-1 items-end' : 'order-2 items-start'}`}>
                                                     <div>
                                                         <span
+
                                                             className={`px-4 py-2 inline-block rounded ${isCurrentUser ? 'bg-gray-300 text-gray-600 rounded-br-none' : 'rounded-bl-none bg-blue-600 text-white '}`}>
-                                                            {comment.message}
+                                                            {/*{comment.message}*/}
+                                                            <div dangerouslySetInnerHTML={{__html: comment.message}} />
                                                             <div className="flex mt-2 justify-end">
                                                                 {
                                                                     comment.files.map((file) => {
@@ -181,27 +186,36 @@ const ViewTicket = () => {
                             }
                         </div>
 
-                        <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+                        <div className="border-t-2 border-gray-200 pt-4 mb-2 sm:mb-0">
                             <form onSubmit={handleSubmit(sendMessage)}>
-                                <textarea
+                                {/*<textarea*/}
+                                {/*    placeholder="پیام خود را اینجا بنویسید..."*/}
+                                {/*    {...register('message', {required: true, min: 3})}*/}
+                                {/*    value={message}*/}
+                                {/*    onInput={(e) => setMessage(e.target.value)}*/}
+                                {/*    className={`textarea rounded ${errors.message && 'textarea-error'} w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pr-4 pl-12 bg-gray-200 py-3`}>*/}
+                                {/*</textarea>*/}
+
+                                <QuillEditor
+                                    ref={quillRef}
+                                    className="ql-height-100"
+                                    setContent={setMessage}
+                                    defaultValue={message}
                                     placeholder="پیام خود را اینجا بنویسید..."
-                                    {...register('message', {required: true, min: 3})}
-                                    value={message}
-                                    onInput={(e) => setMessage(e.target.value)}
-                                    className={`textarea rounded ${errors.message && 'textarea-error'} w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pr-4 pl-12 bg-gray-200 py-3`}>
-                                </textarea>
-                                <div className="mt-4 flex justify-between items-center">
+                                />
+
+                                <div className="mt-2 flex justify-between items-center">
                                     <div className="">
                                         <button type="submit"
                                                 // onClick={sendMessage}
-                                                className="btn btn-success text-white">
+                                                className="btn btn-svg btn-sm btn-success text-white">
                                             <ReactSVG src='/src/assets/svgs/send.svg'/>
                                             <span className="pr-2">ارسال</span>
                                         </button>
 
                                         <button type="button"
                                                 onClick={attachFile}
-                                                className="btn text-white mr-2"
+                                                className="btn btn-svg btn-sm text-white mr-2"
                                         >
                                             <ReactSVG src='/src/assets/svgs/paperclip.svg'/>
                                             <span className="pr-2 text-sm">فایل ضمیمه</span>

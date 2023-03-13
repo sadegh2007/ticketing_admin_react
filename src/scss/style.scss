@@ -257,7 +257,7 @@ body {
 	//height: calc(100vh - #{$main_header_height} - 162px);
 
 	#messages {
-		height: calc(100vh - (108px + 162px) - #{$main_header_height} - 140px);
+		height: calc(100vh - (108px + 162px) - #{$main_header_height} - 177px);
 	}
 }
 
@@ -349,3 +349,99 @@ body {
 	} // .react-confirm-alert
 
 } // #react-confirm-alert
+
+.quill {
+	&.ql-height-300 {
+		.ql-editor {
+			min-height: 300px;
+		}
+	}
+	&.ql-height-100 {
+		.ql-editor {
+			min-height: 100px;
+		}
+	}
+
+	.ql-container {
+		//@include border-radius(0 0 $border_radius/2 $border_radius/2);
+		//border-radius: 0.25rem;
+		border-radius: 0 0 0.25rem 0.25rem;
+	}
+
+	.ql-tooltip.ql-editing {
+		direction: ltr;
+		left: auto !important;
+		top: -30px !important;
+		right: 0 !important;
+	}
+
+	.ql-toolbar {
+		direction: ltr;
+		//@include border-radius(4px 4px 0 0);
+		border-top-left-radius: 0.25rem;
+		border-top-right-radius: 0.25rem;
+
+		.ql-formats {
+			margin-right: 0 !important;
+		}
+
+		//.ql-customImage {
+		//	&:after {
+		//		content: "\F42A";
+		//		font-family: "bootstrap-icons";
+		//		font-size: 16px;
+		//		opacity: .8;
+		//		position: relative;
+		//		top: -3px;
+		//
+		//		&:hover {
+		//			opacity: 1;
+		//		}
+		//	}
+		//}
+
+	} // .ql-toolbar
+
+	::-webkit-scrollbar {
+		width: 3px;
+	}
+	::-webkit-scrollbar-thumb {
+		//background: $secondary_color;
+	}
+
+	.ql-editor {
+		direction: rtl;
+		text-align: right;
+		font-family: "IRAN_SANS_X";
+		font-style: normal;
+		//background: $input_bg;
+		max-height: 500px;
+		//@include border-radius($border_radius/2);
+		//@include font-size(14px);
+		font-size: 14px;
+		//border-radius: 0.25rem;
+		border-radius: 0 0 0.25rem 0.25rem;
+	}
+
+}
+
+:where(.table *:first-child) :where(*:first-child) :where(th, td):last-child {
+	border-top-left-radius: 0.25rem !important;
+}
+
+:where(.table *:first-child) :where(*:first-child) :where(th, td):first-child {
+	border-top-right-radius: 0.25rem !important;
+}
+
+:where(.table *:last-child) :where(*:last-child) :where(th, td):first-child {
+	border-bottom-right-radius: 0 !important;
+}
+
+:where(.table *:last-child) :where(*:last-child) :where(th, td):last-child {
+	border-bottom-left-radius: 0 !important;
+}
+
+input[required] {
+	content: '';
+	border-right: 4px solid hsl(var(--er)/1);
+}

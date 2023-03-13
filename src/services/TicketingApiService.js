@@ -12,3 +12,7 @@ export const AddUserToTicket = async (ticketId, userIds) => {
 export const SendNewComment = async (ticketId, data) => {
     return await PostApiRequest(ApiConstants.Ticketing.Comments(ticketId).Create, data);
 }
+
+export const CreateNewTicket = async (data) => {
+    return await PostApiRequest(ApiConstants.Ticketing.Create, data);
+}
