@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ReactQuill from "react-quill";
 
-const QuillEditor = React.forwardRef(({className, defaultValue, placeholder, setContent}, ref) => {
+const QuillEditor = React.forwardRef(({required = false, className, defaultValue, placeholder, setContent}, ref) => {
     const quillModules = {
         modules: {
             toolbar: {
@@ -52,6 +52,7 @@ const QuillEditor = React.forwardRef(({className, defaultValue, placeholder, set
 
     return <ReactQuill
         ref={ref}
+        required={required}
         className={`${className ?? 'ql-height-300'}`}
         theme="snow"
         modules={quillOptions.modules}

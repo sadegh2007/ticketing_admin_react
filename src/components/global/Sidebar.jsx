@@ -95,6 +95,13 @@ const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li>
+                        <NavLink to="/admin/ticketing/create"
+                                 className={({isActive}) => (isActive ? 'active' : undefined)}>
+                            <ReactSVG className="menu-svg" src="/src/assets/svgs/plus.svg"></ReactSVG>
+                            ایجاد تیکت
+                        </NavLink>
+                    </li>
+                    <li>
                         <NavLink to="/admin/ticketing" >
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/inbox.svg"></ReactSVG>
                             فهرست تیکت ها

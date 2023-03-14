@@ -4,6 +4,11 @@ import React, {useContext, useState} from "react";
 import NewUserModal from "./NewUserModal.jsx";
 import {appContext} from "../../context/AppContext.js";
 import { confirmAlert } from 'react-confirm-alert';
+import {RemoveUserFromTicket} from "../../services/TicketingApiService.js";
+import {handleError} from "../../services/GlobalService.js";
+import {notify} from "../../utilities/index.js";
+import {constants} from "../../general/constants.js";
+import {CurrentUser} from "../../services/AuthService.js";
 
 const UsersSidebar = ({ticket, loadTicket}) => {
     const [showNewUserModal, setShowNewUserModal] = useState(false);
@@ -16,13 +21,27 @@ const UsersSidebar = ({ticket, loadTicket}) => {
             buttons: [
                 {
                     label: 'خیر',
-                    onClick: () => {
-
-                    }
+                    onClick: () => {}
                 },
                 {
                     label: 'حذف کن!',
-                    onClick: () => {}
+                    onClick: () => {
+                        toggleMainLoader(true);
+                        RemoveUserFromTicket(ticket.id, userId)
+                            .then((res) => {
+                                toggleMainLoader(false);
+
+                                ticket.users = ticket.users.filter((user) => {
+                                    return user.id !== userId;
+                                });
+
+                                notify(constants.DELETE_SUCCESS_TEXT);
+                            })
+                            .catch(e => {
+                                toggleMainLoader(false);
+                                handleError(e);
+                            });
+                    }
                 },
             ],
             closeOnEscape: true,
@@ -56,11 +75,13 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                                                 <span className="mr-2 text-xs">{userItem.user.fullName}</span>
                                                 { userItem.userId === ticket.creatorId ? <ReactSVG className="mr-2 btn-sm-svg" src="/src/assets/svgs/star-filled.svg"/> : '' }
                                             </div>
-
                                         </div>
-                                        <button onClick={() => deleteUser(userItem.UserId)} className="btn btn-error btn-sm btn-square btn-svg text-gray-600 rounded btn-outline">
-                                            <ReactSVG src="/src/assets/svgs/trash.svg" />
-                                        </button>
+                                        {
+                                            (userItem.userId !== ticket.creatorId && userItem.userId !== CurrentUser()?.user.id) ? <button onClick={() => deleteUser(userItem.UserId)} className="btn btn-error btn-sm btn-square btn-svg text-gray-600 rounded btn-outline">
+                                                <ReactSVG src="/src/assets/svgs/trash.svg" />
+                                            </button> : undefined
+                                        }
+
                                     </li>
                                 )
                             })

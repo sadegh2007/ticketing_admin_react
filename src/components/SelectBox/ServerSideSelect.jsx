@@ -11,7 +11,9 @@ const ServerSideSelect = React.forwardRef((
         formatData,
         value = null,
         multiple = false,
-        method = 'GET'
+        method = 'GET',
+        required = false,
+        className = '',
     }, ref) => {
 
     const [options, setOptions] = useState([]);
@@ -52,7 +54,9 @@ const ServerSideSelect = React.forwardRef((
 
     return (
         <Select
+            className={className}
             ref={ref}
+            required={required}
             isMultiple={multiple}
             onSearchInputChange={onSearch}
             loading={loading}

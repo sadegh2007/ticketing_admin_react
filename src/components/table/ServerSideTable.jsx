@@ -34,7 +34,7 @@ const ServerSideTable = (
         // });
 
         filters['page'] = pageNo;
-        filters['size'] = rowPerPage;
+        filters['count'] = rowPerPage;
 
         toggleMainLoader(true);
 
@@ -72,7 +72,7 @@ const ServerSideTable = (
                 isLoading: false,
                 rowData: formatRowData(items),
                 totals: total_items,
-                totalPages,
+                totalPages: total_items > 15 ? 1 : Math.ceil(total_items / 15),
             });
         });
     }
@@ -116,10 +116,9 @@ const ServerSideTable = (
                     disabledLinkClassName="btn-disabled"
                     breakLabel="..."
                     nextLabel="&#8250;"
-                    onPageChange={({selected}) => setCurrentPage(selected)}
+                    onPageChange={({selected}) => setCurrentPage(selected+1)}
                     pageRangeDisplayed={5}
-                    pageCount={pageData.totals}
-                    initialPage={currentPage}
+                    pageCount={pageData.totalPages}
                     previousLabel="&#8249;"
                     renderOnZeroPageCount={null}
                 />

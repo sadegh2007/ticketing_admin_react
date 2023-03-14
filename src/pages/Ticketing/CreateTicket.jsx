@@ -5,7 +5,7 @@ import {ReactSVG} from "react-svg";
 import {appContext} from "../../context/AppContext.js";
 import React, {useContext, useRef, useState} from "react";
 import {CreateNewTicket, SendNewComment} from "../../services/TicketingApiService.js";
-import {notify} from "../../utilities/index.js";
+import {notify, strLimit} from "../../utilities/index.js";
 import {constants} from "../../general/constants.js";
 import {handleError} from "../../services/GlobalService.js";
 import ServerSideSelect from "../../components/SelectBox/ServerSideSelect.jsx";
@@ -136,6 +136,7 @@ const CreateTicket = ({}) => {
                                     <span className="label-text">کاربران</span>
                                 </label>
                                 <ServerSideSelect
+                                    required={true}
                                     placeholder='کاربران تیکت...'
                                     url={ApiConstants.Users.List}
                                     value={users}
@@ -143,12 +144,13 @@ const CreateTicket = ({}) => {
                                     onSelect={setUsers}
                                     multiple={true}
                                     formatData={formatUserSelect}
-                                    className={errors.users ? 'input-error' : ''}
+                                    className={`required ${errors.users ? 'input-error' : ''}`}
                                 />
                             </div>
                         </div>
 
                         <QuillEditor
+                            required={true}
                             ref={quillRef}
                             className="ql-height-300"
                             setContent={setMessage}
@@ -157,7 +159,7 @@ const CreateTicket = ({}) => {
                         />
 
                         <div className="mt-2 flex justify-between items-center">
-                            <div className="">
+                            <div className="w-1/2">
                                 <button type="submit"
                                         disabled={(quillRef?.current?.getEditor()?.getText()?.trim().length === 0) || message.trim().length === 0 || title.trim().length === 0 || (users ?? []).length === 0}
                                         className="btn rounded btn-svg btn-sm btn-success text-white">
@@ -175,12 +177,12 @@ const CreateTicket = ({}) => {
                                 <input onChange={fileSelectChange} ref={(inputRef) => fileRef = inputRef} hidden={true}
                                        type="file" name="files"/>
                             </div>
-                            <div dir="ltr" className="flex text-sm text-gray-600">
+                            <div dir="ltr" className="mb-4 grid grid-cols-1 gap-1 lg:grid-cols-2 lg:gap-2">
                                 {
                                     files.map((file, index) => {
                                         return (
-                                            <div key={index} className="mr-1 px-2 py-1 border rounded bg-slate-200">
-                                                {file.name}
+                                            <div key={index} className="text-sm flex justify-between items-center mr-1 px-2 py-1 border rounded bg-slate-200">
+                                                <span className="tooltip" data-tip={file.name}>{ strLimit(file.name) }</span>
                                                 <button onClick={() => removeFile(index)}
                                                         className="ml-1 btn-outline btn btn-sm btn-square">x
                                                 </button>

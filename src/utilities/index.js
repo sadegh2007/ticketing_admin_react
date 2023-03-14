@@ -19,3 +19,11 @@ export const toEnglishDigits = () => {
         return persian.indexOf(chr);
     });
 };
+
+export const strLimit = (str, length = 20) => {
+  if (str.length > length) {
+      return str.substring(1, length) + '...';
+  }
+
+  return str;
+}
