@@ -9,11 +9,10 @@ import PersianDate from "../../components/global/PersianDate.jsx";
 import Card from "../../components/global/Card.jsx";
 import {handleError} from "../../services/GlobalService.js";
 import {constants} from "../../general/constants.js";
-import {notify, strLimit} from "../../utilities/index.js";
-import { useForm } from "react-hook-form";
+import {notify} from "../../utilities/index.js";
 import UsersSidebar from "../../components/ticketing/UsersSidebar.jsx";
-import QuillEditor from "../../components/global/QuillEditor.jsx";
 import TicketComment from "../../components/ticketing/TicketComment.jsx";
+import MessageBox from "../../components/ticketing/MessageBox.jsx";
 
 const ViewTicket = () => {
     const {ticketId} = useParams();
@@ -21,10 +20,8 @@ const ViewTicket = () => {
     const [ticket, setTicket] = useState(null);
     const [message, setMessage] = useState('');
     const [files, setFiles] = useState([]);
-    const { register, handleSubmit, formState: { errors } } = useForm();
-
-    let fileRef = useRef();
-    const quillRef = useRef(null);
+    const [showCategories, setShowCategories] = useState(false);
+    const [departmentModal, setDepartmentModal] = useState(false);
 
     const currentUser = CurrentUser();
 
@@ -51,11 +48,6 @@ const ViewTicket = () => {
     }
 
     const sendMessage = () => {
-        // if (!message || message.trim().length === 0) {
-        //     notify('لطفا پیام خود را وارد کنید.');
-        //     return;
-        // }
-
         toggleMainLoader(true);
 
         const formData = new FormData();
@@ -87,28 +79,17 @@ const ViewTicket = () => {
         });
     }
 
-    const attachFile = () => {
-        fileRef.click();
-    }
-
-    const fileSelectChange = (e) => {
-        const newFiles = [...files, ...e.target.files]
-        setFiles(newFiles);
-
-        // clear input
-        e.target.value = null;
-    }
-
-    const removeFile = (index) => {
-        let newFiles = [...files];
-        newFiles.splice(index, 1);
-
-        setFiles(newFiles);
-    }
-
     const scrollToId = (id) => {
         const element = document.getElementById(id);
         element.scrollIntoView({behavior: 'smooth'});
+    }
+
+    const leftTicket = () => {
+
+    }
+
+    const copyLink = () => {
+        navigator.clipboard.writeText(`${constants.APP_BASE_URL}/admin/ticketing/${ticketId}`);
     }
 
     return (
@@ -126,6 +107,10 @@ const ViewTicket = () => {
                                     <span className="text-xs">وضعیت: </span>
                                     <span className="px-2 py-1 rounded bg-blue-400 text-white text-xs">{ticket?.status?.title ?? 'نامشخص'}</span>
                                 </div>
+                                <button className="btn btn-sm rounded btn-svg">
+                                    <ReactSVG src="/src/assets/svgs/plus.svg" />
+                                    <span className="text-sm">تیکت جدید</span>
+                                </button>
                             </div>
                             <div className="divider my-1"></div>
                             <div className="flex text-sm text-gray-600 justify-between items-center">
@@ -133,12 +118,51 @@ const ViewTicket = () => {
 
                                 <PersianDate className="text-xs" date={ticket?.createdAt} format="shortDateTime"/>
 
-                                <div className="buttons justify-end">
-                                    <button onClick={loadTicket}
-                                            className="btn border-gray-400 rounded btn-sm btn-svg btn-outline btn-square">
-                                        <ReactSVG src="/src/assets/svgs/reload.svg"/>
-                                    </button>
+                                <div className="flex">
+
+                                    <div className="buttons justify-end">
+                                        <button onClick={loadTicket}
+                                                className="btn border-gray-400 rounded btn-sm btn-svg btn-outline btn-square">
+                                            <ReactSVG className="tooltip" data-tip="رفرش" src="/src/assets/svgs/reload.svg"/>
+                                        </button>
+                                    </div>
+
+                                    <div className="buttons justify-end mr-1">
+                                        <button onClick={leftTicket}
+                                                className="btn btn-error border-red-400 rounded btn-sm btn-svg btn-outline btn-square">
+                                            <ReactSVG className="tooltip" data-tip="خروج" src="/src/assets/svgs/logout.svg"/>
+                                        </button>
+                                    </div>
+
+                                    <div className="buttons justify-end mr-1">
+                                        <button onClick={leftTicket}
+                                                className="btn border-gray-400 text-gray-600 rounded btn-sm btn-svg btn-outline btn-square">
+                                            <ReactSVG className="tooltip" data-tip="تاریخچه" src="/src/assets/svgs/history.svg"/>
+                                        </button>
+                                    </div>
+
+                                    <div className="buttons justify-end mr-1">
+                                        <button onClick={copyLink}
+                                                className="btn border-gray-400 text-gray-600 rounded btn-sm btn-svg btn-outline btn-square">
+                                            <ReactSVG className="tooltip" data-tip="کپی لینک تیکت" src="/src/assets/svgs/link.svg"/>
+                                        </button>
+                                    </div>
+
+                                    <div className="buttons justify-end mr-1">
+                                        <button onClick={() => setShowCategories(true)}
+                                                className="btn border-gray-400 text-gray-600 rounded btn-sm btn-svg btn-outline btn-square">
+                                            <ReactSVG className="tooltip" data-tip="دسته بندی ها" src="/src/assets/svgs/tags.svg"/>
+                                        </button>
+                                    </div>
+
+                                    <div className="buttons justify-end mr-1">
+                                        <button onClick={() => setDepartmentModal(true)}
+                                                className="btn border-gray-400 text-gray-600 rounded btn-sm btn-svg btn-outline btn-square">
+                                            <ReactSVG className="tooltip" data-tip="انتقال تیکت" src="/src/assets/svgs/sign-right.svg"/>
+                                        </button>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -149,61 +173,19 @@ const ViewTicket = () => {
                             {
                                 ticket?.comments.map((comment, index) => {
                                     const isCurrentUser = comment.creator.id === currentUser.user.id;
-                                    return <TicketComment comment={comment} isCurrentUser={isCurrentUser} />;
+                                    return <TicketComment key={comment.id} comment={comment} isCurrentUser={isCurrentUser} />;
                                 })
                             }
                         </div>
 
                         <div className="border-t-2 border-gray-200 pt-4 mb-2 sm:mb-0">
-                            <form onSubmit={handleSubmit(sendMessage)}>
-                                {/*<textarea*/}
-                                {/*    placeholder="پیام خود را اینجا بنویسید..."*/}
-                                {/*    {...register('message', {required: true, min: 3})}*/}
-                                {/*    value={message}*/}
-                                {/*    onInput={(e) => setMessage(e.target.value)}*/}
-                                {/*    className={`textarea rounded ${errors.message && 'textarea-error'} w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pr-4 pl-12 bg-gray-200 py-3`}>*/}
-                                {/*</textarea>*/}
-
-                                <QuillEditor
-                                    ref={quillRef}
-                                    className="ql-height-100"
-                                    setContent={setMessage}
-                                    defaultValue={message}
-                                    placeholder="پیام خود را اینجا بنویسید..."
-                                />
-
-                                <div className="mt-2 flex justify-between items-center">
-                                    <div className="">
-                                        <button type="submit"
-                                                // onClick={sendMessage}
-                                                className="btn btn-svg btn-sm btn-success text-white">
-                                            <ReactSVG src='/src/assets/svgs/send.svg'/>
-                                            <span className="pr-2">ارسال</span>
-                                        </button>
-
-                                        <button type="button"
-                                                onClick={attachFile}
-                                                className="btn btn-svg btn-sm text-white mr-2"
-                                        >
-                                            <ReactSVG src='/src/assets/svgs/paperclip.svg'/>
-                                            <span className="pr-2 text-sm">فایل ضمیمه</span>
-                                        </button>
-                                        <input onChange={fileSelectChange} ref={(inputRef) => fileRef = inputRef} hidden={true} type="file" name="files"/>
-                                    </div>
-                                    <div dir="ltr" className="text-sm mb-4 grid grid-cols-1 gap-1 lg:grid-cols-2 lg:gap-2">
-                                        {
-                                            files.map((file, index) => {
-                                                return (
-                                                    <div key={index} className="flex justify-between items-center mr-1 px-2 py-1 border rounded bg-slate-200">
-                                                        <span className="tooltip" data-tip={file.name}>{ strLimit(file.name) }</span>
-                                                        <button onClick={() => removeFile(index)} className="ml-1 btn-outline btn btn-sm btn-square">x</button>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                </div>
-                            </form>
+                            <MessageBox
+                                message={message}
+                                setMessage={setMessage}
+                                files={files}
+                                setFiles={setFiles}
+                                onSend={sendMessage}
+                            />
                         </div>
                     </div>
                 </Card>

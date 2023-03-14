@@ -9,6 +9,7 @@ import ServerSideSelect from "../../components/SelectBox/ServerSideSelect.jsx";
 import {Link, useNavigate} from "react-router-dom";
 import Card from "../../components/global/Card.jsx";
 import ApiConstants from "../../general/ApiConstants.js";
+import Input from "../../components/global/Form/Input.jsx";
 
 const Ticketing = () => {
     const columnHelper = createColumnHelper();
@@ -39,10 +40,23 @@ const Ticketing = () => {
             // Header: "Total trips",
             // accessor: "trips",
         }),
+        columnHelper.accessor('categories', {
+            id: () => 4,
+            cell: info => {
+                const categories = (info.getValue() ?? []);
+
+                if (categories.length === 0) return '-';
+
+                return categories.join(', ');
+            },
+            header: () => "دسته بندی ها",
+            // Header: "Total trips",
+            // accessor: "trips",
+        }),
         columnHelper.accessor('', {
             // Header: "Current flight",
             // accessor: "flightName",
-            id: () => 4,
+            id: () => 5,
             cell: info => {
                 return (
                     <>
@@ -125,12 +139,12 @@ const Ticketing = () => {
                     </div>
                     <form onSubmit={onFilterSubmit} action="#">
                         <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">عنوان</span>
-                                </label>
-                                <input style={{height: '38px'}} value={titleFilter} onInput={(e) => setTitleFilter(e.target.value)} type="text" placeholder="عنوان..." className="input input-sm input-bordered rounded-sm"/>
-                            </div>
+                            <Input
+                                label="عنوان"
+                                value={titleFilter}
+                                onInput={(e) => setTitleFilter(e.target.value)}
+                                placeholder="عنوان..."
+                            />
 
                             <div className="form-control">
                                 <label className="label">
@@ -143,13 +157,6 @@ const Ticketing = () => {
                                     value={usersFilter}
                                     formatData={formatUserSelect}
                                 />
-                            </div>
-
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">عنوان</span>
-                                </label>
-                                <input style={{height: '38px'}} value={titleFilter} onInput={(e) => setTitleFilter(e.target.value)} type="text" placeholder="عنوان..." className="input input-sm input-bordered rounded-sm"/>
                             </div>
                         </div>
 

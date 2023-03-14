@@ -34,11 +34,11 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                                 _(String(value)) // set internal global filter to keep text in the search input
                                 setGlobalFilter(String(value))
                             }}
-                            className="p-2 mb-2 rounded input input-bordered input-sm w-full max-w-xs"
+                            className="p-2 mb-2 rounded input focus:outline-none text-sm input-bordered input-sm w-full max-w-xs"
                             placeholder="جستجو ..."
                         />
                         <div className="mr-2 table-buttons">
-                            <button onClick={reload} className="btn rounded btn-outline btn-sm btn-square">
+                            <button onClick={reload} className="btn border-gray-400 focus:outline-none text-gray-600 rounded btn-outline btn-sm btn-square">
                                 <ReactSVG src="/src/assets/svgs/reload.svg" />
                             </button>
                         </div>

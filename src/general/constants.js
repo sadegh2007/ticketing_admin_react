@@ -1,6 +1,7 @@
 export const constants = {
     APP_TITLE: "تیکتینگ",
-    BASE_URL: "http://0.0.0.0:5291",
+    APP_BASE_URL: 'http://localhost:5173',
+    BASE_URL: "http://localhost:5291", // 10.5.50.200
     TABLE_PAGE_SIZE: 20,
     ADD_STATUS_CODE: 201,
     EDIT_STATUS_CODE_SUCCESS: 200,
