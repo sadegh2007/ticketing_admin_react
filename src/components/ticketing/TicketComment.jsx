@@ -1,11 +1,8 @@
 import {constants} from "../../general/constants.js";
 import {ReactSVG} from "react-svg";
-import React, {useContext, useState} from "react";
-import {confirmAlert} from "react-confirm-alert";
-import {appContext} from "../../context/AppContext.js";
-import {RemoveMessageFromTicket} from "../../services/TicketingApiService.js";
-import {handleError} from "../../services/GlobalService.js";
+import React, {useState} from "react";
 import CommentViewersModal from "./CommentViewersModal.jsx";
+import PersianDate from "../global/PersianDate.jsx";
 
 const TicketComment = ({ticket, comment, isCurrentUser, onRemove, onReply, scrollToReply}) => {
     const [showViewer, setShowViewer] = useState(false);
@@ -19,16 +16,30 @@ const TicketComment = ({ticket, comment, isCurrentUser, onRemove, onReply, scrol
                         <div>
                         <span
 
-                            className={`px-3 py-2 inline-block rounded ${isCurrentUser ? 'bg-gray-300 text-gray-600 rounded-br-none' : 'rounded-bl-none bg-blue-600 text-white '}`}>
+                            className={`px-3 py-2 inline-block rounded ${isCurrentUser ? 'rounded-bl-none bg-blue-600 text-white' : 'bg-gray-300 text-gray-600 rounded-br-none'}`}>
+
+                            <span className="flex justify-between items-center text-xs">
+                                <p className="ml-8">{comment.creator.fullName}</p>
+                                <PersianDate format="shortDateTime" className={isCurrentUser ? "text-blue-400" : "text-gray-400"} date={comment.createdAt} />
+                            </span>
+
+                            <div className="divider m-0 p-0"></div>
+
                             {/*{comment.message}*/}
 
                             {
-                                comment.replay ? <div onClick={() => scrollToReply(comment.replay.id)} className={`${isCurrentUser ? 'hover:bg-gray-400 border-gray-500' : 'hover:bg-blue-400 border-blue-500'} rounded border cursor-pointer mb-2 text-xs border-dashed`}>
-                                    <div className="px-2 py-1" dangerouslySetInnerHTML={{__html: comment.replay.message}}/>
-                                </div> : undefined
+                                comment.replay
+                                    ? <div onClick={() => scrollToReply(comment.replay.id)} className={`${isCurrentUser ? 'hover:bg-blue-500 hover:border-blue-800 border-blue-800 text-blue-300' : 'hover:bg-gray-400 hover:border-gray-500 border-gray-500 text-gray-500'} border-2 border-y-transparent border-l-transparent mb-1 cursor-pointer mb-2 text-xs border-dashed`}>
+                                        <span className="flex btn-sm-svg mb-1 mr-2">
+                                            <ReactSVG className="ml-1" src="/src/assets/svgs/arrow-forward.svg"/>
+                                            {comment.replay.creator.fullName}
+                                        </span>
+                                        <div className="px-2 py-0.5 max-h-5 text-clip overflow-hidden" dangerouslySetInnerHTML={{__html: comment.replay.message}}/>
+                                    </div>
+                                    : undefined
                             }
 
-                            <div dangerouslySetInnerHTML={{__html: comment.message}}/>
+                            <div className="font-semibold" dangerouslySetInnerHTML={{__html: comment.message}}/>
 
                             {
                                 comment.files.length > 0 ?
@@ -57,14 +68,14 @@ const TicketComment = ({ticket, comment, isCurrentUser, onRemove, onReply, scrol
                             <span className="flex justify-end items-center">
                                 <button
                                     onClick={() => setShowViewer(true)}
-                                    className={`btn-xs btn-sm-svg ml-1 btn-square ${isCurrentUser ? 'bg-gray-300 hover:bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}
+                                    className={`btn-xs btn-sm-svg ml-1 btn-square ${isCurrentUser ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 hover:bg-gray-400'}`}
                                 >
                                     <ReactSVG className="tooltip" data-tip="دیده شده" src="/src/assets/svgs/eye.svg"/>
                                 </button>
 
                                 <button
                                     onClick={() => onReply(comment)}
-                                    className={`btn-xs btn-sm-svg ml-1 btn-square ${isCurrentUser ? 'bg-gray-300 hover:bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}
+                                    className={`btn-xs btn-sm-svg ml-1 btn-square ${isCurrentUser ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 hover:bg-gray-400'}`}
                                 >
                                     <ReactSVG className="tooltip" data-tip="پاسخ"
                                               src="/src/assets/svgs/arrow-forward.svg"/>
@@ -72,7 +83,7 @@ const TicketComment = ({ticket, comment, isCurrentUser, onRemove, onReply, scrol
                                 {
                                     ticket.creator.id === comment.creator.id ? <button
                                         onClick={() => onRemove(comment.id)}
-                                        className={`btn-xs btn-sm-svg btn-square ${isCurrentUser ? 'bg-gray-300 hover:bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}
+                                        className={`btn-xs btn-sm-svg btn-square ${isCurrentUser ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 hover:bg-gray-400'}`}
                                     >
                                         <ReactSVG className="tooltip" data-tip="حذف" src="/src/assets/svgs/trash.svg"/>
                                     </button> : null

@@ -163,13 +163,13 @@ const Ticketing = () => {
 
 
                         <div className="mt-4">
-                            <button className="btn-filter rounded btn gap-2 btn-svg btn-sm" type="submit">
+                            <button className="rounded btn-svg btn-sm btn btn-svg text-sm btn-primary leading-none" type="submit">
                                 <ReactSVG src="/src/assets/svgs/filter.svg" />
                                 فیلتر
                             </button>
 
                             {
-                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="btn-svg rounded btn-sm mr-2 btn-filter btn btn-secondary gap-2" type="button">
+                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="rounded btn-secondary btn-svg btn-sm btn btn-svg text-sm btn-primary mr-2 leading-none" type="button">
                                 <ReactSVG src="/src/assets/svgs/filter-off.svg" />
                                 حذف فیلتر
                                 </button> : null

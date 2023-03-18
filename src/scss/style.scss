@@ -461,3 +461,8 @@ input[required] {
 	content: '';
 	border-right: 4px solid hsl(var(--er)/1);
 }
+
+.history-container {
+	height: calc(100vh - 200px);
+	overflow-y: scroll;
+}

@@ -24,8 +24,8 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
     }, [])
 
     return (
-        <div className={`modal ${show ? 'modal-open' : ''} overflow-visible`}>
-            <div className="modal-box p-2 rounded relative">
+        <div className={`modal ${show ? 'modal-open' : ''}`}>
+            <div className="modal-box p-4 rounded relative overflow-hidden">
                 <button onClick={() => {
                     setHistories([]);
                     closeModal(false)
@@ -35,7 +35,7 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
                 <h3 className="text-lg font-bold">تاریخچه تیکت</h3>
 
                 <div className="divider m-0 p-0"></div>
-                <div className="" style={{overflow: 'initial'}}>
+                <div className="history-container">
                     <div
                         className="flex flex-col md:grid grid-cols-9 mx-auto p-2 text-blue-50"
                     >

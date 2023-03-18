@@ -179,7 +179,7 @@ const ViewTicket = () => {
                     <div className="card-header">
                         <div className="border-2 rounded mt-4 mx-4 p-3">
                             <div className="flex justify-between items-center">
-                                <span># {ticket?.number} - {ticket?.title}</span>
+                                <span># {ticket?.number ?? '-'} - {ticket?.title}</span>
                                 <Link to="/admin/ticketing/create" className="btn btn-sm rounded btn-svg">
                                     <ReactSVG src="/src/assets/svgs/plus.svg" />
                                     <span className="text-xs mr-1">تیکت جدید</span>
