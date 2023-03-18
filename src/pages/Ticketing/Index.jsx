@@ -18,7 +18,7 @@ const Ticketing = () => {
     const columns = [
         columnHelper.accessor('title', {
             id: () => 0,
-            cell: info => info.getValue(),
+            cell: info => <span className={info.row.original.unreadCount > 0 ? 'font-bold' : ''}>{info.getValue()}</span>,
             header: () => "عنوان",
         }),
         columnHelper.accessor('status', {
@@ -43,7 +43,7 @@ const Ticketing = () => {
         columnHelper.accessor('categories', {
             id: () => 4,
             cell: info => {
-                const categories = (info.getValue() ?? []);
+                const categories = (info.getValue() ?? []).map(x => x.title);
 
                 if (categories.length === 0) return '-';
 
@@ -81,6 +81,7 @@ const Ticketing = () => {
                     creator: info.creator ?? {},
                     status: info.status ?? {},
                     department: info.department ?? {},
+                    categories: info.categories ?? {},
                     trips: info.trips,
                     flightName: info.airline?.name ?? '-',
                 }
@@ -107,7 +108,7 @@ const Ticketing = () => {
 
     const removeFilters = () => {
         setTitleFilter('');
-        setUsersFilter([]);
+        setUsersFilter(null);
 
         let newFilters = {...filters}
 

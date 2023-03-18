@@ -10,7 +10,9 @@ const MessageBox = (
         message,
         setMessage,
         files,
-        setFiles
+        setFiles,
+        replyTo = null,
+        onCloseReply
     }) => {
 
     let fileRef = useRef();
@@ -37,6 +39,13 @@ const MessageBox = (
 
     return (
         <>
+            {
+                replyTo ? <div className="bg-gray-300 p-3 text-xs rounded-t">
+                    <button className="btn btn-xs btn-outline border-none mb-2" onClick={onCloseReply}>x</button>
+                    <div className="" dangerouslySetInnerHTML={{__html: replyTo.message}}></div>
+                </div> : undefined
+            }
+
             <QuillEditor
                 ref={quillRef}
                 className={`ql-height-${height}`}
@@ -48,18 +57,18 @@ const MessageBox = (
             <div className="mt-2 flex justify-between items-center">
                 <div className="">
                     <button type="submit"
-                            onClick={onSend}
-                            className="btn btn-svg btn-sm btn-success text-white">
+                            onClick={() => onSend(replyTo?.id)}
+                            className="rounded text-xs btn btn-svg btn-sm btn-success text-white">
                         <ReactSVG src='/src/assets/svgs/send.svg'/>
                         <span className="pr-2">ارسال</span>
                     </button>
 
                     <button type="button"
                             onClick={attachFile}
-                            className="btn btn-svg btn-sm text-white mr-2"
+                            className="rounded text-xs btn btn-svg btn-sm text-white mr-2"
                     >
                         <ReactSVG src='/src/assets/svgs/paperclip.svg'/>
-                        <span className="pr-2 text-sm">فایل ضمیمه</span>
+                        <span className="pr-2">فایل ضمیمه</span>
                     </button>
                     <input onChange={fileSelectChange} ref={(inputRef) => fileRef = inputRef} hidden={true} type="file"
                            name="files"/>

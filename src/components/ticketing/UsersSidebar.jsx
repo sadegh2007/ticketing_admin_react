@@ -3,7 +3,7 @@ import Card from "../global/Card.jsx";
 import React, {useContext, useState} from "react";
 import NewUserModal from "./NewUserModal.jsx";
 import {appContext} from "../../context/AppContext.js";
-import { confirmAlert } from 'react-confirm-alert';
+import {confirmAlert} from 'react-confirm-alert';
 import {RemoveUserFromTicket} from "../../services/TicketingApiService.js";
 import {handleError} from "../../services/GlobalService.js";
 import {notify} from "../../utilities/index.js";
@@ -21,7 +21,8 @@ const UsersSidebar = ({ticket, loadTicket}) => {
             buttons: [
                 {
                     label: 'خیر',
-                    onClick: () => {}
+                    onClick: () => {
+                    }
                 },
                 {
                     label: 'حذف کن!',
@@ -29,15 +30,17 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                         toggleMainLoader(true);
                         RemoveUserFromTicket(ticket.id, userId)
                             .then((res) => {
-                                toggleMainLoader(false);
+                                loadTicket();
+                                // toggleMainLoader(false);
+                                //
+                                // ticket.users = ticket.users.filter((user) => {
+                                //     return user.id !== userId;
+                                // });
 
-                                ticket.users = ticket.users.filter((user) => {
-                                    return user.id !== userId;
-                                });
-
-                                notify(constants.DELETE_SUCCESS_TEXT);
+                                notify(constants.DELETE_SUCCESS_TEXT, 'success');
                             })
                             .catch(e => {
+                                console.log(e);
                                 toggleMainLoader(false);
                                 handleError(e);
                             });
@@ -55,10 +58,12 @@ const UsersSidebar = ({ticket, loadTicket}) => {
     return (
         <>
             <Card className="hidden md:block">
-                <div className="card-header flex justify-between items-center border-b rounded-t bg-gray-800 text-white p-3 text-center">
+                <div
+                    className="card-header flex justify-between items-center border-b rounded-t bg-gray-800 text-white p-3 text-center">
                     <span>کاربران</span>
-                    <button onClick={() => setShowNewUserModal(true)} className="btn-svg btn-primary btn btn-sm btn-square">
-                        <ReactSVG src="/src/assets/svgs/plus.svg" />
+                    <button onClick={() => setShowNewUserModal(true)}
+                            className="btn-svg btn-primary btn btn-sm btn-square">
+                        <ReactSVG src="/src/assets/svgs/plus.svg"/>
                     </button>
                 </div>
                 <div className="card-body p-3">
@@ -66,20 +71,24 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                         {
                             ticket?.users.map((userItem) => {
                                 return (
-                                    <li key={userItem.id} className="flex justify-between items-center mb-2">
+                                    <li id={userItem.id} key={userItem.id} className="flex justify-between items-center mb-2">
                                         <div className="flex items-center">
                                             <img className="w-8 rounded-full border"
-                                                 src={userItem.user.picture ?? '/src/assets/user-placeholder.png'}
+                                                 src={(userItem.user && userItem.user.picture) ? userItem.user.picture : '/src/assets/user-placeholder.png'}
                                                  alt="user"/>
                                             <div className="flex items-center">
-                                                <span className="mr-2 text-xs">{userItem.user.fullName}</span>
-                                                { userItem.userId === ticket.creatorId ? <ReactSVG className="mr-2 btn-sm-svg" src="/src/assets/svgs/star-filled.svg"/> : '' }
+                                                <span className="mr-2 text-xs">{(userItem.user && userItem.user.fullName) ? userItem.user.fullName : '-'}</span>
+                                                {userItem.user?.id === ticket.creator.id ?
+                                                    <ReactSVG className="mr-2 btn-sm-svg"
+                                                              src="/src/assets/svgs/star-filled.svg"/> : ''}
                                             </div>
                                         </div>
                                         {
-                                            (userItem.userId !== ticket.creatorId && userItem.userId !== CurrentUser()?.user.id) ? <button onClick={() => deleteUser(userItem.UserId)} className="btn btn-error btn-sm btn-square btn-svg text-gray-600 rounded btn-outline">
-                                                <ReactSVG src="/src/assets/svgs/trash.svg" />
-                                            </button> : undefined
+                                            (userItem.user && userItem.user?.id !== ticket.creator.id && userItem.user?.id !== CurrentUser()?.user.id) ?
+                                                <button onClick={() => deleteUser(userItem.user.id)}
+                                                        className="btn btn-error btn-sm btn-square btn-svg text-gray-600 rounded btn-outline">
+                                                    <ReactSVG src="/src/assets/svgs/trash.svg"/>
+                                                </button> : undefined
                                         }
 
                                     </li>
@@ -90,16 +99,18 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                 </div>
             </Card>
 
-            <NewUserModal
-                ticketId={ticket?.id}
-                show={showNewUserModal}
-                closeModal={(reload = false) => {
-                    setShowNewUserModal(false)
-                    if (reload) {
-                        loadTicket();
+            {
+                showNewUserModal ? <NewUserModal
+                    ticketId={ticket?.id}
+                    show={showNewUserModal}
+                    closeModal={(reload = false) => {
+                        setShowNewUserModal(false)
+                        if (reload) {
+                            loadTicket();
+                        }
                     }
-                }
-            }/>
+                    }/> : null
+            }
         </>
     )
 }

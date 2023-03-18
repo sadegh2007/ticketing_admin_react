@@ -1,38 +1,52 @@
 import ServerSideSelect from "../SelectBox/ServerSideSelect.jsx";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Apis from "../../general/ApiConstants.js";
 import {appContext} from "../../context/AppContext.js";
-import {AddUserToTicket} from "../../services/TicketingApiService.js";
+import {AddCategoriesToTicket, AddUserToTicket} from "../../services/TicketingApiService.js";
 import {handleError} from "../../services/GlobalService.js";
 import {ReactSVG} from "react-svg";
 
-const NewUserModal = ({ticketId, show, closeModal}) => {
-    const [users, setUsers] = useState(null);
+const SelectCategoryModal = ({ticket, show = false, closeModal}) => {
+    const [categories, setCategories] = useState(null);
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
+
+    useEffect(() => {
+        if (ticket && ticket.categories && ticket.categories.length > 0) {
+            setCategories(ticket.categories.map(c => {
+                return {
+                    value: c.id,
+                    label: c.title
+                }
+            }));
+        }
+    }, []);
 
     const formatUserSelect = (data) => {
         return data.items.map((x) => {
             return {
-                label: x.fullName,
+                label: x.title,
                 value: x.id,
             };
         });
     }
 
-    const addUser = async () => {
+    const addCategories = async () => {
+        if (!categories || categories.length === 0) {
+            return;
+        }
+
         toggleMainLoader(true);
 
-        const userIds = users.map((i) => i.value);
-        AddUserToTicket(ticketId, userIds)
+        const categoriesIds = categories.map((i) => i.value);
+        AddCategoriesToTicket(ticket.id, categoriesIds)
             .then(res => {
-                setUsers([]);
+                setCategories([]);
 
                 toggleMainLoader(false);
 
                 closeModal(true);
             })
             .catch(err => {
-                console.log(err)
                 handleError(err.response);
                 toggleMainLoader(false);
             });
@@ -42,24 +56,24 @@ const NewUserModal = ({ticketId, show, closeModal}) => {
         <div className={`modal ${show ? 'modal-open' : ''} overflow-visible`}>
             <div className="modal-box rounded relative" style={{overflow: 'initial'}}>
                 <button onClick={() => {
-                    setUsers([]);
+                    setCategories([]);
                     closeModal(false)
                 }} className="btn btn-sm btn-square btn-svg text-gray-600 rounded btn-outline absolute left-2 top-2">
                     <ReactSVG src="/src/assets/svgs/X.svg" />
                 </button>
-                <h3 className="text-lg font-bold">اضافه کردن کاربر</h3>
+                <h3 className="text-lg font-bold">انتخاب دسته بندی ها</h3>
 
                 <div className="">
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">کاربر</span>
+                            <span className="label-text">دسته بندی ها</span>
                         </label>
                         <ServerSideSelect
-                            placeholder="کاربران..."
-                            url={Apis.Users.List}
-                            value={users}
+                            placeholder="دسته بندی ها ..."
+                            url={Apis.Categories.List}
+                            value={categories}
                             method='POST'
-                            onSelect={setUsers}
+                            onSelect={setCategories}
                             multiple={true}
                             formatData={formatUserSelect}
                         />
@@ -67,9 +81,9 @@ const NewUserModal = ({ticketId, show, closeModal}) => {
                 </div>
 
                 <div className="modal-action">
-                    <button onClick={addUser} className="text-xs btn btn-sm btn-svg rounded btn-success text-white">
+                    <button disabled={!categories || categories.length === 0} onClick={addCategories} className="text-xs btn btn-svg btn-sm rounded btn-success text-white">
                         <ReactSVG src="/src/assets/svgs/device-floppy.svg" />
-                        <span className="mr-1">اضافه کردن</span>
+                        <span className="mr-1">ثبت</span>
                     </button>
                 </div>
             </div>
@@ -77,4 +91,4 @@ const NewUserModal = ({ticketId, show, closeModal}) => {
     );
 }
 
-export default NewUserModal;
+export default SelectCategoryModal;

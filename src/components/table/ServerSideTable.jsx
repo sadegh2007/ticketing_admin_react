@@ -1,10 +1,10 @@
-import {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect, useContext, useRef, useImperativeHandle} from "react";
 import AppTable from "./AppTable.jsx";
 import ReactPaginate from 'react-paginate';
 import {appContext} from "../../context/AppContext.js";
 import axios from "axios";
 
-const ServerSideTable = (
+const ServerSideTable = React.forwardRef((
     {
         url,
         method = 'GET',
@@ -14,7 +14,7 @@ const ServerSideTable = (
         currentPageIndex = 1,
         isCompact = true,
         filters = {}
-    }) => {
+    }, ref) => {
 
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
     const [pageData, setPageData] = useState({
@@ -25,6 +25,10 @@ const ServerSideTable = (
     });
     const [currentPage, setCurrentPage] = useState(currentPageIndex);
     const [globalFilter, setGlobalFilter] = useState('');
+
+    useImperativeHandle(ref, () => ({
+        reload
+    }));
 
     const getData = async (pageNo = 1) => {
         // let urlBuilder = `${url}?page=${pageNo}&size=${rowPerPage}&q=${globalFilter}`;
@@ -126,6 +130,6 @@ const ServerSideTable = (
 
         </>
     );
-}
+})
 
 export default ServerSideTable;

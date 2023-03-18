@@ -31,6 +31,15 @@ body {
 	//height: 100%;
 }
 
+.Toastify__toast-body  {
+	direction: rtl;
+
+	> div:last-child {
+		font-family: "IRAN_SANS_X";
+		font-size: 14px;
+	}
+}
+
 .breadcrumbs a {
 	color: #212121;
 }
@@ -229,11 +238,13 @@ body {
 .btn-svg svg {
 	width: 18px;
 	height: 18px;
+	display: inline-block;
 }
 
 .btn-sm-svg svg {
 	width: 14px;
 	height: 14px;
+	display: inline-block;
 }
 
 .ltr {

@@ -2,6 +2,7 @@ import Select from "react-tailwindcss-select";
 import React, {useEffect, useState} from "react";
 import {ApiRequest} from "../../services/ApiService.js";
 import {notify} from "../../utilities/index.js";
+import {handleError} from "../../services/GlobalService.js";
 
 const ServerSideSelect = React.forwardRef((
     {
@@ -41,7 +42,9 @@ const ServerSideSelect = React.forwardRef((
             if (formatData != undefined && result) {
                 result = formatData(result);
             }
-        } catch {
+        } catch (e) {
+            handleError(e.response);
+            result = [];
         }
 
         setLoading(false);
