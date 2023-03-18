@@ -9,6 +9,8 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
     const columnData = useMemo(() => columns, [columns]);
     const rowData = useMemo(() => data, [data]);
 
+    const [columnResizeMode, setColumnResizeMode] = React.useState('onChange')
+
     const [globalFilter, _] = React.useState('')
 
     const table = useReactTable({
@@ -19,6 +21,13 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
             globalFilter,
         },
         getCoreRowModel: getCoreRowModel(),
+        enableColumnResizing: true,
+        columnResizeMode,
+        defaultColumn: {
+            size: 150,
+            minSize: 20,
+            maxSize: Number.MAX_SAFE_INTEGER,
+        }
     });
 
     return (
@@ -44,7 +53,13 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                         </div>
                     </div>
                     <div style={{minHeight: '600px'}} className="overflow-x-auto border rounded">
-                        <table className={`table ${isCompact ? 'table-compact': ''} table-zebra w-full`}>
+                        <table
+                            {...{
+                                style: {
+                                    width: table.getCenterTotalSize(),
+                                },
+                            }}
+                            className={`table ${isCompact ? 'table-compact': ''} table-zebra w-full`}>
                             <thead>
                             {table.getHeaderGroups().map(headerGroup => (
                                 <tr
@@ -54,6 +69,9 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                                         <th
                                             key={header.id}
                                             colSpan={header.colSpan}
+                                            style={{
+                                                width: header.getSize()
+                                            }}
                                         >
                                             {header.isPlaceholder
                                                 ? null
@@ -61,6 +79,24 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                                                     header.column.columnDef.header,
                                                     header.getContext()
                                                 )}
+                                            <div
+                                                {...{
+                                                    onMouseDown: header.getResizeHandler(),
+                                                    onTouchStart: header.getResizeHandler(),
+                                                    className: `resizer ${
+                                                        header.column.getIsResizing() ? 'isResizing' : ''
+                                                    }`,
+                                                    style: {
+                                                        transform:
+                                                            columnResizeMode === 'onEnd' &&
+                                                            header.column.getIsResizing()
+                                                                ? `translateX(${
+                                                                    table.getState().columnSizingInfo.deltaOffset
+                                                                }px)`
+                                                                : '',
+                                                    },
+                                                }}
+                                            />
                                         </th>
                                     ))}
                                 </tr>
@@ -70,7 +106,12 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                             {table.getRowModel().rows.map(row => (
                                 <tr className='hover' key={row.id}>
                                     {row.getVisibleCells().map(cell => (
-                                        <td key={cell.id}>
+                                        <td {...{
+                                            key: cell.id,
+                                            style: {
+                                                width: cell.column.getSize(),
+                                            },
+                                        }}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
                                     ))}

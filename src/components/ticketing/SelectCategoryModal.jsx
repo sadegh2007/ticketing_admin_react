@@ -7,7 +7,7 @@ import {handleError} from "../../services/GlobalService.js";
 import {ReactSVG} from "react-svg";
 
 const SelectCategoryModal = ({ticket, show = false, closeModal}) => {
-    const [categories, setCategories] = useState(null);
+    const [categories, setCategories] = useState('');
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
 
     useEffect(() => {

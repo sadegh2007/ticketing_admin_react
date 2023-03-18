@@ -1,5 +1,4 @@
-import DashboardLayout from "../../components/layouts/DashboardLayout.jsx";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {createColumnHelper} from "@tanstack/react-table";
 import ServerSideTable from "../../components/table/ServerSideTable.jsx";
 import {ReactSVG} from "react-svg";
@@ -10,10 +9,20 @@ import {Link, useNavigate} from "react-router-dom";
 import Card from "../../components/global/Card.jsx";
 import ApiConstants from "../../general/ApiConstants.js";
 import Input from "../../components/global/Form/Input.jsx";
+import SelectCategoryModal from "../../components/ticketing/SelectCategoryModal.jsx";
 
 const Ticketing = () => {
     const columnHelper = createColumnHelper();
     const navigation = useNavigate();
+    const [showCategoryModel, setShowCategoryModal] = useState(false);
+    const [currentTicket, setCurrentTicket] = useState(false);
+
+    const datatable = useRef(null);
+
+    const assignCategory = (ticket) => {
+        setCurrentTicket(ticket);
+        setShowCategoryModal(true);
+    }
 
     const columns = [
         columnHelper.accessor('title', {
@@ -33,9 +42,9 @@ const Ticketing = () => {
             // Header: "Total trips",
             // accessor: "trips",
         }),
-        columnHelper.accessor('department.title', {
+        columnHelper.accessor('department', {
             id: () => 3,
-            cell: info => info.getValue() ?? '-',
+            cell: info => info.getValue()?.title ?? '-',
             header: () => "دپارتمان",
             // Header: "Total trips",
             // accessor: "trips",
@@ -43,11 +52,10 @@ const Ticketing = () => {
         columnHelper.accessor('categories', {
             id: () => 4,
             cell: info => {
-                const categories = (info.getValue() ?? []).map(x => x.title);
-
+                const categories = (info.getValue() ?? []).map(x => x.title).join(',');
                 if (categories.length === 0) return '-';
 
-                return categories.join(', ');
+                return <p className="inline-block truncate max-w-full">{categories}</p>;
             },
             header: () => "دسته بندی ها",
             // Header: "Total trips",
@@ -60,7 +68,13 @@ const Ticketing = () => {
             cell: info => {
                 return (
                     <>
-                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="rounded table-action-button btn-square btn btn-sm btn-outline">
+                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="rounded btn-error table-action-button btn-square btn btn-sm-svg btn-xs btn-outline">
+                            <ReactSVG src="/src/assets/svgs/trash.svg" />
+                        </button>
+                        <button onClick={() => assignCategory(info.row.original)} className="mr-1 rounded btn-info table-action-button btn-square btn btn-sm-svg btn-xs btn-outline">
+                            <ReactSVG src="/src/assets/svgs/tags.svg" />
+                        </button>
+                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="mr-1 rounded table-action-button btn-square btn btn-sm-svg btn-xs btn-outline">
                             <ReactSVG src="/src/assets/svgs/eye.svg" />
                         </button>
                     </>
@@ -91,7 +105,7 @@ const Ticketing = () => {
 
     const [filters, setFilters] = useState({});
     const [titleFilter, setTitleFilter] = useState('');
-    const [usersFilter, setUsersFilter] = useState();
+    const [usersFilter, setUsersFilter] = useState(null);
 
     const onFilterSubmit = (e) => {
         e.preventDefault();
@@ -180,9 +194,9 @@ const Ticketing = () => {
                     <div className="divider"></div>
                     
                     <ServerSideTable
+                        ref={datatable}
                         url={Apis.Ticketing.List}
                         method='POST'
-                        value={usersFilter}
                         rowPerPage={15}
                         formatRowData={(data) => formatRowData(data)}
                         columns={columns}
@@ -190,6 +204,18 @@ const Ticketing = () => {
                     />
                 </div>
             </Card>
+            {
+                showCategoryModel ? <SelectCategoryModal
+                    ticket={currentTicket}
+                    closeModal={(reload) => {
+                        setShowCategoryModal(false);
+                        if (reload) {
+                            datatable.current?.reload();
+                        }
+                    }}
+                    show={showCategoryModel}
+                /> : null
+            }
         </>
     );
 }
