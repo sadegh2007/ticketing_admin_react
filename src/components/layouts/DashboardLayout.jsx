@@ -82,7 +82,7 @@ const DashboardLayout = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="content-wrapper container mb-4">
+                <div className="content-wrapper mx-4 mb-4">
                     <Outlet/>
                     {/*{props.children}*/}
                     {/*<Footer/>*/}

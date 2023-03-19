@@ -44,7 +44,7 @@ const NewUserModal = ({ticketId, show, closeModal}) => {
                 <button onClick={() => {
                     setUsers([]);
                     closeModal(false)
-                }} className="btn btn-sm btn-square btn-svg text-gray-600 rounded btn-outline absolute left-2 top-2">
+                }} className="btn btn-sm btn-square btn-sm-svg text-gray-600 rounded btn-outline absolute left-2 top-2">
                     <ReactSVG src="/src/assets/svgs/X.svg" />
                 </button>
                 <h3 className="text-lg font-bold">اضافه کردن کاربر</h3>
@@ -67,7 +67,7 @@ const NewUserModal = ({ticketId, show, closeModal}) => {
                 </div>
 
                 <div className="modal-action">
-                    <button onClick={addUser} className="text-xs btn btn-sm btn-svg rounded btn-success text-white">
+                    <button onClick={addUser} className="text-sm btn btn-sm btn-sm-svg rounded btn-success text-white">
                         <ReactSVG src="/src/assets/svgs/device-floppy.svg" />
                         <span className="mr-1">اضافه کردن</span>
                     </button>

@@ -40,7 +40,7 @@ const MessageBox = (
     return (
         <>
             {
-                replyTo ? <div className="bg-gray-300 p-3 text-xs rounded-t">
+                replyTo ? <div className="bg-gray-300 p-3 text-sm rounded-t">
                     <button className="btn btn-xs btn-outline border-none mb-2" onClick={onCloseReply}>x</button>
                     <div className="" dangerouslySetInnerHTML={{__html: replyTo.message}}></div>
                 </div> : undefined

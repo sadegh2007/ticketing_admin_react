@@ -62,7 +62,7 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                     className="card-header flex justify-between items-center border-b rounded-t bg-gray-800 text-white p-3 text-center">
                     <span>کاربران</span>
                     <button onClick={() => setShowNewUserModal(true)}
-                            className="btn-svg btn-primary btn btn-sm btn-square">
+                            className="btn-sm-svg btn-primary btn btn-sm btn-square">
                         <ReactSVG src="/src/assets/svgs/plus.svg"/>
                     </button>
                 </div>
@@ -71,25 +71,33 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                         {
                             ticket?.users.map((userItem) => {
                                 return (
-                                    <li id={userItem.id} key={userItem.id} className="flex justify-between items-center mb-2">
+                                    <li id={userItem.id} key={userItem.id}
+                                        className="flex justify-between items-center mb-2 border-b pb-2">
                                         <div className="flex items-center">
-                                            <img className="w-8 rounded-full border"
+                                            {
+                                                (userItem.user && userItem.user?.id !== ticket.creator.id && userItem.user?.id !== CurrentUser()?.user.id)
+                                                    ?
+                                                    <div className="hover:opacity-100 opacity-0 absolute z-40 right-3">
+                                                        <button onClick={() => deleteUser(userItem.user.id)}
+                                                                style={{height: '2.5rem', width: '2.5rem'}}
+                                                                className="btn btn-sm btn-error btn-circle rounded-full btn-sm-svg">
+                                                            <ReactSVG src="/src/assets/svgs/trash.svg"/>
+                                                        </button>
+                                                    </div>
+                                                    : undefined
+                                            }
+                                            <img className="w-10 rounded-full border z-30"
                                                  src={(userItem.user && userItem.user.picture) ? userItem.user.picture : '/src/assets/user-placeholder.png'}
                                                  alt="user"/>
-                                            <div className="flex items-center">
-                                                <span className="mr-2 text-xs">{(userItem.user && userItem.user.fullName) ? userItem.user.fullName : '-'}</span>
+                                            <div className="flex items-baseline">
+                                                <span
+                                                    className="mr-2 text-sm">{(userItem.user && userItem.user.fullName) ? userItem.user.fullName : '-'}</span>
                                                 {userItem.user?.id === ticket.creator.id ?
                                                     <ReactSVG className="mr-2 btn-sm-svg"
                                                               src="/src/assets/svgs/star-filled.svg"/> : ''}
                                             </div>
                                         </div>
-                                        {
-                                            (userItem.user && userItem.user?.id !== ticket.creator.id && userItem.user?.id !== CurrentUser()?.user.id) ?
-                                                <button onClick={() => deleteUser(userItem.user.id)}
-                                                        className="btn btn-error btn-sm btn-square btn-svg text-gray-600 rounded btn-outline">
-                                                    <ReactSVG src="/src/assets/svgs/trash.svg"/>
-                                                </button> : undefined
-                                        }
+
 
                                     </li>
                                 )

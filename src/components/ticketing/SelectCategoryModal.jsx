@@ -58,7 +58,7 @@ const SelectCategoryModal = ({ticket, show = false, closeModal}) => {
                 <button onClick={() => {
                     setCategories([]);
                     closeModal(false)
-                }} className="btn btn-sm btn-square btn-svg text-gray-600 rounded btn-outline absolute left-2 top-2">
+                }} className="btn btn-sm btn-square btn-sm-svg text-gray-600 rounded btn-outline absolute left-2 top-2">
                     <ReactSVG src="/src/assets/svgs/X.svg" />
                 </button>
                 <h3 className="text-lg font-bold">انتخاب دسته بندی ها</h3>
@@ -81,7 +81,7 @@ const SelectCategoryModal = ({ticket, show = false, closeModal}) => {
                 </div>
 
                 <div className="modal-action">
-                    <button disabled={!categories || categories.length === 0} onClick={addCategories} className="text-xs btn btn-svg btn-sm rounded btn-success text-white">
+                    <button disabled={!categories || categories.length === 0} onClick={addCategories} className="text-sm btn btn-sm-svg btn-sm rounded btn-success text-white">
                         <ReactSVG src="/src/assets/svgs/device-floppy.svg" />
                         <span className="mr-1">ثبت</span>
                     </button>

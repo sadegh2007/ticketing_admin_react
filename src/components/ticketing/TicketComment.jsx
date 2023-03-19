@@ -14,18 +14,13 @@ const TicketComment = ({ticket, comment, isCurrentUser, onRemove, onReply, scrol
                     <div
                         className={`flex flex-col space-y-2 text-sm max-w-xs mx-2 ${!isCurrentUser ? 'order-1 items-end' : 'order-2 items-start'}`}>
                         <div>
-                        <span
-
-                            className={`px-3 py-2 inline-block rounded ${isCurrentUser ? 'rounded-bl-none bg-blue-600 text-white' : 'bg-gray-300 text-gray-600 rounded-br-none'}`}>
-
+                        <span className={`px-3 py-2 inline-block rounded ${isCurrentUser ? 'rounded-br-none bg-blue-600 text-white' : 'bg-gray-300 text-gray-600 rounded-bl-none'}`}>
                             <span className="flex justify-between items-center text-xs">
                                 <p className="ml-8">{comment.creator.fullName}</p>
-                                <PersianDate format="shortDateTime" className={isCurrentUser ? "text-blue-400" : "text-gray-400"} date={comment.createdAt} />
+                                <PersianDate format="shortDateTime" className={isCurrentUser ? "text-blue-300" : "text-gray-500"} date={comment.createdAt} />
                             </span>
 
                             <div className="divider m-0 p-0"></div>
-
-                            {/*{comment.message}*/}
 
                             {
                                 comment.replay

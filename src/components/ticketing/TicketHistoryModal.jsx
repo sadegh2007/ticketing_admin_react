@@ -29,7 +29,7 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
                 <button onClick={() => {
                     setHistories([]);
                     closeModal(false)
-                }} className="btn btn-sm btn-square btn-svg text-gray-600 rounded btn-outline absolute left-2 top-2">
+                }} className="btn btn-sm btn-square btn-sm-svg text-gray-600 rounded btn-outline absolute left-2 top-2">
                     <ReactSVG src="/src/assets/svgs/X.svg"/>
                 </button>
                 <h3 className="text-lg font-bold">تاریخچه تیکت</h3>
@@ -37,13 +37,13 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
                 <div className="divider m-0 p-0"></div>
                 <div className="history-container">
                     <div
-                        className="flex flex-col md:grid grid-cols-9 mx-auto p-2 text-blue-50"
+                        className="flex flex-col md:grid grid-cols-9 mx-auto text-blue-50"
                     >
                     {
                         histories.map((h, i) => {
                             if (i % 2 === 0) {
                                 return (
-                                    <div key={i} className="flex md:contents text-xs">
+                                    <div key={i} className="flex md:contents text-sm">
                                         <div className="col-start-5 col-end-6 mr-10 md:mx-auto relative">
                                             <div className="h-full w-3 flex items-center justify-center">
                                                 <div className="h-full w-0.5 bg-blue-800 pointer-events-none"></div>
@@ -53,7 +53,7 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
                                             ></div>
                                         </div>
                                         <div
-                                            className="bg-blue-500 col-start-6 col-end-10 p-3 rounded-xl my-4 mr-auto"
+                                            className="bg-blue-500 col-start-6 col-end-10 p-3 rounded my-4 mr-auto"
                                         >
                                             <p className="leading-tight">
                                                 {h.message}
@@ -68,9 +68,9 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
                             }
 
                             return (
-                                <div key={i} className="flex md:contents text-xs flex-row-reverse">
+                                <div key={i} className="flex md:contents text-sm flex-row-reverse">
                                     <div
-                                        className="bg-blue-500 col-start-1 col-end-5 p-3 rounded-xl my-4 ml-auto"
+                                        className="bg-blue-500 col-start-1 col-end-5 p-3 rounded my-4 ml-auto"
                                     >
                                         <p className="leading-tight">
                                             {h.message}

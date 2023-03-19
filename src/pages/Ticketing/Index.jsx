@@ -16,6 +16,9 @@ const Ticketing = () => {
     const navigation = useNavigate();
     const [showCategoryModel, setShowCategoryModal] = useState(false);
     const [currentTicket, setCurrentTicket] = useState(false);
+    const [filters, setFilters] = useState({});
+    const [titleFilter, setTitleFilter] = useState();
+    const [usersFilter, setUsersFilter] = useState();
 
     const datatable = useRef(null);
 
@@ -68,13 +71,13 @@ const Ticketing = () => {
             cell: info => {
                 return (
                     <>
-                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="rounded btn-error table-action-button btn-square btn btn-sm-svg btn-xs btn-outline">
+                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="rounded btn-error table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                             <ReactSVG src="/src/assets/svgs/trash.svg" />
                         </button>
-                        <button onClick={() => assignCategory(info.row.original)} className="mr-1 rounded btn-info table-action-button btn-square btn btn-sm-svg btn-xs btn-outline">
+                        <button onClick={() => assignCategory(info.row.original)} className="mr-1 rounded btn-info table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                             <ReactSVG src="/src/assets/svgs/tags.svg" />
                         </button>
-                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="mr-1 rounded table-action-button btn-square btn btn-sm-svg btn-xs btn-outline">
+                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="mr-1 rounded table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                             <ReactSVG src="/src/assets/svgs/eye.svg" />
                         </button>
                     </>
@@ -102,10 +105,6 @@ const Ticketing = () => {
             )
         );
     }
-
-    const [filters, setFilters] = useState({});
-    const [titleFilter, setTitleFilter] = useState('');
-    const [usersFilter, setUsersFilter] = useState(null);
 
     const onFilterSubmit = (e) => {
         e.preventDefault();
@@ -147,7 +146,7 @@ const Ticketing = () => {
             <Card>
                 <div className="card-body p-3">
                     <div className="flex justify-end">
-                        <Link to='/admin/ticketing/create' className="rounded btn-svg btn-sm btn btn-svg text-sm btn-primary">
+                        <Link to='/admin/ticketing/create' className="btn btn-sm rounded btn-svg">
                             <ReactSVG src="/src/assets/svgs/plus.svg" />
                             <span className="mr-1">ایجاد تیکت</span>
                         </Link>
@@ -166,6 +165,7 @@ const Ticketing = () => {
                                     <span className="label-text">کاربر</span>
                                 </label>
                                 <ServerSideSelect
+                                    placeholder="انتخاب کاربر..."
                                     url={ApiConstants.Users.List}
                                     method={'POST'}
                                     onSelect={setUsersFilter}
@@ -177,15 +177,15 @@ const Ticketing = () => {
 
 
                         <div className="mt-4">
-                            <button className="rounded btn-svg btn-sm btn btn-svg text-sm btn-primary leading-none" type="submit">
+                            <button className="rounded btn-svg btn-sm btn btn-svg btn-primary leading-none" type="submit">
                                 <ReactSVG src="/src/assets/svgs/filter.svg" />
-                                فیلتر
+                                <span className="mr-1">فیلتر</span>
                             </button>
 
                             {
-                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="rounded btn-secondary btn-svg btn-sm btn btn-svg text-sm btn-primary mr-2 leading-none" type="button">
+                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="rounded btn-secondary btn-svg btn-sm btn btn-svg btn-primary mr-2 leading-none" type="button">
                                 <ReactSVG src="/src/assets/svgs/filter-off.svg" />
-                                حذف فیلتر
+                                <span className="mr-1">حذف فیلتر</span>
                                 </button> : null
                             }
                         </div>

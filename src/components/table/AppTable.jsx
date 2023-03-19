@@ -36,23 +36,24 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                 <Loader />
             ) : (
                 <>
-                    <div className="flex">
+                    <div className="flex bg-neutral-100 p-2 rounded-t border">
+                        <div className="ml-2 table-buttons">
+                            <button onClick={reload} className="btn border-gray-400 focus:outline-none text-gray-600 rounded btn-outline btn-sm btn-sm-svg btn-square">
+                                <ReactSVG src="/src/assets/svgs/reload.svg" />
+                            </button>
+                        </div>
                         <DebouncedInput
                             value={globalFilter ?? ''}
                             onChange={value => {
                                 _(String(value)) // set internal global filter to keep text in the search input
                                 setGlobalFilter(String(value))
                             }}
-                            className="p-2 mb-2 rounded input focus:outline-none text-sm input-bordered input-sm w-full max-w-xs"
+                            style={{height: '28px'}}
+                            className="rounded input focus:outline-none text-xs input-bordered input-xs max-w-xs"
                             placeholder="جستجو ..."
                         />
-                        <div className="mr-2 table-buttons">
-                            <button onClick={reload} className="btn border-gray-400 focus:outline-none text-gray-600 rounded btn-outline btn-sm btn-square">
-                                <ReactSVG src="/src/assets/svgs/reload.svg" />
-                            </button>
-                        </div>
                     </div>
-                    <div style={{minHeight: '600px'}} className="overflow-x-auto border rounded">
+                    <div style={{minHeight: '600px'}} className="overflow-x-auto border-x">
                         <table
                             {...{
                                 style: {
@@ -67,6 +68,7 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                                 >
                                     {headerGroup.headers.map(header => (
                                         <th
+                                            className="bg-neutral-100 border-b-2 font-semibold"
                                             key={header.id}
                                             colSpan={header.colSpan}
                                             style={{

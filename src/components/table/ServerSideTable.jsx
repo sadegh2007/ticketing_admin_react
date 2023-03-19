@@ -93,7 +93,7 @@ const ServerSideTable = React.forwardRef((
                     reload={reload}
                 />
             </div>
-            <div className="mt-2 flex items-baseline justify-between">
+            <div className="flex items-baseline justify-between bg-neutral-100 p-2 rounded-b border">
                 <div className="text-sm w-1/2">
                     <p>تعداد کل ایتم ها: { pageData.totals }</p>
                 </div>

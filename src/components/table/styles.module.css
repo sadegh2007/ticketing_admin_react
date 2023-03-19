@@ -9,6 +9,7 @@ table {
 thead tr th {
     /*border-top: 1px solid #dddddd;*/
     position: relative;
+    /*font-size: 12px !important;*/
 }
 
 td, th {
