@@ -51,7 +51,7 @@ const Sidebar = () => {
             </div>
             <ul className="menu text-sm bg-base-100 p-2 rounded-box items-center text-gray-500">
                 <li className="w-60 mb-1">
-                    <NavLink className={({isActive}) => (isActive ? 'active' : undefined)} to="/admin/dashboard">
+                    <NavLink end className={({isActive}) => (isActive ? 'active' : undefined)} to="/admin/dashboard">
                         <ReactSVG className="menu-svg" src="/src/assets/svgs/layout-dashboard.svg"/>
                         داشبورد
                     </NavLink>
@@ -61,20 +61,20 @@ const Sidebar = () => {
 
                 <DropDownMenu title="کاربران" icon="/src/assets/svgs/users.svg">
                     <li>
-                        <NavLink to="{ name: 'users' }" className={({isActive}) => (isActive ? 'active' : undefined)}>
+                        <NavLink end to="{ name: 'users' }" className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/users.svg"></ReactSVG>
                             فهرست کاربران
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="{ name: 'users.roles' }"
+                        <NavLink end to="{ name: 'users.roles' }"
                                      className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/user-check.svg"></ReactSVG>
                             فهرست نقش ها
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="{ name: 'users.permissions' }"
+                        <NavLink end to="{ name: 'users.permissions' }"
                                      className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/license.svg"></ReactSVG>
                             فهرست دسترسی ها
@@ -88,21 +88,21 @@ const Sidebar = () => {
 
                 <DropDownMenu title="تیکتینگ" icon="/src/assets/svgs/inbox.svg">
                     <li>
-                        <NavLink to="/admin/ticketing/categories"
+                        <NavLink end to="/admin/ticketing/categories"
                                  className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/category-2.svg"></ReactSVG>
                             فهرست دسته بندی ها
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/admin/ticketing/create"
+                        <NavLink end to="/admin/ticketing/create"
                                  className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/plus.svg"></ReactSVG>
                             ایجاد تیکت
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/admin/ticketing" >
+                        <NavLink end to="/admin/ticketing" >
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/inbox.svg"></ReactSVG>
                             فهرست تیکت ها
                         </NavLink>
@@ -112,7 +112,7 @@ const Sidebar = () => {
                 {/* End of users */}
 
                 <li className="w-60 mb-1">
-                    <NavLink className={({isActive}) => (isActive ? 'active' : undefined)} to="/settings">
+                    <NavLink end className={({isActive}) => (isActive ? 'active' : undefined)} to="/settings">
                         <ReactSVG className="menu-svg" src="/src/assets/svgs/settings.svg"/>
                         تنظیمات
                     </NavLink>

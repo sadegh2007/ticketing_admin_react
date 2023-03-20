@@ -57,7 +57,7 @@ const UsersSidebar = ({ticket, loadTicket}) => {
 
     return (
         <>
-            <Card className="hidden md:block">
+            <div className="card rounded bg-base-100 shadow text-gray-500 hidden md:block">
                 <div
                     className="card-header flex justify-between items-center border-b rounded-t bg-gray-800 text-white p-3 text-center">
                     <span>کاربران</span>
@@ -105,7 +105,7 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                         }
                     </ul>
                 </div>
-            </Card>
+            </div>
 
             {
                 showNewUserModal ? <NewUserModal

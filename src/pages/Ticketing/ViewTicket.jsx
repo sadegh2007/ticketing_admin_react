@@ -175,7 +175,7 @@ const ViewTicket = () => {
                 items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}, {to: '#', title: `تیکت شماره ${ticket?.number}`}]}/>
 
             <div className="ticketing-container grid grid-cols-1 md:grid-cols-5 md:gap-2">
-                <Card className="col-span-4">
+                <Card className="col-span-4" withBorder={false}>
                     <div className="card-header">
                         <div className="border-2 rounded mt-4 mx-4 p-3">
                             <div className="flex justify-between items-center">

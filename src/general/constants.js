@@ -1,7 +1,8 @@
 export const constants = {
     APP_TITLE: "تیکتینگ",
     APP_BASE_URL: 'http://localhost:5173',
-    BASE_URL: "http://10.5.50.200:5292", // 10.5.50.200
+    BASE_URL: "http://0.0.0.0:5292", // 10.5.50.200
+    SIGNALR_URL: "http://0.0.0.0:5292/messageHub", // 10.5.50.200
     TABLE_PAGE_SIZE: 20,
     ADD_STATUS_CODE: 201,
     EDIT_STATUS_CODE_SUCCESS: 200,

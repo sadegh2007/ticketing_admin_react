@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@microsoft/signalr": "^7.0.4",
     "@tanstack/react-table": "^8.7.9",
     "axios": "^1.3.4",
     "chart.js": "^4.2.1",

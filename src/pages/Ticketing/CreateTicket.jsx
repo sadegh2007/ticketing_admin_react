@@ -80,8 +80,7 @@ const CreateTicket = ({}) => {
     return (
         <>
             <Breadcrumb items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}, {title: 'ایجاد تیکت', to: '#'}]}/>
-            <Card>
-                <div className="card-body p-3">
+            <Card title="ایجاد تیکت" icon="/src/assets/svgs/plus.svg">
                     <div className="mb-4 grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
                         <Input
                             label="عنوان تیکت"
@@ -120,7 +119,6 @@ const CreateTicket = ({}) => {
                         setFiles={setFiles}
                         onSend={createTicket}
                     />
-                </div>
             </Card>
         </>
     );

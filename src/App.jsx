@@ -1,6 +1,4 @@
-// import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-toastify/dist/ReactToastify.css';
-// import './scss/bootstrap-icons.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-quill/dist/quill.snow.css';
 import './scss/style.scss'
@@ -12,7 +10,7 @@ import {constants} from "./general/constants.js";
 import {BrowserRouter} from "react-router-dom";
 import {AppRouter} from "./general/routes.jsx";
 import {appContext} from "./context/AppContext.js";
-import { ToastContainer } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import {IsLogin} from "./services/AuthService.js";
 import {notify} from "./utilities/index.js";
 
@@ -46,8 +44,7 @@ function App() {
     const [showSidebar, toggleSidebar] = useState(true);
     const [showUserDropDown, toggleUserDropDown] = useState(false);
 
-    return (
-        <appContext.Provider value={{
+    return (<appContext.Provider value={{
             showSidebar,
             toggleSidebar,
             showUserDropDown,
@@ -57,7 +54,7 @@ function App() {
         }}>
             <BrowserRouter>
                 <AppRouter/>
-                <ToastContainer />
+                <ToastContainer/>
             </BrowserRouter>
         </appContext.Provider>
     )

@@ -3,10 +3,17 @@ import {constants} from "./constants.js";
 const baseUrl = constants.BASE_URL;
 
 const Apis = {
+    Dashboard: {
+        info: `${baseUrl}/api/dashboard`,
+    },
+    Notifications: {
+        List: `${baseUrl}/api/notification/list`,
+    },
     Ticketing: {
         List: `${baseUrl}/api/ticketing/list`,
         Create: `${baseUrl}/api/ticketing`,
         Get: (ticketId) => `${baseUrl}/api/ticketing/${ticketId}`,
+        Delete: (ticketId) => `${baseUrl}/api/ticketing/${ticketId}`,
         Histories: (ticketId) => `${baseUrl}/api/ticketing/${ticketId}/histories`,
         Comments: (ticketId) => {
             return {

@@ -76,7 +76,7 @@ const ServerSideTable = React.forwardRef((
                 isLoading: false,
                 rowData: formatRowData(items),
                 totals: total_items,
-                totalPages: total_items > 15 ? 1 : Math.ceil(total_items / 15),
+                totalPages: total_items <= 15 ? 1 : Math.ceil(total_items / 15),
             });
         });
     }

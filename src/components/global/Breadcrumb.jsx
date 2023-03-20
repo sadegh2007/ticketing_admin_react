@@ -4,9 +4,9 @@ import {ReactSVG} from "react-svg";
 const Breadcrumb = (props) => {
 
     return(
-        <div className="text-sm breadcrumbs">
+        <div className="text-sm breadcrumbs mb-1">
             <ul>
-                <li><Link to='/dashboard' className="flex items-center">
+                <li><Link to='/admin/dashboard' className="flex items-center">
                     <ReactSVG className="menu-svg" src="/src/assets/svgs/layout-dashboard.svg"/>
                     <span className="mr-1">داشبورد</span>
                 </Link></li>

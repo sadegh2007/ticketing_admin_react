@@ -23,7 +23,7 @@ const CategoryModal = ({category, show, closeModal}) => {
             UpdateCategory(category.id, {title})
                 .then(res => {
                     toggleMainLoader(false);
-                    closeModal(false);
+                    closeModal(true);
                 })
                 .catch(err => {
                     toggleMainLoader(false);
@@ -34,7 +34,7 @@ const CategoryModal = ({category, show, closeModal}) => {
             CreateCategory({title})
                 .then(res => {
                     toggleMainLoader(false);
-                    closeModal(false);
+                    closeModal(true);
                 })
                 .catch(err => {
                     toggleMainLoader(false);

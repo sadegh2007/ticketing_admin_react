@@ -38,7 +38,7 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                 <>
                     <div className="flex bg-neutral-100 p-2 rounded-t border">
                         <div className="ml-2 table-buttons">
-                            <button onClick={reload} className="btn border-gray-400 focus:outline-none text-gray-600 rounded btn-outline btn-sm btn-sm-svg btn-square">
+                            <button data-tip="رفرش" onClick={reload} className="tooltip btn border-gray-300 bg-white focus:outline-none text-gray-500 rounded btn-outline btn-sm btn-sm-svg btn-square">
                                 <ReactSVG src="/src/assets/svgs/reload.svg" />
                             </button>
                         </div>
@@ -106,7 +106,7 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                             </thead>
                             <tbody>
                             {table.getRowModel().rows.map(row => (
-                                <tr className='hover' key={row.id}>
+                                <tr className='hover text-gray-800' key={row.id}>
                                     {row.getVisibleCells().map(cell => (
                                         <td {...{
                                             key: cell.id,

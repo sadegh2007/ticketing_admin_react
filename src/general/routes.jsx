@@ -16,11 +16,11 @@ export const AppRouter = () => {
           <Route path='/admin' element={<DashboardLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
 
-              <Route exact path="ticketing" element={<Ticketing />} />
-              <Route exact path="ticketing/create" element={<CreateTicket />} />
-              <Route exact path="ticketing/categories" element={<TicketingCategories />} />
+              <Route id="ticketing-list" exact path="ticketing" element={<Ticketing />} />
+              <Route id="new-ticketing" exact path="ticketing/create" element={<CreateTicket />} />
+              <Route id="categories" exact path="ticketing/categories" element={<TicketingCategories />} />
 
-              <Route path="ticketing/:ticketId" element={<ViewTicket />} />
+              <Route id="get-ticket-by-id" path="ticketing/:ticketId" element={<ViewTicket />}/>
           </Route>
 
           <Route path="*" element={<NotFound/>} />

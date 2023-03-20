@@ -40,3 +40,7 @@ export const SendNewComment = async (ticketId, data) => {
 export const CreateNewTicket = async (data) => {
     return await PostApiRequest(ApiConstants.Ticketing.Create, data);
 }
+
+export const DeleteTicket = async (ticketId) => {
+    return await ApiRequest(ApiConstants.Ticketing.Delete(ticketId), 'DELETE');
+}

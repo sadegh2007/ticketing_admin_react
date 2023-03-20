@@ -29,11 +29,11 @@ const TicketingCategories = () => {
         setShowEditModal(true);
     }
 
-    const closeEditModal = () => {
+    const closeEditModal = (reload = false) => {
         setCurrentCategory(null);
         setShowEditModal(false);
 
-        if (tableRef) {
+        if (tableRef && reload) {
             tableRef.current.reload();
         }
     }
@@ -93,11 +93,11 @@ const TicketingCategories = () => {
             cell: info => {
                 return (
                     <div>
-                        <button onClick={() => openEditModal(info.row.original)} className="rounded table-action-button btn-square btn btn-sm btn-success btn-outline">
+                        <button onClick={() => openEditModal(info.row.original)} className="rounded btn-success table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                             <ReactSVG src="/src/assets/svgs/pencil.svg" />
                         </button>
 
-                        <button onClick={() => deleteCategory(info.row.original)} className="mr-1 rounded table-action-button btn-square btn btn-sm btn-error btn-outline">
+                        <button onClick={() => deleteCategory(info.row.original)} className="mr-1 rounded btn-error  table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                             <ReactSVG src="/src/assets/svgs/trash.svg" />
                         </button>
                     </div>
@@ -154,52 +154,50 @@ const TicketingCategories = () => {
     return (
         <>
             <Breadcrumb items={[{to: '/admin/ticketing/categories', title: 'فهرست دسته بندی ها'}]}/>
-            <Card>
-                <div className="card-body p-3">
-                    <div className="flex justify-end">
-                        <button onClick={() => setShowCreateModal(true)} className="rounded btn-svg btn-sm btn btn-svg text-sm btn-primary">
-                            <ReactSVG src="/src/assets/svgs/plus.svg" />
-                            <span className="mr-1">ایجاد دسته بندی</span>
-                        </button>
-                    </div>
-                    <form onSubmit={onFilterSubmit} action="#">
-                        <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
-                            <Input
-                                label="عنوان"
-                                value={titleFilter}
-                                onInput={(e) => setTitleFilter(e.target.value)}
-                                placeholder="عنوان..."
-                            />
-                        </div>
-
-
-                        <div className="mt-4">
-                            <button className="btn-filter rounded btn gap-2 btn-svg btn-sm" type="submit">
-                                <ReactSVG src="/src/assets/svgs/filter.svg" />
-                                فیلتر
-                            </button>
-
-                            {
-                                Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="btn-svg rounded btn-sm mr-2 btn-filter btn btn-secondary gap-2" type="button">
-                                    <ReactSVG src="/src/assets/svgs/filter-off.svg" />
-                                    حذف فیلتر
-                                </button> : null
-                            }
-                        </div>
-                    </form>
-
-                    <div className="divider"></div>
-
-                    <ServerSideTable
-                        ref={tableRef}
-                        url={Apis.Categories.List}
-                        method='POST'
-                        rowPerPage={15}
-                        formatRowData={(data) => formatRowData(data)}
-                        columns={columns}
-                        filters={filters}
-                    />
+            <Card title="دسته بندی ها" icon="/src/assets/svgs/category-2.svg">
+                <div className="flex justify-end">
+                    <button onClick={() => setShowCreateModal(true)} className="btn btn-sm rounded btn-svg">
+                        <ReactSVG src="/src/assets/svgs/plus.svg" />
+                        <span className="mr-1">ایجاد دسته بندی</span>
+                    </button>
                 </div>
+                <form onSubmit={onFilterSubmit} action="#">
+                    <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
+                        <Input
+                            label="عنوان"
+                            value={titleFilter}
+                            onInput={(e) => setTitleFilter(e.target.value)}
+                            placeholder="عنوان..."
+                        />
+                    </div>
+
+
+                    <div className="mt-4">
+                        <button className="btn-filter rounded btn gap-2 btn-sm-svg btn-sm" type="submit">
+                            <ReactSVG src="/src/assets/svgs/filter.svg" />
+                            فیلتر
+                        </button>
+
+                        {
+                            Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="btn-svg rounded btn-sm mr-2 btn-filter btn btn-secondary gap-2" type="button">
+                                <ReactSVG src="/src/assets/svgs/filter-off.svg" />
+                                حذف فیلتر
+                            </button> : null
+                        }
+                    </div>
+                </form>
+
+                <div className="divider"></div>
+
+                <ServerSideTable
+                    ref={tableRef}
+                    url={Apis.Categories.List}
+                    method='POST'
+                    rowPerPage={15}
+                    formatRowData={(data) => formatRowData(data)}
+                    columns={columns}
+                    filters={filters}
+                />
             </Card>
             {
                 showCreateModal ? <CategoryModal
