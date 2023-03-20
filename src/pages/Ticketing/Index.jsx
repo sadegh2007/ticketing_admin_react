@@ -155,8 +155,6 @@ const Ticketing = () => {
                     status: info.status ?? {},
                     department: info.department ?? {},
                     categories: info.categories ?? {},
-                    trips: info.trips,
-                    flightName: info.airline?.name ?? '-',
                 }
             )
         );

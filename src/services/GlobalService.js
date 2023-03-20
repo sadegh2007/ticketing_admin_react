@@ -17,6 +17,11 @@ export const handleError = ({type, errors, status, data}) => {
     // console.log(errors)
     // console.log(status)
 
+    if (data && data.errors) {
+        handleArrayErrors(data.errors);
+        return false;
+    }
+
     if (status === 404) {
         toast.error('آیتم مورد نظر یافت نشد.', {
             position: toast.POSITION.BOTTOM_LEFT

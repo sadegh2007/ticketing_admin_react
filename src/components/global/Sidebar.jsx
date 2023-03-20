@@ -61,7 +61,7 @@ const Sidebar = () => {
 
                 <DropDownMenu title="کاربران" icon="/src/assets/svgs/users.svg">
                     <li>
-                        <NavLink end to="{ name: 'users' }" className={({isActive}) => (isActive ? 'active' : undefined)}>
+                        <NavLink end to="/admin/users" className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/users.svg"></ReactSVG>
                             فهرست کاربران
                         </NavLink>

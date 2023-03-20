@@ -89,12 +89,16 @@ const UsersSidebar = ({ticket, loadTicket}) => {
                                             <img className="w-10 rounded-full border z-30"
                                                  src={(userItem.user && userItem.user.picture) ? userItem.user.picture : '/src/assets/user-placeholder.png'}
                                                  alt="user"/>
-                                            <div className="flex items-baseline">
-                                                <span
-                                                    className="mr-2 text-sm">{(userItem.user && userItem.user.fullName) ? userItem.user.fullName : '-'}</span>
-                                                {userItem.user?.id === ticket.creator.id ?
-                                                    <ReactSVG className="mr-2 btn-sm-svg"
-                                                              src="/src/assets/svgs/star-filled.svg"/> : ''}
+                                            <div className="flex flex-col items-start">
+                                                <div className="flex items-baseline mb-1">
+                                                    <span className="mr-2 text-sm">{(userItem.user && userItem.user.fullName) ? userItem.user.fullName : '-'}</span>
+                                                    {userItem.user?.id === ticket.creator.id ?
+                                                        <ReactSVG className="mr-2 btn-sm-svg"
+                                                                  src="/src/assets/svgs/star-filled.svg"/> : ''}
+                                                </div>
+
+                                                <span className="mr-2 text-xs">{(userItem.user && userItem.user.email) ? userItem.user.email : '-'}</span>
+
                                             </div>
                                         </div>
 

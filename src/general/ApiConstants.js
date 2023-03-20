@@ -55,6 +55,9 @@ const Apis = {
     },
     Users: {
         List: `${baseUrl}/api/users/list`,
+        Create: `${baseUrl}/api/users`,
+        Update: (userId) => `${baseUrl}/api/users/${userId}`,
+        Delete: (userId) => `${baseUrl}/api/users/${userId}`,
     }
 };
 
