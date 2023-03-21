@@ -53,7 +53,7 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
                             placeholder="جستجو ..."
                         />
                     </div>
-                    <div style={{minHeight: '600px'}} className="overflow-x-auto border-x">
+                    <div style={{minHeight: '360px'}} className="overflow-x-auto border-x">
                         <table
                             {...{
                                 style: {
