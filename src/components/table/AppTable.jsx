@@ -32,116 +32,113 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
 
     return (
         <>
-            {isLoading ? (
-                <Loader />
-            ) : (
-                <>
-                    <div className="flex bg-neutral-100 p-2 rounded-t border">
-                        <div className="ml-2 table-buttons">
-                            <button data-tip="رفرش" onClick={reload} className="tooltip btn border-gray-300 bg-white focus:outline-none text-gray-500 rounded btn-outline btn-sm btn-sm-svg btn-square">
-                                <ReactSVG src="/src/assets/svgs/reload.svg" />
-                            </button>
-                        </div>
-                        <DebouncedInput
-                            value={globalFilter ?? ''}
-                            onChange={value => {
-                                _(String(value)) // set internal global filter to keep text in the search input
-                                setGlobalFilter(String(value))
-                            }}
-                            style={{height: '28px'}}
-                            className="rounded input focus:outline-none text-xs input-bordered input-xs max-w-xs"
-                            placeholder="جستجو ..."
-                        />
-                    </div>
-                    <div style={{minHeight: '360px'}} className="overflow-x-auto border-x">
-                        <table
-                            {...{
-                                style: {
-                                    width: table.getCenterTotalSize(),
-                                },
-                            }}
-                            className={`table ${isCompact ? 'table-compact': ''} table-zebra w-full`}>
-                            <thead>
-                            {table.getHeaderGroups().map(headerGroup => (
-                                <tr
-                                    key={headerGroup.id}
+            {
+                isLoading ? <Loader /> : undefined
+            }
+            <div className="flex bg-neutral-100 p-2 rounded-t border">
+                <div className="ml-2 table-buttons">
+                    <button data-tip="رفرش" onClick={reload} className="tooltip btn border-gray-300 bg-white focus:outline-none text-gray-500 rounded btn-outline btn-sm btn-sm-svg btn-square">
+                        <ReactSVG src="/src/assets/svgs/reload.svg" />
+                    </button>
+                </div>
+                <DebouncedInput
+                    value={globalFilter ?? ''}
+                    onChange={value => {
+                        _(String(value)) // set internal global filter to keep text in the search input
+                        setGlobalFilter(String(value))
+                    }}
+                    style={{height: '28px'}}
+                    className="rounded input focus:outline-none text-xs input-bordered input-xs max-w-xs"
+                    placeholder="جستجو ..."
+                />
+            </div>
+            <div style={{minHeight: '360px'}} className="overflow-x-auto border-x">
+                <table
+                    {...{
+                        style: {
+                            width: table.getCenterTotalSize(),
+                        },
+                    }}
+                    className={`table ${isCompact ? 'table-compact': ''} table-zebra w-full`}>
+                    <thead>
+                    {table.getHeaderGroups().map(headerGroup => (
+                        <tr
+                            key={headerGroup.id}
+                        >
+                            {headerGroup.headers.map(header => (
+                                <th
+                                    className="bg-neutral-100 border-b-2 font-semibold"
+                                    key={header.id}
+                                    colSpan={header.colSpan}
+                                    style={{
+                                        width: header.getSize()
+                                    }}
                                 >
-                                    {headerGroup.headers.map(header => (
-                                        <th
-                                            className="bg-neutral-100 border-b-2 font-semibold"
-                                            key={header.id}
-                                            colSpan={header.colSpan}
-                                            style={{
-                                                width: header.getSize()
-                                            }}
-                                        >
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                            <div
-                                                {...{
-                                                    onMouseDown: header.getResizeHandler(),
-                                                    onTouchStart: header.getResizeHandler(),
-                                                    className: `resizer ${
-                                                        header.column.getIsResizing() ? 'isResizing' : ''
-                                                    }`,
-                                                    style: {
-                                                        transform:
-                                                            columnResizeMode === 'onEnd' &&
-                                                            header.column.getIsResizing()
-                                                                ? `translateX(${
-                                                                    table.getState().columnSizingInfo.deltaOffset
-                                                                }px)`
-                                                                : '',
-                                                    },
-                                                }}
-                                            />
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))}
-                            </thead>
-                            <tbody>
-                            {table.getRowModel().rows.map(row => (
-                                <tr className='hover text-gray-800' key={row.id}>
-                                    {row.getVisibleCells().map(cell => (
-                                        <td {...{
-                                            key: cell.id,
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )}
+                                    <div
+                                        {...{
+                                            onMouseDown: header.getResizeHandler(),
+                                            onTouchStart: header.getResizeHandler(),
+                                            className: `resizer ${
+                                                header.column.getIsResizing() ? 'isResizing' : ''
+                                            }`,
                                             style: {
-                                                width: cell.column.getSize(),
+                                                transform:
+                                                    columnResizeMode === 'onEnd' &&
+                                                    header.column.getIsResizing()
+                                                        ? `translateX(${
+                                                            table.getState().columnSizingInfo.deltaOffset
+                                                        }px)`
+                                                        : '',
                                             },
-                                        }}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </td>
-                                    ))}
-                                </tr>
+                                        }}
+                                    />
+                                </th>
                             ))}
-                            </tbody>
-                            {/*{table.getFooterGroups().length > 0 ?*/}
-                            {/*    <tfoot>*/}
-                            {/*    {table.getFooterGroups().map(footerGroup => (*/}
-                            {/*        <tr key={footerGroup.id}>*/}
-                            {/*            {footerGroup.headers.map(header => (*/}
-                            {/*                <th key={header.id}>*/}
-                            {/*                    {header.isPlaceholder*/}
-                            {/*                        ? null*/}
-                            {/*                        : flexRender(*/}
-                            {/*                            header.column.columnDef.footer,*/}
-                            {/*                            header.getContext()*/}
-                            {/*                        )}*/}
-                            {/*                </th>*/}
-                            {/*            ))}*/}
-                            {/*        </tr>*/}
-                            {/*    ))}*/}
-                            {/*    </tfoot>*/}
-                            {/* : null }*/}
-                        </table>
-                    </div>
-                </>
-            )}
+                        </tr>
+                    ))}
+                    </thead>
+                    <tbody>
+                    {table.getRowModel().rows.map(row => (
+                        <tr className='hover text-gray-800' key={row.id}>
+                            {row.getVisibleCells().map(cell => (
+                                <td {...{
+                                    key: cell.id,
+                                    style: {
+                                        width: cell.column.getSize(),
+                                    },
+                                }}>
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                    </tbody>
+                    {/*{table.getFooterGroups().length > 0 ?*/}
+                    {/*    <tfoot>*/}
+                    {/*    {table.getFooterGroups().map(footerGroup => (*/}
+                    {/*        <tr key={footerGroup.id}>*/}
+                    {/*            {footerGroup.headers.map(header => (*/}
+                    {/*                <th key={header.id}>*/}
+                    {/*                    {header.isPlaceholder*/}
+                    {/*                        ? null*/}
+                    {/*                        : flexRender(*/}
+                    {/*                            header.column.columnDef.footer,*/}
+                    {/*                            header.getContext()*/}
+                    {/*                        )}*/}
+                    {/*                </th>*/}
+                    {/*            ))}*/}
+                    {/*        </tr>*/}
+                    {/*    ))}*/}
+                    {/*    </tfoot>*/}
+                    {/* : null }*/}
+                </table>
+            </div>
         </>
     );
 };

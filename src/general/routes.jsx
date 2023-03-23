@@ -8,6 +8,7 @@ import ViewTicket from "../pages/Ticketing/ViewTicket.jsx";
 import DashboardLayout from "../components/layouts/DashboardLayout.jsx";
 import CreateTicket from "../pages/Ticketing/CreateTicket.jsx";
 import UsersIndex from "../pages/Users/Index.jsx";
+import RolesIndex from "../pages/Roles/Index.jsx";
 
 export const AppRouter = () => {
     return (
@@ -24,6 +25,7 @@ export const AppRouter = () => {
               <Route path="ticketing/:ticketId" element={<ViewTicket />}/>
 
               <Route path="users" element={<UsersIndex />}/>
+              <Route path="users/roles" element={<RolesIndex />}/>
           </Route>
 
           <Route path="*" element={<NotFound/>} />

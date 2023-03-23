@@ -67,7 +67,7 @@ const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink end to="{ name: 'users.roles' }"
+                        <NavLink end to="/admin/users/roles"
                                      className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/user-check.svg"></ReactSVG>
                             فهرست نقش ها

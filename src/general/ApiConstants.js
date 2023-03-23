@@ -58,7 +58,21 @@ const Apis = {
         Create: `${baseUrl}/api/users`,
         Update: (userId) => `${baseUrl}/api/users/${userId}`,
         Delete: (userId) => `${baseUrl}/api/users/${userId}`,
-    }
+        Roles: {
+            Get: (roleId) => `${baseUrl}/api/users/roles/${roleId}`,
+            List: `${baseUrl}/api/users/roles/list`,
+            Create: `${baseUrl}/api/users/roles`,
+            Update: (roleId) => `${baseUrl}/api/users/roles/${roleId}`,
+            Delete: (roleId) => `${baseUrl}/api/users/roles/${roleId}`,
+        },
+        Permissions: {
+            All: `${baseUrl}/api/users/roles/permissions`,
+            List: `${baseUrl}/api/users/roles/permissions/list`,
+            Create: `${baseUrl}/api/users/roles/permissions`,
+            Update: (roleId) => `${baseUrl}/api/users/roles/permissions/${roleId}`,
+            Delete: (roleId) => `${baseUrl}/api/users/roles/permissions/${roleId}`,
+        },
+    },
 };
 
 export default Apis;

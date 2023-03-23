@@ -24,7 +24,7 @@ const UserModal = ({user, show, closeModal}) => {
         }
     }, [user]);
 
-    const saveCategory = () => {
+    const saveUser = () => {
         toggleMainLoader(true);
 
         const data = {
@@ -138,7 +138,7 @@ const UserModal = ({user, show, closeModal}) => {
               </div>
 
               <div className="modal-action">
-                  <button disabled={!name || name.length === 0 || !family || family.length === 0 || !username || username.length === 0} onClick={saveCategory} className="btn rounded btn-success text-white">ثبت</button>
+                  <button disabled={!name || name.length === 0 || !family || family.length === 0 || !username || username.length === 0} onClick={saveUser} className="btn rounded btn-success text-white">ثبت</button>
               </div>
           </div>
       </div>
