@@ -5,7 +5,7 @@ import styles from './styles.module.css'
 import DebouncedInput from "./DebouncedInput.jsx";
 import {ReactSVG} from "react-svg";
 
-const AppTable = ({ columns, data, isLoading, manualPagination = false, setGlobalFilter, isCompact = true, reload }) => {
+const AppTable = ({ isServerSide = true, columns, data, isLoading, manualPagination = false, setGlobalFilter, isCompact = true, reload }) => {
     const columnData = useMemo(() => columns, [columns]);
     const rowData = useMemo(() => data, [data]);
 
@@ -35,23 +35,26 @@ const AppTable = ({ columns, data, isLoading, manualPagination = false, setGloba
             {
                 isLoading ? <Loader /> : undefined
             }
-            <div className="flex bg-neutral-100 p-2 rounded-t border">
-                <div className="ml-2 table-buttons">
-                    <button data-tip="رفرش" onClick={reload} className="tooltip btn border-gray-300 bg-white focus:outline-none text-gray-500 rounded btn-outline btn-sm btn-sm-svg btn-square">
-                        <ReactSVG src="/src/assets/svgs/reload.svg" />
-                    </button>
-                </div>
-                <DebouncedInput
-                    value={globalFilter ?? ''}
-                    onChange={value => {
-                        _(String(value)) // set internal global filter to keep text in the search input
-                        setGlobalFilter(String(value))
-                    }}
-                    style={{height: '28px'}}
-                    className="rounded input focus:outline-none text-xs input-bordered input-xs max-w-xs"
-                    placeholder="جستجو ..."
-                />
-            </div>
+            {
+                isServerSide ? <div className="flex bg-neutral-100 p-2 rounded-t border">
+                    <div className="ml-2 table-buttons">
+                        <button data-tip="رفرش" onClick={reload} className="tooltip btn border-gray-300 bg-white focus:outline-none text-gray-500 rounded btn-outline btn-sm btn-sm-svg btn-square">
+                            <ReactSVG src="/src/assets/svgs/reload.svg" />
+                        </button>
+                    </div>
+                    <DebouncedInput
+                        value={globalFilter ?? ''}
+                        onChange={value => {
+                            _(String(value)) // set internal global filter to keep text in the search input
+                            setGlobalFilter(String(value))
+                        }}
+                        style={{height: '28px'}}
+                        className="rounded input focus:outline-none text-xs input-bordered input-xs max-w-xs"
+                        placeholder="جستجو ..."
+                    />
+                </div> : undefined
+            }
+
             <div style={{minHeight: '360px'}} className="overflow-x-auto border-x">
                 <table
                     {...{
