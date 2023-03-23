@@ -9,6 +9,7 @@ import DashboardLayout from "../components/layouts/DashboardLayout.jsx";
 import CreateTicket from "../pages/Ticketing/CreateTicket.jsx";
 import UsersIndex from "../pages/Users/Index.jsx";
 import RolesIndex from "../pages/Roles/Index.jsx";
+import PermissionsIndex from "../pages/Permissions/Index.jsx";
 
 export const AppRouter = () => {
     return (
@@ -26,6 +27,7 @@ export const AppRouter = () => {
 
               <Route path="users" element={<UsersIndex />}/>
               <Route path="users/roles" element={<RolesIndex />}/>
+              <Route path="users/roles/permissions" element={<PermissionsIndex />}/>
           </Route>
 
           <Route path="*" element={<NotFound/>} />

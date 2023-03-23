@@ -74,7 +74,7 @@ const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink end to="{ name: 'users.permissions' }"
+                        <NavLink end to="users/roles/permissions"
                                      className={({isActive}) => (isActive ? 'active' : undefined)}>
                             <ReactSVG className="menu-svg" src="/src/assets/svgs/license.svg"></ReactSVG>
                             فهرست دسترسی ها

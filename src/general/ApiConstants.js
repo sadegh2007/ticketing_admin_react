@@ -68,9 +68,7 @@ const Apis = {
         Permissions: {
             All: `${baseUrl}/api/users/roles/permissions`,
             List: `${baseUrl}/api/users/roles/permissions/list`,
-            Create: `${baseUrl}/api/users/roles/permissions`,
-            Update: (roleId) => `${baseUrl}/api/users/roles/permissions/${roleId}`,
-            Delete: (roleId) => `${baseUrl}/api/users/roles/permissions/${roleId}`,
+            Sync: `${baseUrl}/api/users/roles/permissions/sync_perms`
         },
     },
 };

@@ -97,10 +97,18 @@ const UsersIndex = () => {
             cell: info => info.getValue() ?? '-',
             header: () => "ایمیل",
         }),
+        columnHelper.accessor('roles', {
+            id: () => 3,
+            cell: (info) => {
+                const names = (info.getValue() ?? []).map(x => x.title);
+                return names.length ? names.join(', ') : '-';
+            },
+            header: () => "نقش ها",
+        }),
         columnHelper.accessor('', {
             // Header: "Current flight",
             // accessor: "flightName",
-            id: () => 3,
+            id: () => 4,
             cell: info => {
                 return (
                     <>

@@ -11,6 +11,7 @@ const RoleModal = ({role, show, closeModal}) => {
     const [title, setTitle] = useState('');
     const [allPermissions, setAllPermissions] = useState([]);
     const [selectedPermissions, setSelectedPermissions] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
 
     const {register, formState: {errors}} = useForm();
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
@@ -38,6 +39,10 @@ const RoleModal = ({role, show, closeModal}) => {
                 const roleById = await GetRoleById(role.id);
                 const selectedPerms = roleById.permissions.map(x => x.id);
                 setSelectedPermissions(selectedPerms);
+
+                if (selectedPerms.length === allPermissions.length) {
+                    setSelectAll(true);
+                }
             }
         } catch (err) {
             handleError(err.response);
@@ -89,7 +94,16 @@ const RoleModal = ({role, show, closeModal}) => {
             const permissions = [...selectedPermissions].filter(x => x !== permissionId);
             setSelectedPermissions(permissions);
         }
-        console.log(selectedPermissions);
+    }
+
+    const checkAllRoles = (e) => {
+        if (e.target.checked) {
+            setSelectedPermissions(allPermissions.map(x => x.id));
+        } else {
+            setSelectedPermissions([]);
+        }
+
+        setSelectAll(e.target.checked);
     }
 
     return (
@@ -140,6 +154,16 @@ const RoleModal = ({role, show, closeModal}) => {
                         </div>
                     </div>
 
+                    <div className="divider mb-0">
+                        دسترسی ها
+                    </div>
+
+                    <div className="form-control">
+                        <label className="label justify-start cursor-pointer">
+                            <input onChange={checkAllRoles} checked={selectAll} type="checkbox" className="checkbox"/>
+                            <span className="label-text mr-2">انتخاب همه</span>
+                        </label>
+                    </div>
                     <div className="grid grid-cols-3 gap-1 mt-2">
                         {
                             allPermissions.map((permission) => {
@@ -156,7 +180,7 @@ const RoleModal = ({role, show, closeModal}) => {
                 </div>
 
                 <div className="modal-action">
-                    <button disabled={!name || name.length === 0 || !title || title.length === 0} onClick={saveRole}
+                    <button disabled={selectedPermissions.length === 0 || !name || name.length === 0 || !title || title.length === 0} onClick={saveRole}
                             className="btn rounded btn-success text-white">ثبت
                     </button>
                 </div>

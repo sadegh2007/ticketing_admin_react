@@ -19,7 +19,7 @@ const ServerSideSelect = React.forwardRef((
 
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(false)
-    const [searchValue, setSearchValue] = useState();
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
         const timeout = setTimeout(() => {
