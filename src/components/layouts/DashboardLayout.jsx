@@ -3,7 +3,7 @@ import {Link, Outlet} from "react-router-dom";
 import MainHeader from "../header/MainHeader.jsx";
 import Sidebar from "../global/Sidebar.jsx";
 import {useNavigate} from 'react-router-dom'
-import {CurrentUser, IsLogin} from '../../services/AuthService';
+import {CurrentUser, IsLogin, Logout} from '../../services/AuthService';
 import {useContext, useEffect} from "react"
 import {appContext} from "../../context/AppContext"
 import Footer from "../global/Footer.jsx";
@@ -13,6 +13,8 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 import {notify} from "../../utilities/index.js";
 import {NotificationList} from "../../services/DashboardService.js";
 import {handleError} from "../../services/GlobalService.js";
+import {DeleteUser} from "../../services/UserService.js";
+import {confirmAlert} from "react-confirm-alert";
 
 const DashboardLayout = (props) => {
     const {showSidebar, toggleSidebar, toggleUserDropDown, showMainLoader, toggleMainLoader} = useContext(appContext);
@@ -29,7 +31,28 @@ const DashboardLayout = (props) => {
     }
 
     const logout = () => {
+        const options = {
+            title: 'خروج',
+            message: 'آیا از این کار مطمئن هستید؟',
+            buttons: [
+                {
+                    label: 'خیر',
+                    onClick: () => {
+                    }
+                },
+                {
+                    label: 'بله!',
+                    onClick: () => {
+                        Logout();
+                    }
+                },
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: true,
+            keyCodeForClose: [8, 32],
+        };
 
+        confirmAlert(options);
     }
 
     const getNotifications = () => {
