@@ -20,6 +20,7 @@ const CreateTicket = ({}) => {
     const [files, setFiles] = useState([]);
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
     const [users, setUsers] = useState(null);
+    const [department, setDepartment] = useState(null);
     const navigate = useNavigate();
 
     let fileRef = useRef(null);
@@ -46,6 +47,10 @@ const CreateTicket = ({}) => {
         const formData = new FormData();
         formData.set('message', message);
         formData.set('title', title);
+
+        if (department) {
+            formData.set('departmentId', department.value);
+        }
 
         files.forEach((file) => {
             formData.append('files', file);
@@ -77,6 +82,15 @@ const CreateTicket = ({}) => {
         }) ?? [];
     }
 
+    const formatDepartmentSelect = (data) => {
+        return data.items?.map((x) => {
+            return {
+                label: x.title,
+                value: x.id,
+            };
+        }) ?? [];
+    }
+
     return (
         <>
             <Breadcrumb items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}, {title: 'ایجاد تیکت', to: '#'}]}/>
@@ -92,6 +106,21 @@ const CreateTicket = ({}) => {
                             onChange={(e) => setTitle(e.target.value)}
                             className={errors.title && 'input-error'}
                         />
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">دپارتمان</span>
+                            </label>
+                            <ServerSideSelect
+                                placeholder='دپارتمان...'
+                                url={ApiConstants.Departments.List}
+                                value={department}
+                                method={'POST'}
+                                onSelect={setDepartment}
+                                formatData={formatDepartmentSelect}
+                                className={`required ${errors.users ? 'input-error' : ''}`}
+                            />
+                        </div>
 
                         <div className="form-control">
                             <label className="label">
