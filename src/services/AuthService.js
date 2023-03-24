@@ -44,3 +44,12 @@ export const SetUserData = (data) => {
 export const CurrentUser = () => {
     return JSON.parse(localStorage.getItem('currentUser'))
 }
+
+export const CurrentUserPermissions = () => {
+    const currentUser = CurrentUser();
+    return currentUser ? (currentUser['permissions'] ?? []) : [];
+}
+
+export const HasPermission = (permission) => {
+    return CurrentUserPermissions().includes(permission);
+}

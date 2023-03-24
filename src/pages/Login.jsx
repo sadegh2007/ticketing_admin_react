@@ -12,7 +12,10 @@ const Login = () => {
 
     useEffect(() => {
         if (IsLogin()) {
-            navigate('/admin/dashboard')
+            navigate('/admin/dashboard', {
+                replace: true,
+            });
+            window.location.reload();
         }
     })
 

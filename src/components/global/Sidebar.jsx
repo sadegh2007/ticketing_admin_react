@@ -3,6 +3,7 @@ import {Link, NavLink} from "react-router-dom";
 import {ReactSVG} from "react-svg";
 import DropDownMenu from "./menu/DropDownMenu.jsx";
 import {appContext} from "../../context/AppContext.js";
+import {CurrentUserPermissions} from "../../services/AuthService.js";
 
 const Sidebar = () => {
 
@@ -39,6 +40,8 @@ const Sidebar = () => {
         setMenuitems([...menuItems])
     }
 
+    const permissions = CurrentUserPermissions();
+
 
     return (
         <div className="sidebar bg-white">
@@ -60,26 +63,38 @@ const Sidebar = () => {
                 {/* Users */}
 
                 <DropDownMenu title="کاربران" icon="/src/assets/svgs/users.svg">
-                    <li>
-                        <NavLink end to="/admin/users" className={({isActive}) => (isActive ? 'active' : undefined)}>
-                            <ReactSVG className="menu-svg" src="/src/assets/svgs/users.svg"></ReactSVG>
-                            فهرست کاربران
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink end to="/admin/users/roles"
-                                     className={({isActive}) => (isActive ? 'active' : undefined)}>
-                            <ReactSVG className="menu-svg" src="/src/assets/svgs/user-check.svg"></ReactSVG>
-                            فهرست نقش ها
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink end to="users/roles/permissions"
-                                     className={({isActive}) => (isActive ? 'active' : undefined)}>
-                            <ReactSVG className="menu-svg" src="/src/assets/svgs/license.svg"></ReactSVG>
-                            فهرست دسترسی ها
-                        </NavLink>
-                    </li>
+                    {
+                        permissions.includes('UsersList') ?
+                            <li>
+                                <NavLink end to="/admin/users" className={({isActive}) => (isActive ? 'active' : undefined)}>
+                                    <ReactSVG className="menu-svg" src="/src/assets/svgs/users.svg"></ReactSVG>
+                                    فهرست کاربران
+                                </NavLink>
+                            </li>
+                        : undefined
+                    }
+                    {
+                        permissions.includes('RolesList') ?
+                            <li>
+                                <NavLink end to="/admin/users/roles"
+                                         className={({isActive}) => (isActive ? 'active' : undefined)}>
+                                    <ReactSVG className="menu-svg" src="/src/assets/svgs/user-check.svg"></ReactSVG>
+                                    فهرست نقش ها
+                                </NavLink>
+                            </li>
+                        : undefined
+                    }
+                    {
+                        permissions.includes('PermissionsList') ?
+                            <li>
+                                <NavLink end to="users/roles/permissions"
+                                         className={({isActive}) => (isActive ? 'active' : undefined)}>
+                                    <ReactSVG className="menu-svg" src="/src/assets/svgs/license.svg"></ReactSVG>
+                                    فهرست دسترسی ها
+                                </NavLink>
+                            </li>
+                        : undefined
+                    }
                 </DropDownMenu>
 
                 {/* End of users */}
@@ -87,26 +102,49 @@ const Sidebar = () => {
                 {/* Ticketing */}
 
                 <DropDownMenu title="تیکتینگ" icon="/src/assets/svgs/inbox.svg">
-                    <li>
-                        <NavLink end to="/admin/ticketing/categories"
-                                 className={({isActive}) => (isActive ? 'active' : undefined)}>
-                            <ReactSVG className="menu-svg" src="/src/assets/svgs/category-2.svg"></ReactSVG>
-                            فهرست دسته بندی ها
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink end to="/admin/ticketing/create"
-                                 className={({isActive}) => (isActive ? 'active' : undefined)}>
-                            <ReactSVG className="menu-svg" src="/src/assets/svgs/plus.svg"></ReactSVG>
-                            ایجاد تیکت
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink end to="/admin/ticketing" >
-                            <ReactSVG className="menu-svg" src="/src/assets/svgs/inbox.svg"></ReactSVG>
-                            فهرست تیکت ها
-                        </NavLink>
-                    </li>
+                    {
+                        permissions.includes('CategoriesList') ?
+                            <li>
+                                <NavLink end to="/admin/ticketing/categories"
+                                         className={({isActive}) => (isActive ? 'active' : undefined)}>
+                                    <ReactSVG className="menu-svg" src="/src/assets/svgs/category-2.svg"></ReactSVG>
+                                    فهرست دسته بندی ها
+                                </NavLink>
+                            </li>
+                        : undefined
+                    }
+                    {
+                        permissions.includes('DepartmentsList') ?
+                            <li>
+                                <NavLink end to="/admin/ticketing/departments"
+                                         className={({isActive}) => (isActive ? 'active' : undefined)}>
+                                    <ReactSVG className="menu-svg" src="/src/assets/svgs/building.svg"></ReactSVG>
+                                    فهرست دپارتمان ها
+                                </NavLink>
+                            </li>
+                            : undefined
+                    }
+                    {
+                        permissions.includes('CreateTicket') ?
+                            <li>
+                                <NavLink end to="/admin/ticketing/create"
+                                         className={({isActive}) => (isActive ? 'active' : undefined)}>
+                                    <ReactSVG className="menu-svg" src="/src/assets/svgs/plus.svg"></ReactSVG>
+                                    ایجاد تیکت
+                                </NavLink>
+                            </li>
+                        : undefined
+                    }
+                    {
+                        permissions.includes('TicketsList') ?
+                            <li>
+                                <NavLink end to="/admin/ticketing" >
+                                    <ReactSVG className="menu-svg" src="/src/assets/svgs/inbox.svg"></ReactSVG>
+                                    فهرست تیکت ها
+                                </NavLink>
+                            </li>
+                        : undefined
+                    }
                 </DropDownMenu>
 
                 {/* End of users */}

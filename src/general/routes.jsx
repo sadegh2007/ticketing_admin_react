@@ -10,6 +10,7 @@ import CreateTicket from "../pages/Ticketing/CreateTicket.jsx";
 import UsersIndex from "../pages/Users/Index.jsx";
 import RolesIndex from "../pages/Roles/Index.jsx";
 import PermissionsIndex from "../pages/Permissions/Index.jsx";
+import DepartmentsIndex from "../pages/Departments/Index.jsx";
 
 export const AppRouter = () => {
     return (
@@ -22,6 +23,7 @@ export const AppRouter = () => {
               <Route path="ticketing" element={<Ticketing />} />
               <Route path="ticketing/create" element={<CreateTicket />} />
               <Route path="ticketing/categories" element={<TicketingCategories />} />
+              <Route path="ticketing/departments" element={<DepartmentsIndex />} />
 
               <Route path="ticketing/:ticketId" element={<ViewTicket />}/>
 
