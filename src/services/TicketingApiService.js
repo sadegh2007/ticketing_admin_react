@@ -44,3 +44,7 @@ export const CreateNewTicket = async (data) => {
 export const DeleteTicket = async (ticketId) => {
     return await ApiRequest(ApiConstants.Ticketing.Delete(ticketId), 'DELETE');
 }
+
+export const ChangeTicketStatus = async (ticketId, statusName) => {
+    return await ApiRequest(ApiConstants.Ticketing.ChangeStatus(ticketId), 'PUT', {statusName});
+}

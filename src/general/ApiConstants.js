@@ -15,6 +15,7 @@ const Apis = {
         Get: (ticketId) => `${baseUrl}/api/ticketing/${ticketId}`,
         Delete: (ticketId) => `${baseUrl}/api/ticketing/${ticketId}`,
         Histories: (ticketId) => `${baseUrl}/api/ticketing/${ticketId}/histories`,
+        ChangeStatus: (ticketId) => `${baseUrl}/api/ticketing/${ticketId}/change_status`,
         Comments: (ticketId) => {
             return {
                 Create: `${baseUrl}/api/ticketing/${ticketId}/comments`,

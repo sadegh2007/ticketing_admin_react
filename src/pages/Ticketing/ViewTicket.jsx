@@ -1,6 +1,7 @@
 import {Link, useParams} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import {
+    ChangeTicketStatus,
     GetTicketById,
     RemoveMessageFromTicket,
     SendNewComment
@@ -170,6 +171,23 @@ const ViewTicket = () => {
         notify('با موفقیت کپی شد.', 'success');
     }
 
+    const changeStatus = (statusName) => {
+        toggleMainLoader(true);
+        ChangeTicketStatus(ticketId, statusName)
+            .then(res => {
+
+                const newTicket = ticket;
+                newTicket.status = res;
+
+                setTicket(newTicket);
+
+                toggleMainLoader(false);
+            }).catch(err => {
+                toggleMainLoader(false);
+                handleError(err.response)
+            })
+    }
+
     return (
         <>
             <Breadcrumb
@@ -196,8 +214,15 @@ const ViewTicket = () => {
                             </div>
                             <div className="flex text-sm text-gray-600 justify-between items-center">
                                 <div className="">
-                                    <span className="text-xs">وضعیت: </span>
-                                    <span className="px-2 py-1 rounded bg-blue-400 text-white text-xs">{ticket?.status?.title ?? 'نامشخص'}</span>
+                                    <div className="dropdown">
+                                        <label tabIndex="0" className="btn dropdown-caret border-none rounded bg-blue-500 btn-sm text-xs px-2 py-2 m-1">وضعیت: {ticket?.status?.title ?? 'نامشخص'}</label>
+                                        <ul tabIndex="0"
+                                            className="dropdown-content menu p-2 text-sm shadow bg-base-100 rounded-box w-52">
+                                            <li onClick={() => changeStatus('opened')} className=""><a className="p-2">باز</a></li>
+                                            <li onClick={() => changeStatus('closed')} className=""><a className="p-2">بسته</a></li>
+                                        </ul>
+                                    </div>
+
                                 </div>
 
                                 <div className="hidden md:flex flex-col items-center">
