@@ -1,6 +1,6 @@
 import {ReactSVG} from "react-svg";
 
-const Card = ({className, title, icon, children, withBorder = true}) => {
+const Card = ({className, title, icon, children, withBorder = true, padding = 'p-3'}) => {
     return (
         <div className={`card rounded bg-base-100 shadow text-gray-500 ${className}`}>
             {
@@ -11,7 +11,7 @@ const Card = ({className, title, icon, children, withBorder = true}) => {
                     </div>
                     : undefined
             }
-            <div className={`card-body p-3 ${withBorder ? 'border rounded m-2 mt-0': ''}`}>
+            <div className={`card-body ${padding} ${withBorder ? 'border rounded m-2 mt-0': ''}`}>
                 {/*<div className="border rounded p-4">*/}
                     {children}
                 {/*</div>*/}

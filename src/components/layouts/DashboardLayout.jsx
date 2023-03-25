@@ -111,7 +111,7 @@ const DashboardLayout = (props) => {
             <div className="main-content">
                 <MainLoader show={showMainLoader}/>
 
-                <div className="panel-navbar mb-4 mt-2 mx-4">
+                <div className="panel-navbar mb-2 mt-2 mx-4">
                     <div className="bg-base-100 w-full navbar rounded p-1 shadow rounded">
                         <div className="navbar-start">
                             <button onClick={() => toggleSidebar(!showSidebar)} className="btn btn-square btn-ghost">

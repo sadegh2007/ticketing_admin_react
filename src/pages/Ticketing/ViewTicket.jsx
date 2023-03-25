@@ -32,6 +32,7 @@ const ViewTicket = () => {
     const [showDepartmentModal, setShowDepartmentModal] = useState(false);
     const [showHistoryModal, setShowHistoryModal] = useState(false);
     const [replyTo, setReplyTo] = useState(null);
+    const [showUserSidebar, setShowUserSidebar] = useState(false);
 
     const currentUser = CurrentUser();
 
@@ -175,57 +176,64 @@ const ViewTicket = () => {
                 items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}, {to: '#', title: `تیکت شماره ${ticket?.number}`}]}/>
 
             <div className="ticketing-container grid grid-cols-1 md:grid-cols-5 md:gap-2">
-                <Card className="col-span-4" withBorder={false}>
+                <Card className="col-span-4" padding='p-0' withBorder={false}>
                     <div className="card-header">
-                        <div className="border-2 rounded mt-4 mx-4 p-3">
+                        <div className="border-2 rounded mt-2 mx-2 p-1.5">
                             <div className="flex justify-between items-center">
-                                <span># {ticket?.number ?? '-'} - {ticket?.title}</span>
-                                <Link to="/admin/ticketing/create" className="btn btn-sm rounded btn-svg">
+                                <span className="font-semibold text-gray-600"># {ticket?.number ?? '-'} - {ticket?.title}</span>
+                                <Link to="/admin/ticketing/create" className="hidden md:inline-flex btn btn-sm rounded btn-svg">
                                     <ReactSVG src="/src/assets/svgs/plus.svg" />
                                     <span className="text-xs mr-1">تیکت جدید</span>
                                 </Link>
+                                <button onClick={() => setShowUserSidebar(true)} className="inline-flex md:hidden btn btn-sm btn-outline btn-sm-svg border-none">
+                                    <ReactSVG src="/src/assets/svgs/users.svg" />
+                                </button>
                             </div>
-                            <div className="divider my-1"></div>
+                            <div className="divider my-0"></div>
+                            <div className="md:hidden mb-1 flex items-center justify-center">
+                                <span className="mb-1 text-xs">{ticket?.creator.fullName}</span>
+                                <PersianDate className="mr-1 md:mr-0 text-xs" date={ticket?.createdAt} format="fullDateTime"/>
+                            </div>
                             <div className="flex text-sm text-gray-600 justify-between items-center">
                                 <div className="">
                                     <span className="text-xs">وضعیت: </span>
                                     <span className="px-2 py-1 rounded bg-blue-400 text-white text-xs">{ticket?.status?.title ?? 'نامشخص'}</span>
                                 </div>
 
-                                <div className="flex flex-col items-center">
-                                    <span className="mb-1">{ticket?.creator.fullName}</span>
-                                    <PersianDate className="text-xs" date={ticket?.createdAt} format="shortDateTime"/>
+                                <div className="hidden md:flex flex-col items-center">
+                                    <span className="mb-1 font-semibold">{ticket?.creator.fullName}</span>
+                                    <PersianDate className="mr-1 md:mr-0 text-xs" date={ticket?.createdAt} format="shortDateTime"/>
                                 </div>
 
-                                <div dir="ltr" className={`justify-end grid grid-cols-3 gap-1 lg:grid-cols-6`}>
+                                <div dir="ltr" className={`justify-end grid grid-cols-6 gap-1`}>
                                     <button onClick={loadTicket}
-                                            className="btn border-gray-400 rounded btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-xs border-gray-400 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="رفرش" src="/src/assets/svgs/reload.svg"/>
                                     </button>
 
                                     <button onClick={() => setShowHistoryModal(true)}
-                                            className="btn border-gray-400 text-gray-600 rounded btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-xs border-gray-400 text-gray-600 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="تاریخچه" src="/src/assets/svgs/history.svg"/>
                                     </button>
 
                                     <button onClick={copyLink}
-                                            className="btn btn-success border-success-400 text-gray-600 rounded btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-xs btn-success border-success-400 text-gray-600 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="کپی لینک تیکت" src="/src/assets/svgs/link.svg"/>
                                     </button>
 
                                     <button onClick={() => setShowCategoriesModal(true)}
-                                            className="btn border-info-400 text-gray-600 btn-info rounded btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-xs border-info-400 text-gray-600 btn-info rounded md:btn-sm btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="دسته بندی ها" src="/src/assets/svgs/tags.svg"/>
                                     </button>
 
                                     <button onClick={() => setShowDepartmentModal(true)}
-                                            className="btn btn-primary border-primary-400 text-gray-600 rounded btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-xs btn-primary border-primary-400 text-gray-600 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="انتقال تیکت" src="/src/assets/svgs/sign-right.svg"/>
                                     </button>
 
                                     {
                                         (ticket && CurrentUser().user.id !== ticket.creator.id) ? <button onClick={leftTicket}
-                                                                                                          className="btn btn-error border-red-400 rounded btn-sm btn-sm-svg btn-outline btn-square">
+                                                                                                          className="btn btn-xs btn-error border-red-400 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
                                             <ReactSVG className="tooltip" data-tip="خروج" src="/src/assets/svgs/logout.svg"/>
                                         </button> : null
                                     }
@@ -234,8 +242,8 @@ const ViewTicket = () => {
                         </div>
                     </div>
 
-                    <div className="flex-1 p-2 pt-2 sm:p-6 sm:pt-2 justify-between flex flex-col">
-                        <div id="messages" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+                    <div className="flex-1 p-2 justify-between flex flex-col">
+                        <div id="messages" className="flex flex-col space-y-4 p-1 md:p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                             {
                                 ticket?.comments.map((comment, index) => {
                                     const isCurrentUser = comment.creator.id === currentUser.user.id;
@@ -253,7 +261,7 @@ const ViewTicket = () => {
                             }
                         </div>
 
-                        <div className="border-t-2 border-gray-200 pt-4 mb-2 sm:mb-0">
+                        <div className="border-gray-200">
                             <MessageBox
                                 message={message}
                                 setMessage={setMessage}
@@ -270,6 +278,8 @@ const ViewTicket = () => {
                 <UsersSidebar
                     ticket={ticket}
                     loadTicket={loadTicket}
+                    showSide={showUserSidebar}
+                    toggleSide={() => setShowUserSidebar(!showUserSidebar)}
                 />
                 {
                     showCategoriesModal ? <SelectCategoryModal

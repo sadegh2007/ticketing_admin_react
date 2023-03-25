@@ -4,3 +4,5 @@ $background_color: rgb(243 244 246);
 $gap: 12px;
 $green: green;
 $danger: red;
+
+$ticketing-height: calc(100vh - (108px + 162px) - #{$main_header_height} - 85px);

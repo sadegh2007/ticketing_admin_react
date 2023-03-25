@@ -46,9 +46,9 @@ const Sidebar = () => {
     return (
         <div className="sidebar bg-white">
             <div className="sidebar-logo-holder justify-between">
-                <div className="flex items-center">
-                    <img src="/src/assets/react.svg" className="logo"/>
-                    <Link to="/admin/dashboard" className="mr-2 font-bold">پنل مدیریت</Link>
+                <div className="flex items-center text-gray-600 hover:text-gray-800">
+                    <ReactSVG src="/src/assets/svgs/inbox.svg" className="logo"/>
+                    <Link to="/admin/dashboard" className="mr-2 font-bold text-gray-600 hover:text-gray-800">پنل مدیریت</Link>
                 </div>
                 <button onClick={() => toggleSidebar(false)} className="show-on-phone btn btn-ghost btn-sm">x</button>
             </div>
@@ -149,12 +149,12 @@ const Sidebar = () => {
 
                 {/* End of users */}
 
-                <li className="w-60 mb-1">
-                    <NavLink end className={({isActive}) => (isActive ? 'active' : undefined)} to="/settings">
-                        <ReactSVG className="menu-svg" src="/src/assets/svgs/settings.svg"/>
-                        تنظیمات
-                    </NavLink>
-                </li>
+                {/*<li className="w-60 mb-1">*/}
+                {/*    <NavLink end className={({isActive}) => (isActive ? 'active' : undefined)} to="/settings">*/}
+                {/*        <ReactSVG className="menu-svg" src="/src/assets/svgs/settings.svg"/>*/}
+                {/*        تنظیمات*/}
+                {/*    </NavLink>*/}
+                {/*</li>*/}
             </ul>
         </div>
     )

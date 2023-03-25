@@ -268,7 +268,7 @@ body {
 	//height: calc(100vh - #{$main_header_height} - 162px);
 
 	#messages {
-		height: calc(100vh - (108px + 162px) - #{$main_header_height} - 144px);
+		height: $ticketing-height;
 	}
 }
 
@@ -387,10 +387,12 @@ body {
 	}
 
 	.ql-toolbar {
-		direction: ltr;
+		direction: rtl;
 		//@include border-radius(4px 4px 0 0);
 		border-top-left-radius: 0.25rem;
 		border-top-right-radius: 0.25rem;
+		--tw-bg-opacity: 1;
+		background-color: rgb(245 245 245 / var(--tw-bg-opacity));
 
 		.ql-formats {
 			margin-right: 0 !important;
@@ -499,3 +501,95 @@ input[required] {
 		opacity: 1;
 	}
 }
+
+.user-drawer ul {
+
+	li:last-child {
+		border-bottom: none;
+	}
+
+	li {
+		display: flex;
+		margin-bottom: 6px;
+		padding-bottom: 0.25rem;
+		padding-top: 0.25rem;
+		border-bottom: 1px solid rgba(0,0,0,0.1);
+
+		.image-wrapper {
+			position: relative;
+			width: 35px !important;
+			height: 35px !important;
+
+			.btn-user-delete {
+				position: relative;
+				width: 35px;
+				height: 35px;
+			}
+
+			img {
+				position: relative;
+				object-fit: cover;
+				object-position: top;
+				width: 35px !important;
+				height: 35px !important;
+			}
+		}
+
+		.content {
+			width: calc(100% - 45px);
+			display: flex;
+			flex-flow: column;
+			align-items: flex-start;
+
+			.user-full-name, .user-email {
+				position: relative;
+				max-width: 100%;
+				display: inline-block;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.user-drawer {
+		position: absolute !important;
+		transition: margin-left 100ms;
+		top: 0;
+		opacity: 1;
+		width: $sidebar_with;
+		height: 100%;
+		margin-left: $sidebar_with;
+		left: -$sidebar_with;
+		z-index: 9999;
+	}
+
+	.open-user-drawer {
+		position: absolute;
+		opacity: 1;
+		margin-left: $sidebar_with;
+	}
+
+	.close-user-drawer {
+		margin-left: -$sidebar_with;
+	}
+
+	.user-drawer-overlay {
+		transition: all 100ms;
+
+		&.show-user-drawer-overlay {
+			z-index: 9999;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background: rgba(0, 0, 0, 0.2);
+			width: 100vw;
+			height: 100vh;
+		}
+	}
+
+}
+
+

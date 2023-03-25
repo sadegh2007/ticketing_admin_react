@@ -90,7 +90,7 @@ const TicketComment = ({ticket, comment, isCurrentUser, onRemove, onReply, scrol
                     <img
                         src={comment.creator.picture ?? '/src/assets/user-placeholder.png'}
                         alt="profile picture"
-                        className={`w-10 h-10 rounded-full border ${isCurrentUser ? 'order-1' : 'order-2'}`}/>
+                        className={`hidden md:inline-block w-10 h-10 rounded-full border ${isCurrentUser ? 'order-1' : 'order-2'}`}/>
                 </div>
             </div>
             {

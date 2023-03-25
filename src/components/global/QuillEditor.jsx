@@ -5,9 +5,10 @@ const QuillEditor = React.forwardRef(({required = false, className, defaultValue
     const quillModules = {
         modules: {
             toolbar: {
+                className: "bg-natural-100",
                 container: [
 
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
                     [{ 'direction': 'rtl' }],                         // text direction
                     [{ 'align': [] }],
@@ -17,7 +18,7 @@ const QuillEditor = React.forwardRef(({required = false, className, defaultValue
 
                     // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
                     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+                    // [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
                     // [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
 
                     [/* 'image', */ /* 'video' */],
@@ -28,7 +29,7 @@ const QuillEditor = React.forwardRef(({required = false, className, defaultValue
 
                     ['link'],
 
-                    ['clean']
+                    // ['clean']
 
                 ], // container
 
