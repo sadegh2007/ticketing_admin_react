@@ -12,6 +12,7 @@ import ApiConstants from "../../general/ApiConstants.js";
 import {useNavigate} from "react-router-dom";
 import Input from "../../components/global/Form/Input.jsx";
 import MessageBox from "../../components/ticketing/MessageBox.jsx";
+import CustomSelect from "../../components/SelectBox/CustomSelect.jsx";
 
 const CreateTicket = ({}) => {
     const {register, formState: {errors}} = useForm();
@@ -21,6 +22,8 @@ const CreateTicket = ({}) => {
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
     const [users, setUsers] = useState(null);
     const [department, setDepartment] = useState(null);
+    const [priority, setPriority] = useState({ value: 0, label: 'کم' });
+
     const navigate = useNavigate();
 
     let fileRef = useRef(null);
@@ -50,6 +53,10 @@ const CreateTicket = ({}) => {
 
         if (department) {
             formData.set('departmentId', department.value);
+        }
+
+        if (priority) {
+            formData.set('priority', priority.value);
         }
 
         files.forEach((file) => {
@@ -136,6 +143,18 @@ const CreateTicket = ({}) => {
                                 multiple={true}
                                 formatData={formatUserSelect}
                                 className={`required ${errors.users ? 'input-error' : ''}`}
+                            />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">اولویت</span>
+                            </label>
+                            <CustomSelect
+                                placeholder="انتخاب اولویت..."
+                                onSelect={setPriority}
+                                value={priority}
+                                options={[{ value: 0, label: 'کم' }, { value: 1, label: 'متوسط' }, { value: 2, label: 'زیاد' }]}
                             />
                         </div>
                     </div>

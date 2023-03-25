@@ -16,6 +16,8 @@ import {notify} from "../../utilities/index.js";
 import {handleError} from "../../services/GlobalService.js";
 import {confirmAlert} from "react-confirm-alert";
 import {appContext} from "../../context/AppContext.js";
+import {ConfirmAlert} from "../../services/AlertService.js";
+import CustomSelect from "../../components/SelectBox/CustomSelect.jsx";
 
 const Ticketing = () => {
 
@@ -28,6 +30,9 @@ const Ticketing = () => {
     const [titleFilter, setTitleFilter] = useState('');
     const [numberFilter, setNumberFilter] = useState('');
     const [usersFilter, setUsersFilter] = useState();
+    const [departmentFilter, setDepartmentFilter] = useState(null);
+    const [priorityFilter, setPriorityFilter] = useState();
+    const [statusNameFilter, setStatusNameFilter] = useState();
 
     const datatable = useRef(null);
 
@@ -37,40 +42,25 @@ const Ticketing = () => {
     }
 
     const deleteTicket = (ticket) => {
-        const options = {
-            title: 'حذف پیام',
-            message: 'آیا از حذف این پیام مطمئن هستید؟',
-            buttons: [
-                {
-                    label: 'خیر',
-                    onClick: () => {
-                    }
-                },
-                {
-                    label: 'بله!',
-                    onClick: () => {
-                        toggleMainLoader(true);
+        ConfirmAlert(
+            'حذف تیکت',
+            'آیا از حذف این تیکت مطمئن هستید؟',
+            () => {
+                toggleMainLoader(true);
 
-                        DeleteTicket(ticket.id)
-                            .then(res => {
-                                datatable.current.reload();
+                DeleteTicket(ticket.id)
+                    .then(res => {
+                        datatable.current.reload();
 
-                                toggleMainLoader(false);
+                        toggleMainLoader(false);
 
-                                notify('با موفقیت حذف شد.', 'success');
-                            }).catch(e => {
-                            toggleMainLoader(false);
-                            handleError(e.response);
-                        });
-                    }
-                },
-            ],
-            closeOnEscape: true,
-            closeOnClickOutside: true,
-            keyCodeForClose: [8, 32],
-        };
-
-        confirmAlert(options);
+                        notify('با موفقیت حذف شد.', 'success');
+                    }).catch(e => {
+                    toggleMainLoader(false);
+                    handleError(e.response);
+                });
+            }
+        );
     }
 
     const columns = [
@@ -155,6 +145,7 @@ const Ticketing = () => {
                     status: info.status ?? {},
                     department: info.department ?? {},
                     categories: info.categories ?? {},
+                    priority: info.priority,
                 }
             )
         );
@@ -173,6 +164,18 @@ const Ticketing = () => {
             filters['number'] = numberFilter;
         }
 
+        if (departmentFilter) {
+            filters['departmentId'] = departmentFilter.value;
+        }
+
+        if (priorityFilter) {
+            filters['priority'] = priorityFilter.value;
+        }
+
+        if (statusNameFilter) {
+            filters['statusName'] = statusNameFilter.value;
+        }
+
         if (usersFilter && usersFilter.length > 0) {
             filters['users'] = usersFilter.map((user) => user.value);
         }
@@ -180,19 +183,24 @@ const Ticketing = () => {
         if (Object.keys(filters).length > 0) {
             setFilters(filters)
         }
-
     }
 
     const removeFilters = () => {
         setTitleFilter('');
         setNumberFilter('');
         setUsersFilter(null);
+        setDepartmentFilter(null);
+        setPriorityFilter(null);
+        setStatusNameFilter(null);
 
         let newFilters = {...filters}
 
         delete newFilters['title'];
         delete newFilters['users'];
+        delete newFilters['departmentId'];
         delete newFilters['number'];
+        delete newFilters['priority'];
+        delete newFilters['statusName'];
 
         setFilters({...newFilters});
     }
@@ -206,6 +214,14 @@ const Ticketing = () => {
         }) ?? [];
     }
 
+    const formatDepartmentSelect = (data) => {
+        return data.items?.map((x) => {
+            return {
+                label: x.title,
+                value: x.id,
+            };
+        }) ?? [];
+    }
 
     return (
         <>
@@ -245,6 +261,46 @@ const Ticketing = () => {
                                 value={usersFilter}
                                 multiple={true}
                                 formatData={formatUserSelect}
+                            />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">دپارتمان</span>
+                            </label>
+                            <ServerSideSelect
+                                placeholder="انتخاب دپارتمان..."
+                                url={ApiConstants.Departments.List}
+                                method={'POST'}
+                                onSelect={setDepartmentFilter}
+                                value={departmentFilter}
+                                formatData={formatDepartmentSelect}
+                            />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">اولویت</span>
+                            </label>
+                            <CustomSelect
+                                placeholder="انتخاب اولویت..."
+                                onSelect={setPriorityFilter}
+                                value={priorityFilter}
+                                isClearable={true}
+                                options={[{ value: 0, label: 'کم' }, { value: 1, label: 'متوسط' }, { value: 2, label: 'زیاد' }]}
+                            />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">وضعیت</span>
+                            </label>
+                            <CustomSelect
+                                placeholder="انتخاب وضعیت..."
+                                onSelect={setStatusNameFilter}
+                                value={statusNameFilter}
+                                isClearable={true}
+                                options={[{ value: 'new', label: 'جدید' }, { value: 'opened', label: 'باز' }, { value: 'closed', label: 'بسته' }]}
                             />
                         </div>
                     </div>

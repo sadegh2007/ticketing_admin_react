@@ -1,9 +1,9 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import {
     ChangeTicketStatus,
     GetTicketById,
-    RemoveMessageFromTicket,
+    RemoveMessageFromTicket, RemoveUserFromTicket,
     SendNewComment
 } from "../../services/TicketingApiService.js";
 import {appContext} from "../../context/AppContext.js";
@@ -18,10 +18,10 @@ import {notify} from "../../utilities/index.js";
 import UsersSidebar from "../../components/ticketing/UsersSidebar.jsx";
 import TicketComment from "../../components/ticketing/TicketComment.jsx";
 import MessageBox from "../../components/ticketing/MessageBox.jsx";
-import {confirmAlert} from "react-confirm-alert";
 import SelectCategoryModal from "../../components/ticketing/SelectCategoryModal.jsx";
 import SelectDepartmentModal from "../../components/ticketing/SelectDepartmentModal.jsx";
 import TicketHistoryModal from "../../components/ticketing/TicketHistoryModal.jsx";
+import {ConfirmAlert} from "../../services/AlertService.js";
 
 const ViewTicket = () => {
     const {ticketId} = useParams();
@@ -35,6 +35,7 @@ const ViewTicket = () => {
     const [replyTo, setReplyTo] = useState(null);
     const [showUserSidebar, setShowUserSidebar] = useState(false);
 
+    const navigate = useNavigate();
     const currentUser = CurrentUser();
 
     useEffect(() => {
@@ -103,67 +104,48 @@ const ViewTicket = () => {
     }
 
     const leftTicket = () => {
-        const options = {
-            title: 'خروج از تیکت',
-            message: 'آیا از خروج از این تیکت مطمئن هستید؟',
-            buttons: [
-                {
-                    label: 'خیر',
-                    onClick: () => {}
-                },
-                {
-                    label: 'بله!',
-                    onClick: () => {
-                        toggleMainLoader(true);
+        ConfirmAlert(
+            'خروج از تیکت',
+            'آیا از خروج از این تیکت مطمئن هستید؟',
+            () => {
+                toggleMainLoader(true);
 
-                    }
-                },
-            ],
-            closeOnEscape: true,
-            closeOnClickOutside: true,
-            keyCodeForClose: [8, 32],
-        };
+                RemoveUserFromTicket(ticketId, currentUser.user.id)
+                    .then(res => {
+                        toggleMainLoader(false);
+                        notify('با موفقیت حذف شد.', 'success');
 
-        confirmAlert(options);
+                        navigate('/admin/ticketing');
+                    }).catch(e => {
+                    toggleMainLoader(false);
+                    handleError(e.response);
+                });
+            }
+        );
     }
 
     const removeMessage = (commentId) => {
-        const options = {
-            title: 'حذف پیام',
-            message: 'آیا از حذف این پیام مطمئن هستید؟',
-            buttons: [
-                {
-                    label: 'خیر',
-                    onClick: () => {
-                    }
-                },
-                {
-                    label: 'بله!',
-                    onClick: () => {
-                        toggleMainLoader(true);
+        ConfirmAlert(
+            'حذف پیام',
+            'آیا از حذف این پیام مطمئن هستید؟',
+            () => {
+                toggleMainLoader(true);
 
-                        RemoveMessageFromTicket(ticketId, commentId)
-                            .then(res => {
-                                const newTicket = ticket;
-                                newTicket.comments = newTicket.comments.filter((c) => c.id !== commentId);
-                                setTicket(newTicket);
+                RemoveMessageFromTicket(ticketId, commentId)
+                    .then(res => {
+                        const newTicket = ticket;
+                        newTicket.comments = newTicket.comments.filter((c) => c.id !== commentId);
+                        setTicket(newTicket);
 
-                                toggleMainLoader(false);
+                        toggleMainLoader(false);
 
-                                notify('با موفقیت حذف شد.', 'success');
-                            }).catch(e => {
-                            toggleMainLoader(false);
-                            handleError(e.response);
-                        });
-                    }
-                },
-            ],
-            closeOnEscape: true,
-            closeOnClickOutside: true,
-            keyCodeForClose: [8, 32],
-        };
-
-        confirmAlert(options);
+                        notify('با موفقیت حذف شد.', 'success');
+                    }).catch(e => {
+                    toggleMainLoader(false);
+                    handleError(e.response);
+                });
+            }
+        )
     }
 
     const copyLink = () => {
