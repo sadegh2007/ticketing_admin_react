@@ -79,6 +79,8 @@ const Dashboard = () => {
                 },
             },
             y: {
+                beginAtZero: true,
+                min: 0,
                 grid: {
                     display: true,
                 },
