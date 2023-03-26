@@ -1,10 +1,22 @@
 import { LoginUserApi } from './ApiService'
+import {notify} from "../utilities/index.js";
 
 export const IsLogin = () => {
-    return localStorage.getItem('token')
+    const tenant = localStorage.getItem('tenant');
+    if (tenant == null) return tenant;
+
+    return localStorage.getItem('token');
 }
 export const SetToken = (token) => {
     localStorage.setItem('token', token);
+}
+
+export const SetTenant = (tenant) => {
+    localStorage.setItem('tenant', tenant);
+}
+
+export const GetTenant = () => {
+    return localStorage.getItem('tenant');
 }
 
 // TODO check this async/await
@@ -18,22 +30,28 @@ export const LoginUser = async (mobile, password) => {
         let userData = result.data;
         userData.mobile = mobile;
 
+        if (!userData.tenants || userData.tenants.length === 0) {
+            notify('کاربر مورد نظر یافت نشد.');
+            return;
+        }
+
+        if (userData.tenants.length === 1) {
+            SetTenant(userData.tenants[0].id);
+        }
+
         SetToken(token);
         SetUserData(userData);
     }
 
-    // return new Promise(resolve => setTimeout(() => {
-    //   SetToken(token);
-    //   SetUserData(data);
-    //   resolve();
-    // }, 3000))
-
+    return result;
 }
 
 export const Logout = () => {
     // logout user
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('tenant');
+
     window.location.href = '/login';
 }
 

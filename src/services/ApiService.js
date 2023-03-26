@@ -1,6 +1,6 @@
 import axios from "axios";
 import { constants } from './../general/constants';
-import {IsLogin, Logout} from "./AuthService.js";
+import {GetTenant, IsLogin, Logout} from "./AuthService.js";
 import {notify} from "../utilities/index.js";
 import {toast} from "react-toastify";
 
@@ -24,6 +24,11 @@ export const ApiRequest = async (url, method = 'GET', formData = {}) => {
         requestConfig.headers['Authorization'] = `Bearer ${token}`;
     }
 
+    const tenant = GetTenant();
+    if (tenant) {
+        requestConfig.headers['x-tenant'] = tenant;
+    }
+
     const { data } = await axios.request(requestConfig);
     return data;
 }
@@ -38,6 +43,11 @@ export const PostApiRequest = async (url, data) => {
     const token = IsLogin();
     if (token) {
         requestConfig.headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const tenant = GetTenant();
+    if (tenant) {
+        requestConfig.headers['x-tenant'] = tenant;
     }
 
     // const formData = new FormData();

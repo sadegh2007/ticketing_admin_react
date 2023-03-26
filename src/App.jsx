@@ -11,7 +11,7 @@ import {BrowserRouter} from "react-router-dom";
 import {AppRouter} from "./general/routes.jsx";
 import {appContext} from "./context/AppContext.js";
 import {ToastContainer} from 'react-toastify';
-import {IsLogin} from "./services/AuthService.js";
+import {GetTenant, IsLogin} from "./services/AuthService.js";
 import {notify} from "./utilities/index.js";
 
 if (IsLogin) {
@@ -19,6 +19,7 @@ if (IsLogin) {
 }
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.headers.post['x-tenant'] = GetTenant();
 
 axios.interceptors.request.use(request => {
     // console.log(request);
