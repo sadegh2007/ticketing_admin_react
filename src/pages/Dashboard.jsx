@@ -79,8 +79,6 @@ const Dashboard = () => {
                 },
             },
             y: {
-                beginAtZero: true,
-                min: 0,
                 grid: {
                     display: true,
                 },
@@ -170,6 +168,7 @@ const Dashboard = () => {
                     icon="/src/assets/svgs/inbox.svg"
                     iconBackground="bg-green-300"
                     iconColor="text-base-100"
+                    valueSuffix="عدد"
                 />
 
                 <StatWidget
@@ -178,6 +177,7 @@ const Dashboard = () => {
                     icon="/src/assets/svgs/inbox-off.svg"
                     iconBackground="bg-red-300"
                     iconColor="text-base-100"
+                    valueSuffix="عدد"
                 />
 
                 <StatWidget
@@ -186,6 +186,7 @@ const Dashboard = () => {
                     icon="/src/assets/svgs/messages.svg"
                     iconBackground="bg-green-300"
                     iconColor="text-base-100"
+                    valueSuffix="عدد"
                 />
 
                 <StatWidget
@@ -194,6 +195,7 @@ const Dashboard = () => {
                     icon="/src/assets/svgs/messages-off.svg"
                     iconBackground="bg-red-300"
                     iconColor="text-base-100"
+                    valueSuffix="عدد"
                 />
             </div>
 
