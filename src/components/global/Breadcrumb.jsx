@@ -11,7 +11,7 @@ const Breadcrumb = (props) => {
                     <span className="mr-1">داشبورد</span>
                 </Link></li>
                 {
-                    props.items && props.items.length > 0 ? props.items.map((item, index) => <li key={index}><Link to={item.to}>{item.title}</Link></li>) : ''
+                    props.items && props.items.length > 0 ? props.items.map((item, index) => <li key={index}>{item.to === '#' ? <span className="font-medium">{item.title}</span> : <Link to={item.to}>{item.title}</Link>}</li>) : ''
                 }
             </ul>
         </div>

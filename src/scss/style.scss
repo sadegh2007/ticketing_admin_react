@@ -20,7 +20,7 @@ a {
 }
 
 body {
-	background: rgb(243 244 246);
+	background: $background_color;
 	color: #212121;
 	display: block !important;
 	font-family: 'IRAN_SANS_X';
@@ -269,6 +269,16 @@ body {
 
 	#messages {
 		height: $ticketing-height;
+	}
+}
+
+@media (max-width: 768px) {
+	.ticketing-container {
+		//height: calc(100vh - #{$main_header_height} - 162px);
+
+		#messages {
+			height: calc($ticketing-height - 20px);
+		}
 	}
 }
 
@@ -555,31 +565,39 @@ input[required] {
 
 @media (max-width: 768px) {
 	.user-drawer {
+		display: none;
 		position: absolute !important;
 		transition: margin-left 100ms;
 		top: 0;
-		opacity: 1;
+		opacity: 0;
 		width: $sidebar_with;
 		height: 100%;
 		margin-left: $sidebar_with;
-		left: -$sidebar_with;
+		//left: -$sidebar_with;
 		z-index: 9999;
 	}
 
 	.open-user-drawer {
 		position: absolute;
 		opacity: 1;
-		margin-left: $sidebar_with;
+		margin-left: 0;
+		left: 0;
 	}
 
 	.close-user-drawer {
+		opacity: 0;
+		display: none;
 		margin-left: -$sidebar_with;
 	}
 
 	.user-drawer-overlay {
 		transition: all 100ms;
+		display: none;
+		opacity: 0;
 
 		&.show-user-drawer-overlay {
+			opacity: 1;
+			display: block;
 			z-index: 9999;
 			position: absolute;
 			top: 0;
@@ -604,4 +622,11 @@ input[required] {
 	border-left: 0.3em solid transparent;
 }
 
+.notification-menu .menu > :where(li:first-child) {
+	border-radius: 0;
+}
 
+[dir="rtl"] .breadcrumbs > ul > li + *:before, [dir="rtl"] .breadcrumbs > ol > li + *:before
+{
+	--tw-rotate: -45deg;
+}

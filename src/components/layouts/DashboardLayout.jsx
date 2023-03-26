@@ -15,6 +15,8 @@ import {NotificationList} from "../../services/DashboardService.js";
 import {handleError} from "../../services/GlobalService.js";
 import {DeleteUser} from "../../services/UserService.js";
 import {confirmAlert} from "react-confirm-alert";
+import PersianDate from "../global/PersianDate.jsx";
+import {ReactSVG} from "react-svg";
 
 const DashboardLayout = (props) => {
     const {showSidebar, toggleSidebar, toggleUserDropDown, showMainLoader, toggleMainLoader} = useContext(appContext);
@@ -123,8 +125,8 @@ const DashboardLayout = (props) => {
                             </button>
                         </div>
                         <div className="navbar-end">
-                            <div className="dropdown dropdown-end">
-                                <button onClick={getNotifications} className="btn btn-ghost btn-circle">
+                            <div className="dropdown dropdown-end" onClick={getNotifications}>
+                                <button className="btn btn-ghost btn-circle">
                                     <div className="indicator">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                                              viewBox="0 0 24 24" stroke="currentColor">
@@ -137,10 +139,25 @@ const DashboardLayout = (props) => {
                                     </div>
                                 </button>
                                 <ul tabIndex="0"
-                                    className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                                    className="notification-menu menu menu-compact inline-block dropdown-content mt-3 shadow bg-base-100 rounded w-72 md:w-96 h-96 overflow-y-scroll">
                                     {
                                         notifications.map((notification) =>
-                                            <li className={!notification.readAt ? 'font-bold' : ''} key={notification.id}><Link to={`/admin/ticketing/${notification.data.TicketId}`}>{ notification.title }</Link></li>
+                                            <li className={`border-b ${!notification.readAt ? 'font-bold' : ''}`} key={notification.id}>
+                                                <Link className="hover:text-black flex items-center" to={`/admin/ticketing/${notification.data.TicketId}`}>
+                                                    <div className="hidden md:inline-block avatar placeholder">
+                                                        <div className="bg-neutral-100 rounded-full w-11 h-11">
+                                                            <span>T</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className={`${notification.readAt == null ? 'font-semibold' : ''}`}>{ notification.title }</span>
+                                                        <div className="flex items-baseline text-gray-400 mt-1">
+                                                            <ReactSVG className="btn-sm-svg ml-1" src="/src/assets/svgs/calendar-time.svg" />
+                                                            <PersianDate className="text-xs" date={notification.createdAt} format="shortDateTime"/>
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            </li>
                                         )
                                     }
                                 </ul>

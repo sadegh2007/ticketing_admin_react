@@ -57,7 +57,7 @@ const UsersSidebar = ({ticket, loadTicket, toggleSide, showSide = false}) => {
 
     return (
         <>
-            <div className={`user-drawer-overlay block md:hidden ${showSide ? 'show-user-drawer-overlay' : ''}`}></div>
+            <div onClick={() => toggleSide(false)} className={`user-drawer-overlay block md:hidden ${showSide ? 'show-user-drawer-overlay' : ''}`}></div>
             <div
                 className={`user-drawer card sm:rounded-tl-none rounded bg-base-100 shadow text-gray-500 ${showSide ? 'open-user-drawer' : 'close-user-drawer'} md:block`}>
                 <div
