@@ -8,7 +8,7 @@ import {PermissionsList, SyncPermissions} from "../../services/PermissionService
 import {ReactSVG} from "react-svg";
 import {handleError} from "../../services/GlobalService.js";
 import {notify} from "../../utilities/index.js";
-import {GetTenant} from "../../services/AuthService.js";
+import {CurrentUserPermissions, GetTenant} from "../../services/AuthService.js";
 
 const PermissionsIndex = () => {
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
@@ -20,6 +20,8 @@ const PermissionsIndex = () => {
         totals: 0,
         totalPages: 0,
     });
+
+    const currentPermissions = CurrentUserPermissions();
 
     const setName = (route, value) => {
         const newPerms = {...perms, [route]: {title: perms[route].title, name: value}};
@@ -51,14 +53,20 @@ const PermissionsIndex = () => {
         columnHelper.accessor('name', {
             id: () => 1,
             cell: (info) => {
-                return (<input className="input input-sm input-bordered rounded focus:outline-none text-sm w-full placeholder-gray-600" defaultValue={info.getValue() ?? ''} type="text" name={`perms[${info.row.original.route}][name]`} id="name" />)
+                return (<input
+                    className="input input-sm input-bordered rounded focus:outline-none text-sm w-full placeholder-gray-600"
+                    defaultValue={info.getValue() ?? ''} type="text" name={`perms[${info.row.original.route}][name]`}
+                    id="name"/>)
             },
             header: () => "نام",
         }),
         columnHelper.accessor('title', {
             id: () => 2,
             cell: (info) => {
-                return (<input className="input input-sm input-bordered rounded focus:outline-none text-sm w-full placeholder-gray-600" defaultValue={info.getValue() ?? ''} type="text" name={`perms[${info.row.original.route}][title]`} id="title" />)
+                return (<input
+                    className="input input-sm input-bordered rounded focus:outline-none text-sm w-full placeholder-gray-600"
+                    defaultValue={info.getValue() ?? ''} type="text" name={`perms[${info.row.original.route}][title]`}
+                    id="title"/>)
             },
             header: () => "عنوان",
         }),
@@ -107,7 +115,8 @@ const PermissionsIndex = () => {
     }
 
     useEffect(() => {
-        getData().then(res => {});
+        getData().then(res => {
+        });
     }, [])
 
     return (
@@ -115,7 +124,7 @@ const PermissionsIndex = () => {
             <Breadcrumb items={[{to: `/${GetTenant()}/admin/users/roles/permissions`, title: 'فهرست دسترسی ها'}]}/>
             <Card title="دسترسی ها" icon="/src/assets/svgs/license.svg">
                 <form onSubmit={savePermissions} action="#">
-                    <div style={{ minHeight: "360px" }}>
+                    <div style={{minHeight: "360px"}}>
                         <AppTable
                             isServerSide={false}
                             columns={columns}
@@ -126,13 +135,17 @@ const PermissionsIndex = () => {
                     </div>
                     <div className="flex items-baseline justify-between bg-neutral-100 p-2 rounded-b border">
                         <div className="text-sm w-1/2">
-                            <p>تعداد کل ایتم ها: { pageData.totals }</p>
+                            <p>تعداد کل ایتم ها: {pageData.totals}</p>
                         </div>
                     </div>
 
-                    <button type={"submit"} className="btn rounded btn-success text-white w-47 mt-4">
-                        <span>ثبت</span>
-                    </button>
+                    {
+                        currentPermissions.includes('SyncPermissions')
+                            ? <button type={"submit"} className="btn rounded btn-success text-white w-47 mt-4">
+                                <span>ثبت</span>
+                            </button>
+                            : undefined
+                    }
                 </form>
             </Card>
         </>

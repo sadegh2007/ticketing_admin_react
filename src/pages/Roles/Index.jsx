@@ -6,7 +6,7 @@ import {appContext} from "../../context/AppContext.js";
 import {notify} from "../../utilities/index.js";
 import {handleError} from "../../services/GlobalService.js";
 import {confirmAlert} from "react-confirm-alert";
-import {CurrentUser, GetTenant} from "../../services/AuthService.js";
+import {CurrentUser, CurrentUserPermissions, GetTenant} from "../../services/AuthService.js";
 import {ReactSVG} from "react-svg";
 import Input from "../../components/global/Form/Input.jsx";
 import ServerSideTable from "../../components/table/ServerSideTable.jsx";
@@ -28,6 +28,8 @@ const RolesIndex = () => {
     const [emailFilter, setEmailFilter] = useState('');
 
     const datatable = useRef(null);
+
+    const permissions = CurrentUserPermissions();
 
     const editUser = (ticket) => {
         setCurrentRole(ticket);
@@ -99,17 +101,21 @@ const RolesIndex = () => {
                 return (
                     <>
                         {
-                            info.row.original.id !== CurrentUser().user.id
+                            permissions.includes('DeleteRole')
                                 ? <button onClick={() => deleteUser(info.row.original)}
                                           className="ml-1 rounded btn-error table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                                     <ReactSVG src="/src/assets/svgs/trash.svg"/>
                                 </button>
                                 : undefined
                         }
-                        <button onClick={() => editUser(info.row.original)}
-                                className="rounded table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
-                            <ReactSVG src="/src/assets/svgs/pencil.svg"/>
-                        </button>
+                        {
+                            permissions.includes('UpdateRole')
+                                ? <button onClick={() => editUser(info.row.original)}
+                                          className="rounded table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                                    <ReactSVG src="/src/assets/svgs/pencil.svg"/>
+                                </button>
+                                : undefined
+                        }
                     </>
                 );
             },
@@ -181,12 +187,15 @@ const RolesIndex = () => {
         <>
             <Breadcrumb items={[{to: `/${GetTenant()}/admin/users/roles`, title: 'فهرست نقش ها'}]}/>
             <Card title="نقش ها" icon="/src/assets/svgs/user-check.svg">
-                <div className="flex justify-end mb-4">
-                    <button onClick={() => editUser(null)} className="btn btn-sm rounded btn-svg">
-                        <ReactSVG src="/src/assets/svgs/plus.svg"/>
-                        <span className="mr-1">ایجاد نقش</span>
-                    </button>
-                </div>
+                {
+                    permissions.includes('CreateRole') ? <div className="flex justify-end mb-4">
+                        <button onClick={() => editUser(null)} className="btn btn-sm rounded btn-svg">
+                            <ReactSVG src="/src/assets/svgs/plus.svg"/>
+                            <span className="mr-1">ایجاد نقش</span>
+                        </button>
+                    </div> : undefined
+                }
+
                 <ServerSideTable
                     ref={datatable}
                     url={Apis.Users.Roles.List}

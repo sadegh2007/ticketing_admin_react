@@ -7,14 +7,12 @@ import Breadcrumb from "../../components/global/Breadcrumb.jsx";
 import Card from "../../components/global/Card.jsx";
 import Input from "../../components/global/Form/Input.jsx";
 import PersianDate from "../../components/global/PersianDate.jsx";
-import CategoryModal from "../../modals/Categories/CategoryModal.jsx";
-import {DeleteCategory} from "../../services/CategoryApiService.js";
 import {handleError} from "../../services/GlobalService.js";
 import {appContext} from "../../context/AppContext.js";
 import {confirmAlert} from "react-confirm-alert";
 import DepartmentModal from "../../modals/Deparments/DepartmentModal.jsx";
 import {DeleteDepartment} from "../../services/DepartmentApiService.js";
-import {GetTenant} from "../../services/AuthService.js";
+import {CurrentUserPermissions, GetTenant} from "../../services/AuthService.js";
 
 const DepartmentsIndex = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -26,6 +24,8 @@ const DepartmentsIndex = () => {
 
     const columnHelper = createColumnHelper();
     const tableRef = useRef(null);
+
+    const permissions = CurrentUserPermissions();
 
     const openEditModal = (category) => {
         setCurrentDepartment(category);
@@ -96,13 +96,16 @@ const DepartmentsIndex = () => {
             cell: info => {
                 return (
                     <div>
-                        <button onClick={() => openEditModal(info.row.original)} className="rounded btn-success table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
-                            <ReactSVG src="/src/assets/svgs/pencil.svg" />
-                        </button>
-
-                        <button onClick={() => deleteDepartment(info.row.original)} className="mr-1 rounded btn-error  table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
-                            <ReactSVG src="/src/assets/svgs/trash.svg" />
-                        </button>
+                        {
+                            permissions.includes('UpdateDepartment') ? <button onClick={() => openEditModal(info.row.original)} className="rounded btn-success table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                                <ReactSVG src="/src/assets/svgs/pencil.svg" />
+                            </button> : undefined
+                        }
+                        {
+                            permissions.includes('DeleteDepartment') ? <button onClick={() => deleteDepartment(info.row.original)} className="mr-1 rounded btn-error  table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                                <ReactSVG src="/src/assets/svgs/trash.svg" />
+                            </button> : undefined
+                        }
                     </div>
                 );
             },
@@ -158,12 +161,17 @@ const DepartmentsIndex = () => {
         <>
             <Breadcrumb items={[{to: `/${GetTenant()}/admin/ticketing/categories`, title: 'فهرست دپارتمان ها'}]}/>
             <Card title="دپارتمان ها" icon="/src/assets/svgs/building.svg">
-                <div className="flex justify-end">
-                    <button onClick={() => setShowCreateModal(true)} className="btn btn-sm rounded btn-svg">
-                        <ReactSVG src="/src/assets/svgs/plus.svg" />
-                        <span className="mr-1">ایجاد دپارتمان</span>
-                    </button>
-                </div>
+                {
+                    permissions.includes('CreateDepartment') ? <div className="flex justify-end">
+                            <button onClick={() => setShowCreateModal(true)} className="btn btn-sm rounded btn-svg">
+                                <ReactSVG src="/src/assets/svgs/plus.svg" />
+                                <span className="mr-1">ایجاد دپارتمان</span>
+                            </button>
+                        </div>
+                        : undefined
+                }
+
+
                 <form onSubmit={onFilterSubmit} action="#">
                     <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
                         <Input

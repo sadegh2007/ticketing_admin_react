@@ -12,7 +12,7 @@ import {DeleteCategory} from "../../services/CategoryApiService.js";
 import {handleError} from "../../services/GlobalService.js";
 import {appContext} from "../../context/AppContext.js";
 import {confirmAlert} from "react-confirm-alert";
-import {GetTenant} from "../../services/AuthService.js";
+import {CurrentUserPermissions, GetTenant} from "../../services/AuthService.js";
 
 const TicketingCategories = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -24,6 +24,8 @@ const TicketingCategories = () => {
 
     const columnHelper = createColumnHelper();
     const tableRef = useRef(null);
+
+    const permissions = CurrentUserPermissions();
 
     const openEditModal = (category) => {
         setCurrentCategory(category);
@@ -82,7 +84,7 @@ const TicketingCategories = () => {
         }),
         columnHelper.accessor('createdAt', {
             id: info => 1,
-            cell: info => <PersianDate date={info.getValue()} />,
+            cell: info => <PersianDate date={info.getValue()}/>,
             header: () => "تاریخ ایجاد",
             // Header: "Total trips",
             // accessor: "trips",
@@ -94,13 +96,24 @@ const TicketingCategories = () => {
             cell: info => {
                 return (
                     <div>
-                        <button onClick={() => openEditModal(info.row.original)} className="rounded btn-success table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
-                            <ReactSVG src="/src/assets/svgs/pencil.svg" />
-                        </button>
+                        {
+                            permissions.includes('UpdateCategory')
+                                ? <button onClick={() => openEditModal(info.row.original)}
+                                          className="rounded btn-success table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                                    <ReactSVG src="/src/assets/svgs/pencil.svg"/>
+                                </button>
+                                : undefined
+                        }
+                        {
+                            permissions.includes('DeleteCategory')
+                                ? <button onClick={() => deleteCategory(info.row.original)}
+                                          className="mr-1 rounded btn-error  table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                                    <ReactSVG src="/src/assets/svgs/trash.svg"/>
+                                </button>
+                                : undefined
+                        }
 
-                        <button onClick={() => deleteCategory(info.row.original)} className="mr-1 rounded btn-error  table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
-                            <ReactSVG src="/src/assets/svgs/trash.svg" />
-                        </button>
+
                     </div>
                 );
             },
@@ -156,12 +169,17 @@ const TicketingCategories = () => {
         <>
             <Breadcrumb items={[{to: `${GetTenant()}/admin/ticketing/categories`, title: 'فهرست دسته بندی ها'}]}/>
             <Card title="دسته بندی ها" icon="/src/assets/svgs/category-2.svg">
-                <div className="flex justify-end">
-                    <button onClick={() => setShowCreateModal(true)} className="btn btn-sm rounded btn-svg">
-                        <ReactSVG src="/src/assets/svgs/plus.svg" />
-                        <span className="mr-1">ایجاد دسته بندی</span>
-                    </button>
-                </div>
+                {
+                    permissions.includes('CreateCategory')
+                        ? <div className="flex justify-end">
+                            <button onClick={() => setShowCreateModal(true)} className="btn btn-sm rounded btn-svg">
+                                <ReactSVG src="/src/assets/svgs/plus.svg"/>
+                                <span className="mr-1">ایجاد دسته بندی</span>
+                            </button>
+                        </div>
+                        : undefined
+                }
+
                 <form onSubmit={onFilterSubmit} action="#">
                     <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
                         <Input
@@ -172,16 +190,16 @@ const TicketingCategories = () => {
                         />
                     </div>
 
-
                     <div className="mt-4">
                         <button className="btn-filter rounded btn gap-2 btn-sm-svg btn-sm" type="submit">
-                            <ReactSVG src="/src/assets/svgs/filter.svg" />
+                            <ReactSVG src="/src/assets/svgs/filter.svg"/>
                             فیلتر
                         </button>
-
                         {
-                            Object.keys(filters).length > 0 ? <button onClick={removeFilters} className="btn-svg rounded btn-sm mr-2 btn-filter btn btn-secondary gap-2" type="button">
-                                <ReactSVG src="/src/assets/svgs/filter-off.svg" />
+                            Object.keys(filters).length > 0 ? <button onClick={removeFilters}
+                                                                      className="btn-svg rounded btn-sm mr-2 btn-filter btn btn-secondary gap-2"
+                                                                      type="button">
+                                <ReactSVG src="/src/assets/svgs/filter-off.svg"/>
                                 حذف فیلتر
                             </button> : null
                         }
@@ -205,10 +223,10 @@ const TicketingCategories = () => {
                     show={showCreateModal}
                     closeModal={closeModal}
                     category={null}
-                />: undefined
+                /> : undefined
             }
             {
-                showEditModal ?  <CategoryModal
+                showEditModal ? <CategoryModal
                     show={showEditModal}
                     closeModal={closeEditModal}
                     category={currentCategory}

@@ -7,7 +7,7 @@ import {DeleteTicket} from "../../services/TicketingApiService.js";
 import {notify} from "../../utilities/index.js";
 import {handleError} from "../../services/GlobalService.js";
 import {confirmAlert} from "react-confirm-alert";
-import {CurrentUser, GetTenant} from "../../services/AuthService.js";
+import {CurrentUser, CurrentUserPermissions, GetTenant} from "../../services/AuthService.js";
 import {ReactSVG} from "react-svg";
 import Input from "../../components/global/Form/Input.jsx";
 import ServerSideTable from "../../components/table/ServerSideTable.jsx";
@@ -29,6 +29,8 @@ const UsersIndex = () => {
     const [usersFilter, setUsersFilter] = useState();
 
     const datatable = useRef(null);
+
+    const permissions = CurrentUserPermissions();
 
     const editUser = (ticket) => {
         setCurrentUser(ticket);
@@ -113,17 +115,22 @@ const UsersIndex = () => {
                 return (
                     <>
                         {
-                            info.row.original.id !== CurrentUser().user.id
+                            (permissions.includes('DeleteUser') && info.row.original.id !== CurrentUser().user.id)
                                 ? <button onClick={() => deleteUser(info.row.original)}
                                           className="ml-1 rounded btn-error table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                                     <ReactSVG src="/src/assets/svgs/trash.svg"/>
                                 </button>
                                 : undefined
                         }
-                        <button onClick={() => editUser(info.row.original)}
-                                className="rounded table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
-                            <ReactSVG src="/src/assets/svgs/pencil.svg"/>
-                        </button>
+                        {
+                            permissions.includes('UpdateUser')
+                                ? <button onClick={() => editUser(info.row.original)}
+                                          className="rounded table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                                    <ReactSVG src="/src/assets/svgs/pencil.svg"/>
+                                </button>
+                                : undefined
+                        }
+
                     </>
                 );
             },
@@ -198,13 +205,16 @@ const UsersIndex = () => {
         <>
             <Breadcrumb items={[{to: `/${GetTenant()}/admin/users`, title: 'فهرست کاربران'}]}/>
             <Card title="کاربران" icon="/src/assets/svgs/users.svg">
-                <div className="flex justify-end">
-                    <button onClick={() => editUser(null)} className="btn btn-sm rounded btn-svg">
-                        <ReactSVG src="/src/assets/svgs/plus.svg"/>
-                        <span className="mr-1">ایجاد کاربر</span>
-                    </button>
-                </div>
-
+                {
+                    permissions.includes('CreateUser')
+                        ? <div className="flex justify-end">
+                            <button onClick={() => editUser(null)} className="btn btn-sm rounded btn-svg">
+                                <ReactSVG src="/src/assets/svgs/plus.svg"/>
+                                <span className="mr-1">ایجاد کاربر</span>
+                            </button>
+                        </div>
+                        : undefined
+                }
                 <form onSubmit={onFilterSubmit} action="#">
                     <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
                         <Input
