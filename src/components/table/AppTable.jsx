@@ -1,16 +1,53 @@
 import React, { useMemo } from "react";
-import {flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
+import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import Loader from "./Loader";
 import styles from './styles.module.css'
 import DebouncedInput from "./DebouncedInput.jsx";
 import {ReactSVG} from "react-svg";
+import IndeterminateCheckbox from "../global/IndeterminateCheckbox.jsx";
 
-const AppTable = ({ isServerSide = true, columns, data, isLoading, manualPagination = false, setGlobalFilter, isCompact = true, reload }) => {
-    const columnData = useMemo(() => columns, [columns]);
+const AppTable = ({ rowSelection = {}, setRowSelection, showSelection = false, showIndex = true, isServerSide = true, columns, data, isLoading, manualPagination = false, setGlobalFilter, isCompact = true, reload }) => {
+
+    const columnHelper = createColumnHelper();
+    const indexColumn = columnHelper.accessor('index', {
+        id: () => 'select',
+        header: ({table}) => (
+            <div className="px-1 flex items-center">
+                {
+                    showSelection ? <IndeterminateCheckbox
+                        checked={table.getIsAllRowsSelected()}
+                        indeterminate = {table.getIsSomeRowsSelected()}
+                        onChange= {table.getToggleAllRowsSelectedHandler()}
+                    /> : undefined
+                }
+                {
+                    showIndex ? <span className="mr-1">#</span> : undefined
+                }
+            </div>
+        )
+        ,
+        cell: ({row}) => (
+            <div className="px-1 flex items-center">
+                {
+                    showSelection ?  <IndeterminateCheckbox
+                        disabled={!row.getCanSelect()}
+                        checked={row.getIsSelected()}
+                        indeterminate = {row.getIsSomeSelected()}
+                        onChange= {row.getToggleSelectedHandler()}
+                    /> : undefined
+                }
+                {
+                    showIndex ? <span className="mr-1">{row.index+1}</span> : undefined
+                }
+            </div>
+        ),
+        maxSize: 60,
+    });
+
+    const columnData = useMemo(() => (showIndex || showSelection) ? [indexColumn, ...columns] : columns, [columns]);
     const rowData = useMemo(() => data, [data]);
 
     const [columnResizeMode, setColumnResizeMode] = React.useState('onChange')
-
     const [globalFilter, _] = React.useState('')
 
     const table = useReactTable({
@@ -19,7 +56,10 @@ const AppTable = ({ isServerSide = true, columns, data, isLoading, manualPaginat
         manualPagination,
         state: {
             globalFilter,
+            rowSelection
         },
+        enableRowSelection: true,
+        onRowSelectionChange: setRowSelection,
         getCoreRowModel: getCoreRowModel(),
         enableColumnResizing: true,
         columnResizeMode,

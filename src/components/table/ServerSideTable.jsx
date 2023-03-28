@@ -13,7 +13,11 @@ const ServerSideTable = React.forwardRef((
         rowPerPage = 15,
         currentPageIndex = 1,
         isCompact = true,
-        filters = {}
+        filters = {},
+        showIndex = true,
+        showSelection = false,
+        rowSelection = {},
+        setRowSelection
     }, ref) => {
 
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
@@ -93,6 +97,10 @@ const ServerSideTable = React.forwardRef((
                     globalFilter={globalFilter}
                     isCompact={isCompact}
                     reload={reload}
+                    showIndex={showIndex}
+                    showSelection={showSelection}
+                    rowSelection={rowSelection}
+                    setRowSelection={setRowSelection}
                 />
             </div>
             <div className="flex items-baseline justify-between bg-neutral-100 p-2 rounded-b border">
