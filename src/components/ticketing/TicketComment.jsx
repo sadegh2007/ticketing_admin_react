@@ -88,9 +88,9 @@ const TicketComment = ({ticket, comment, isCurrentUser, onRemove, onReply, scrol
                         </div>
                     </div>
                     <img
-                        src={comment.creator.picture ?? '/src/assets/user-placeholder.png'}
+                        src={comment.creator.picture ? `${constants.BASE_URL}${comment.creator.picture}` : '/src/assets/user-placeholder.png'}
                         alt="profile picture"
-                        className={`hidden md:inline-block w-10 h-10 rounded-full border ${isCurrentUser ? 'order-1' : 'order-2'}`}/>
+                        className={`profile border border-gray-300 hidden md:inline-block w-10 h-10 rounded-full border ${isCurrentUser ? 'order-1' : 'order-2'}`}/>
                 </div>
             </div>
             {

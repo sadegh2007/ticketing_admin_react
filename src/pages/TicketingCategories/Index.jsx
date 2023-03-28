@@ -12,6 +12,7 @@ import {DeleteCategory} from "../../services/CategoryApiService.js";
 import {handleError} from "../../services/GlobalService.js";
 import {appContext} from "../../context/AppContext.js";
 import {confirmAlert} from "react-confirm-alert";
+import {GetTenant} from "../../services/AuthService.js";
 
 const TicketingCategories = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -153,7 +154,7 @@ const TicketingCategories = () => {
 
     return (
         <>
-            <Breadcrumb items={[{to: '/admin/ticketing/categories', title: 'فهرست دسته بندی ها'}]}/>
+            <Breadcrumb items={[{to: `${GetTenant()}/admin/ticketing/categories`, title: 'فهرست دسته بندی ها'}]}/>
             <Card title="دسته بندی ها" icon="/src/assets/svgs/category-2.svg">
                 <div className="flex justify-end">
                     <button onClick={() => setShowCreateModal(true)} className="btn btn-sm rounded btn-svg">

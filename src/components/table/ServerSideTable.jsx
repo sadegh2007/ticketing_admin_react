@@ -39,6 +39,7 @@ const ServerSideTable = React.forwardRef((
 
         filters['page'] = pageNo;
         filters['count'] = rowPerPage;
+        filters['q'] = globalFilter;
 
         toggleMainLoader(true);
 
@@ -89,6 +90,7 @@ const ServerSideTable = React.forwardRef((
                     data={pageData.rowData}
                     isLoading={pageData.isLoading}
                     setGlobalFilter={setGlobalFilter}
+                    globalFilter={globalFilter}
                     isCompact={isCompact}
                     reload={reload}
                 />
@@ -112,12 +114,12 @@ const ServerSideTable = React.forwardRef((
                     // nextClassName="btn btn-sm btn-ghost btn-outline"
                     // breakClassName="btn btn-sm btn-ghost btn-outline"
                     // activeClassName="btn-active"
-                    breakLinkClassName="btn btn-sm rounded btn-ghost btn-outline ml-1 leading-none"
-                    pageLinkClassName="btn btn-sm rounded btn-ghost btn-outline ml-1 leading-none"
-                    activeLinkClassName="btn-active"
-                    nextLinkClassName="btn btn-sm rounded btn-ghost btn-outline ml-1 leading-none"
-                    previousLinkClassName="btn btn-sm rounded btn-ghost btn-outline leading-none"
-                    disabledLinkClassName="btn-disabled"
+                    breakLinkClassName="btn btn-sm rounded btn-ghost btn-outline ml-1 leading-none border-none"
+                    pageLinkClassName="btn btn-sm rounded btn-ghost btn-outline ml-1 leading-none border-none"
+                    activeLinkClassName="bg-neutral-200"
+                    nextLinkClassName="btn btn-sm rounded btn-ghost btn-outline ml-1 leading-none border-none"
+                    previousLinkClassName="btn btn-sm rounded btn-ghost btn-outline leading-none border-none"
+                    disabledLinkClassName="text-gray-400 hover:text-gray-400 hover:bg-neutral-100"
                     breakLabel="..."
                     nextLabel="&#8250;"
                     onPageChange={({selected}) => setCurrentPage(selected+1)}

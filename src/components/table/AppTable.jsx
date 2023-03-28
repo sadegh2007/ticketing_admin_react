@@ -43,8 +43,8 @@ const AppTable = ({ isServerSide = true, columns, data, isLoading, manualPaginat
                         </button>
                     </div>
                     <DebouncedInput
-                        value={globalFilter ?? ''}
-                        onChange={value => {
+                        value={globalFilter}
+                        onChange={(value) => {
                             _(String(value)) // set internal global filter to keep text in the search input
                             setGlobalFilter(String(value))
                         }}

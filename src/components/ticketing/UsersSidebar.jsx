@@ -65,19 +65,13 @@ const UsersSidebar = ({ticket, loadTicket, toggleSide, showSide = false}) => {
 
                     <div className="">
                         <button onClick={() => toggleSide(false)}
-                                className="inline-flex md:hidden btn-sm-svg btn-outline text-white border-none btn btn-sm btn-square ml-2">
+                                className="rounded inline-flex md:hidden btn-sm-svg btn-outline text-white border-none btn btn-sm btn-square ml-2">
                             <ReactSVG src="/src/assets/svgs/X.svg"/>
                         </button>
                         <span>{(ticket && ticket.department) ? ticket.department.title : 'کاربران'}</span>
                     </div>
-
-
-                    <button onClick={() => setShowNewUserModal(true)}
-                            className="btn-sm-svg btn-primary btn btn-sm btn-square">
-                        <ReactSVG src="/src/assets/svgs/plus.svg"/>
-                    </button>
                 </div>
-                <div className="card-body p-2">
+                <div className="card-body p-2 overflow-y-scroll">
                     <ul>
                         {
                             ticket?.users.map((userItem) => {
@@ -95,8 +89,8 @@ const UsersSidebar = ({ticket, loadTicket, toggleSide, showSide = false}) => {
                                                     </div>
                                                     : undefined
                                             }
-                                            <img className="rounded-full border z-30"
-                                                 src={(userItem.user && userItem.user.picture) ? userItem.user.picture : '/src/assets/user-placeholder.png'}
+                                            <img className="profile rounded-full border border-gray-300 z-30"
+                                                 src={(userItem.user && userItem.user.picture) ? `${constants.BASE_URL}${userItem.user.picture}` : '/src/assets/user-placeholder.png'}
                                                  alt="user"/>
                                         </div>
                                         <div className="content mr-2">
@@ -115,6 +109,13 @@ const UsersSidebar = ({ticket, loadTicket, toggleSide, showSide = false}) => {
                             })
                         }
                     </ul>
+                    <div className="text-center border-t py-4">
+                        <button onClick={() => setShowNewUserModal(true)}
+                                className="btn-sm-svg bg-primary btn btn-sm rounded">
+                            <ReactSVG src="/src/assets/svgs/user-plus.svg"/>
+                            <span className="mr-1 font-normal">افزودن</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 

@@ -8,6 +8,7 @@ import {PermissionsList, SyncPermissions} from "../../services/PermissionService
 import {ReactSVG} from "react-svg";
 import {handleError} from "../../services/GlobalService.js";
 import {notify} from "../../utilities/index.js";
+import {GetTenant} from "../../services/AuthService.js";
 
 const PermissionsIndex = () => {
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
@@ -111,7 +112,7 @@ const PermissionsIndex = () => {
 
     return (
         <>
-            <Breadcrumb items={[{to: '/admin/users', title: 'فهرست دسترسی ها'}]}/>
+            <Breadcrumb items={[{to: `/${GetTenant()}/admin/users/roles/permissions`, title: 'فهرست دسترسی ها'}]}/>
             <Card title="دسترسی ها" icon="/src/assets/svgs/license.svg">
                 <form onSubmit={savePermissions} action="#">
                     <div style={{ minHeight: "360px" }}>

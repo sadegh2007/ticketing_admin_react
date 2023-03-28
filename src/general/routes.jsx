@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import {Routes, Route, Navigate} from "react-router-dom";
 import Dashboard from './../pages/Dashboard';
 import NotFound from "../pages/NotFound.jsx";
 import Login from "../pages/Login.jsx";
@@ -15,9 +15,10 @@ import DepartmentsIndex from "../pages/Departments/Index.jsx";
 export const AppRouter = () => {
     return (
       <Routes>
+          <Route index path="/" element={<Navigate to="/login" />}/>
           <Route path="/login" element={<Login />} />
 
-          <Route path='/admin' element={<DashboardLayout />}>
+          <Route path=':tenant/admin' element={<DashboardLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
 
               <Route path="ticketing" element={<Ticketing />} />

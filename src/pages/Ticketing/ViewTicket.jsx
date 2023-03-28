@@ -9,7 +9,7 @@ import {
 import {appContext} from "../../context/AppContext.js";
 import {ReactSVG} from "react-svg";
 import Breadcrumb from "../../components/global/Breadcrumb.jsx";
-import {CurrentUser} from "../../services/AuthService.js";
+import {CurrentUser, GetTenant} from "../../services/AuthService.js";
 import PersianDate from "../../components/global/PersianDate.jsx";
 import Card from "../../components/global/Card.jsx";
 import {handleError} from "../../services/GlobalService.js";
@@ -35,6 +35,7 @@ const ViewTicket = () => {
     const [replyTo, setReplyTo] = useState(null);
     const [showUserSidebar, setShowUserSidebar] = useState(false);
 
+    const currentTenant = GetTenant();
     const navigate = useNavigate();
     const currentUser = CurrentUser();
 
@@ -115,7 +116,7 @@ const ViewTicket = () => {
                         toggleMainLoader(false);
                         notify('با موفقیت حذف شد.', 'success');
 
-                        navigate('/admin/ticketing');
+                        navigate(`${currentTenant}/admin/ticketing`);
                     }).catch(e => {
                     toggleMainLoader(false);
                     handleError(e.response);
@@ -149,7 +150,7 @@ const ViewTicket = () => {
     }
 
     const copyLink = () => {
-        navigator.clipboard.writeText(`${constants.APP_BASE_URL}/admin/ticketing/${ticketId}`);
+        navigator.clipboard.writeText(`${constants.APP_BASE_URL}/${currentTenant}/admin/ticketing/${ticketId}`);
         notify('با موفقیت کپی شد.', 'success');
     }
 
@@ -173,7 +174,7 @@ const ViewTicket = () => {
     return (
         <>
             <Breadcrumb
-                items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}, {to: '#', title: `تیکت شماره ${ticket?.number}`}]}/>
+                items={[{to: `/${currentTenant}/admin/ticketing`, title: 'فهرست تیکت ها'}, {to: '#', title: `تیکت شماره ${ticket?.number}`}]}/>
 
             <div className="ticketing-container grid grid-cols-1 md:grid-cols-5 md:gap-2">
                 <Card className="col-span-4" padding='p-0' withBorder={false}>
@@ -181,7 +182,7 @@ const ViewTicket = () => {
                         <div className="border-2 rounded mt-2 mx-2 p-1.5">
                             <div className="flex justify-between items-center">
                                 <span className="font-semibold text-gray-600"># {ticket?.number ?? '-'} - {ticket?.title}</span>
-                                <Link to="/admin/ticketing/create" className="hidden md:inline-flex btn btn-sm rounded btn-svg">
+                                <Link to={`${currentTenant}/admin/ticketing/create`} className="hidden md:inline-flex btn btn-sm rounded btn-svg">
                                     <ReactSVG src="/src/assets/svgs/plus.svg" />
                                     <span className="text-xs mr-1">تیکت جدید</span>
                                 </Link>

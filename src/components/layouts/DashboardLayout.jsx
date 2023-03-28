@@ -3,7 +3,7 @@ import {Link, Outlet} from "react-router-dom";
 import MainHeader from "../header/MainHeader.jsx";
 import Sidebar from "../global/Sidebar.jsx";
 import {useNavigate} from 'react-router-dom'
-import {CurrentUser, IsLogin, Logout} from '../../services/AuthService';
+import {CurrentUser, GetTenant, IsLogin, Logout} from '../../services/AuthService';
 import {useContext, useEffect} from "react"
 import {appContext} from "../../context/AppContext"
 import Footer from "../global/Footer.jsx";
@@ -138,12 +138,11 @@ const DashboardLayout = (props) => {
                                         }
                                     </div>
                                 </button>
-                                <ul tabIndex="0"
-                                    className="notification-menu menu menu-compact inline-block dropdown-content mt-3 shadow bg-base-100 rounded w-72 md:w-96 h-96 overflow-y-scroll">
+                                <ul tabIndex="0" className="notification-menu menu menu-compact inline-block dropdown-content mt-16 shadow bg-base-100 rounded w-72 md:w-96 h-96 overflow-y-scroll">
                                     {
                                         notifications.map((notification) =>
                                             <li className={`border-b ${!notification.readAt ? 'font-bold' : ''}`} key={notification.id}>
-                                                <Link className="hover:text-black flex items-center" to={`/admin/ticketing/${notification.data.TicketId}`}>
+                                                <Link className="hover:text-black flex items-center" to={`/${GetTenant()}/admin/ticketing/${notification.data.TicketId}`}>
                                                     <div className="hidden md:inline-block avatar placeholder">
                                                         <div className="bg-neutral-100 rounded-full w-11 h-11">
                                                             <span>T</span>
@@ -166,7 +165,7 @@ const DashboardLayout = (props) => {
                                 <label tabIndex="0" className="btn btn-ghost btn-circle">
                                     <div className="avatar">
                                         <div className="w-10 rounded-full">
-                                            <img src="/src/assets/user-placeholder.png"/>
+                                            <img src={CurrentUser()?.user?.picture ? `${constants.BASE_URL}${CurrentUser()?.user?.picture}` : '/src/assets/user-placeholder.png' }/>
                                         </div>
                                     </div>
                                 </label>

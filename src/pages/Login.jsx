@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import React, {useState, useEffect} from "react";
-import {IsLogin, LoginUser} from "../services/AuthService"
+import {GetTenant, IsLogin, LoginUser} from "../services/AuthService"
 import {notify} from "../utilities/index.js";
 import Card from "../components/global/Card.jsx";
 import CustomSelect from "../components/SelectBox/CustomSelect.jsx";
@@ -17,7 +17,9 @@ const Login = () => {
 
     useEffect(() => {
         if (IsLogin()) {
-            navigate('/admin/dashboard', {
+            const currentTenant = GetTenant();
+
+            navigate(`/${currentTenant}/admin/dashboard`, {
                 replace: true,
             });
             window.location.reload();

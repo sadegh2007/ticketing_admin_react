@@ -14,6 +14,7 @@ import {appContext} from "../../context/AppContext.js";
 import {confirmAlert} from "react-confirm-alert";
 import DepartmentModal from "../../modals/Deparments/DepartmentModal.jsx";
 import {DeleteDepartment} from "../../services/DepartmentApiService.js";
+import {GetTenant} from "../../services/AuthService.js";
 
 const DepartmentsIndex = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -155,7 +156,7 @@ const DepartmentsIndex = () => {
 
     return (
         <>
-            <Breadcrumb items={[{to: '/admin/ticketing/categories', title: 'فهرست دپارتمان ها'}]}/>
+            <Breadcrumb items={[{to: `/${GetTenant()}/admin/ticketing/categories`, title: 'فهرست دپارتمان ها'}]}/>
             <Card title="دپارتمان ها" icon="/src/assets/svgs/building.svg">
                 <div className="flex justify-end">
                     <button onClick={() => setShowCreateModal(true)} className="btn btn-sm rounded btn-svg">

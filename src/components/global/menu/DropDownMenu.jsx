@@ -5,7 +5,7 @@ const DropDownMenu = (props) => {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
-        <li className={`w-60 ${showMenu ? 'bg-gray-100 rounded-lg' : ''}`}>
+        <li className={`w-60 font-semibold ${showMenu ? 'bg-gray-100 rounded-lg' : ''}`}>
             <div className="flex items-center" onClick={() => setShowMenu(!showMenu)}>
                 {props.icon ? <ReactSVG className="menu-svg" src={props.icon}/> : null}
                 {props.title}

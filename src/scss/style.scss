@@ -94,6 +94,7 @@ body {
 	min-height: 100vh;
 	margin: 0;
 	transition: all 250ms;
+	border-left: 1px solid rgba(0,0,0,0.05);
 
 	.sidebar-menu {
 		display: flex;
@@ -481,7 +482,7 @@ input[required] {
 }
 
 .history-container {
-	height: calc(100vh - 200px);
+	max-height: calc(100vh - 200px);
 	overflow-y: scroll;
 }
 
@@ -512,52 +513,57 @@ input[required] {
 	}
 }
 
-.user-drawer ul {
+.profile {
+	padding: 1px;
+}
 
-	li:last-child {
-		border-bottom: none;
-	}
-
-	li {
-		display: flex;
-		margin-bottom: 6px;
-		padding-bottom: 0.25rem;
-		padding-top: 0.25rem;
-		border-bottom: 1px solid rgba(0,0,0,0.1);
-
-		.image-wrapper {
-			position: relative;
-			width: 35px !important;
-			height: 35px !important;
-
-			.btn-user-delete {
-				position: relative;
-				width: 35px;
-				height: 35px;
-			}
-
-			img {
-				position: relative;
-				object-fit: cover;
-				object-position: top;
-				width: 35px !important;
-				height: 35px !important;
-			}
+.user-drawer {
+	ul {
+		li:last-child {
+			border-bottom: none;
 		}
 
-		.content {
-			width: calc(100% - 45px);
+		li {
 			display: flex;
-			flex-flow: column;
-			align-items: flex-start;
+			margin-bottom: 6px;
+			padding-bottom: 0.25rem;
+			padding-top: 0.25rem;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-			.user-full-name, .user-email {
+			.image-wrapper {
 				position: relative;
-				max-width: 100%;
-				display: inline-block;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				width: 35px !important;
+				height: 35px !important;
+
+				.btn-user-delete {
+					position: relative;
+					width: 35px;
+					height: 35px;
+				}
+
+				img {
+					position: relative;
+					object-fit: cover;
+					object-position: top;
+					width: 35px !important;
+					height: 35px !important;
+				}
+			}
+
+			.content {
+				width: calc(100% - 45px);
+				display: flex;
+				flex-flow: column;
+				align-items: flex-start;
+
+				.user-full-name, .user-email {
+					position: relative;
+					max-width: 100%;
+					display: inline-block;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
 			}
 		}
 	}
@@ -586,7 +592,7 @@ input[required] {
 
 	.close-user-drawer {
 		opacity: 0;
-		display: none;
+		display: none !important;
 		margin-left: -$sidebar_with;
 	}
 

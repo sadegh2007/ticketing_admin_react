@@ -3,7 +3,7 @@ import React from "react";
 const DebouncedInput = ({
                             value: initialValue,
                             onChange,
-                            debounce = 500,
+                            debounce = 300,
                             ...props
                         }) => {
     const [value, setValue] = React.useState(initialValue)

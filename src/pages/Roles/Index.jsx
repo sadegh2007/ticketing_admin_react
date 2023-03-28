@@ -6,7 +6,7 @@ import {appContext} from "../../context/AppContext.js";
 import {notify} from "../../utilities/index.js";
 import {handleError} from "../../services/GlobalService.js";
 import {confirmAlert} from "react-confirm-alert";
-import {CurrentUser} from "../../services/AuthService.js";
+import {CurrentUser, GetTenant} from "../../services/AuthService.js";
 import {ReactSVG} from "react-svg";
 import Input from "../../components/global/Form/Input.jsx";
 import ServerSideTable from "../../components/table/ServerSideTable.jsx";
@@ -179,7 +179,7 @@ const RolesIndex = () => {
 
     return (
         <>
-            <Breadcrumb items={[{to: '/admin/users', title: 'فهرست نقش ها'}]}/>
+            <Breadcrumb items={[{to: `/${GetTenant()}/admin/users/roles`, title: 'فهرست نقش ها'}]}/>
             <Card title="نقش ها" icon="/src/assets/svgs/user-check.svg">
                 <div className="flex justify-end mb-4">
                     <button onClick={() => editUser(null)} className="btn btn-sm rounded btn-svg">

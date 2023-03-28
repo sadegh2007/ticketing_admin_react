@@ -13,6 +13,7 @@ import {useNavigate} from "react-router-dom";
 import Input from "../../components/global/Form/Input.jsx";
 import MessageBox from "../../components/ticketing/MessageBox.jsx";
 import CustomSelect from "../../components/SelectBox/CustomSelect.jsx";
+import {GetTenant} from "../../services/AuthService.js";
 
 const CreateTicket = ({}) => {
     const {register, formState: {errors}} = useForm();
@@ -25,6 +26,8 @@ const CreateTicket = ({}) => {
     const [priority, setPriority] = useState({ value: 0, label: 'کم' });
 
     const navigate = useNavigate();
+
+    const currentTenant = GetTenant();
 
     let fileRef = useRef(null);
     const quillRef = useRef(null);
@@ -72,7 +75,7 @@ const CreateTicket = ({}) => {
 
             notify(constants.ADD_SUCCESS_TEXT, 'success')
 
-            navigate(`/admin/ticketing/${res}`);
+            navigate(`/${currentTenant}/admin/ticketing/${res}`);
         })
             .catch(e => {
                 toggleMainLoader(false);
@@ -100,7 +103,7 @@ const CreateTicket = ({}) => {
 
     return (
         <>
-            <Breadcrumb items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}, {title: 'ایجاد تیکت', to: '#'}]}/>
+            <Breadcrumb items={[{to: `/${currentTenant}/admin/ticketing`, title: 'فهرست تیکت ها'}, {title: 'ایجاد تیکت', to: '#'}]}/>
             <Card title="ایجاد تیکت" icon="/src/assets/svgs/plus.svg">
                     <div className="mb-4 grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
                         <Input

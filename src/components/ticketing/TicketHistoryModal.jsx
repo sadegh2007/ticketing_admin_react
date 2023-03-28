@@ -55,13 +55,11 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
                                         <div
                                             className="bg-blue-500 col-start-6 col-end-10 p-3 rounded my-4 mr-auto"
                                         >
-                                            <p className="leading-tight">
+                                            <p style={{direction: "rtl"}} className="">
                                                 {h.message}
                                             </p>
                                             <div className="divider m-0"></div>
-                                            <h3 className="">
-                                                <PersianDate date={h.createdAt} format="shortDateTime"/>
-                                            </h3>
+                                            <PersianDate className="text-xs" date={h.createdAt} format="shortDateTime"/>
                                         </div>
                                     </div>
                                 );
@@ -72,13 +70,13 @@ const TicketHistoryModal = ({show, ticketId, closeModal}) => {
                                     <div
                                         className="bg-blue-500 col-start-1 col-end-5 p-3 rounded my-4 ml-auto"
                                     >
-                                        <p className="leading-tight">
+                                        <p style={{direction: "rtl"}} className="leading-tight">
                                             {h.message}
                                         </p>
                                         <div className="divider m-0"></div>
-                                        <h3 className="">
-                                            <PersianDate date={h.createdAt} format="shortDateTime"/>
-                                        </h3>
+
+                                        <PersianDate className="text-xs" date={h.createdAt} format="shortDateTime"/>
+
                                     </div>
                                     <div className="col-start-5 col-end-6 md:mx-auto relative mr-10">
                                         <div className="h-full w-3 flex items-center justify-center">

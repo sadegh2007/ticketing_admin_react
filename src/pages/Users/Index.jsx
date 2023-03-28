@@ -7,7 +7,7 @@ import {DeleteTicket} from "../../services/TicketingApiService.js";
 import {notify} from "../../utilities/index.js";
 import {handleError} from "../../services/GlobalService.js";
 import {confirmAlert} from "react-confirm-alert";
-import {CurrentUser} from "../../services/AuthService.js";
+import {CurrentUser, GetTenant} from "../../services/AuthService.js";
 import {ReactSVG} from "react-svg";
 import Input from "../../components/global/Form/Input.jsx";
 import ServerSideTable from "../../components/table/ServerSideTable.jsx";
@@ -196,7 +196,7 @@ const UsersIndex = () => {
 
     return (
         <>
-            <Breadcrumb items={[{to: '/admin/users', title: 'فهرست کاربران'}]}/>
+            <Breadcrumb items={[{to: `/${GetTenant()}/admin/users`, title: 'فهرست کاربران'}]}/>
             <Card title="کاربران" icon="/src/assets/svgs/users.svg">
                 <div className="flex justify-end">
                     <button onClick={() => editUser(null)} className="btn btn-sm rounded btn-svg">

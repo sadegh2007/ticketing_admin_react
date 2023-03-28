@@ -7,6 +7,7 @@ export const IsLogin = () => {
 
     return localStorage.getItem('token');
 }
+
 export const SetToken = (token) => {
     localStorage.setItem('token', token);
 }
@@ -19,7 +20,6 @@ export const GetTenant = () => {
     return localStorage.getItem('tenant');
 }
 
-// TODO check this async/await
 export const LoginUser = async (mobile, password) => {
 
     const result = await LoginUserApi(mobile, password);

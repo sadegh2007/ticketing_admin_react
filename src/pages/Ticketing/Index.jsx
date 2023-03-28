@@ -10,7 +10,7 @@ import Card from "../../components/global/Card.jsx";
 import ApiConstants from "../../general/ApiConstants.js";
 import Input from "../../components/global/Form/Input.jsx";
 import SelectCategoryModal from "../../components/ticketing/SelectCategoryModal.jsx";
-import {CurrentUser} from "../../services/AuthService.js";
+import {CurrentUser, GetTenant} from "../../services/AuthService.js";
 import {DeleteTicket} from "../../services/TicketingApiService.js";
 import {notify} from "../../utilities/index.js";
 import {handleError} from "../../services/GlobalService.js";
@@ -34,6 +34,7 @@ const Ticketing = () => {
     const [priorityFilter, setPriorityFilter] = useState();
     const [statusNameFilter, setStatusNameFilter] = useState();
 
+    const currentTenant = GetTenant();
     const datatable = useRef(null);
 
     const assignCategory = (ticket) => {
@@ -123,7 +124,7 @@ const Ticketing = () => {
                         <button onClick={() => assignCategory(info.row.original)} className="mr-1 rounded btn-info table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                             <ReactSVG src="/src/assets/svgs/tags.svg" />
                         </button>
-                        <button onClick={() => navigation(`/admin/ticketing/${info.row.original.id}`)} className="mr-1 rounded table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                        <button onClick={() => navigation(`/${currentTenant}/admin/ticketing/${info.row.original.id}`)} className="mr-1 rounded table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                             <ReactSVG src="/src/assets/svgs/eye.svg" />
                         </button>
                     </>
@@ -225,10 +226,10 @@ const Ticketing = () => {
 
     return (
         <>
-            <Breadcrumb items={[{to: '/admin/ticketing', title: 'فهرست تیکت ها'}]}/>
+            <Breadcrumb items={[{to: `/${currentTenant}/admin/ticketing`, title: 'فهرست تیکت ها'}]}/>
             <Card title="تیکت ها" icon="/src/assets/svgs/inbox.svg">
                 <div className="flex justify-end">
-                    <Link to='/admin/ticketing/create' className="btn btn-sm rounded btn-svg">
+                    <Link to={`${currentTenant}/admin/ticketing/create`} className="btn btn-sm rounded btn-svg">
                         <ReactSVG src="/src/assets/svgs/plus.svg" />
                         <span className="mr-1">ایجاد تیکت</span>
                     </Link>

@@ -1,5 +1,4 @@
 import StatWidget from "../components/dashboard/StatWidget.jsx";
-import DashboardLayout from "../components/layouts/DashboardLayout.jsx";
 import Breadcrumb from "../components/global/Breadcrumb.jsx";
 import {
     Chart as ChartJS,
