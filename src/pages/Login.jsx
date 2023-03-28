@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import React, {useState, useEffect} from "react";
-import {GetTenant, IsLogin, LoginUser} from "../services/AuthService"
+import {GetTenant, IsLogin, LoginUser, SetCurrentTenant} from "../services/AuthService"
 import {notify} from "../utilities/index.js";
 import Card from "../components/global/Card.jsx";
 import CustomSelect from "../components/SelectBox/CustomSelect.jsx";
@@ -29,10 +29,7 @@ const Login = () => {
     const login = async (e) => {
         e.preventDefault();
 
-        setLoading(true);
-
         try {
-
             if (mobile.length !== 11) {
                 return notify("لطفا موبایل خود را به صورت صحیح وارد کنید.")
             }
@@ -41,20 +38,22 @@ const Login = () => {
                 return notify("کلمه عبور حداقل ۶ کلمه می باشد.")
             }
 
+            setLoading(true);
+
             const {data} = await LoginUser(mobile, password);
 
-            if (data.tenants.length > 1) {
-                setTenants(data.tenants);
-
-                setCurrentTenant({
-                    value: data.tenants[0].id,
-                    label: data.tenants[0].title,
-                });
+            if (data.tenants.length === 0) {
+                window.location.reload();
                 return;
             }
 
+            setTenants(data.tenants);
+
+            setCurrentTenant({
+                value: data.tenants[0].id,
+                label: data.tenants[0].title,
+            });
             // navigate('/admin/dashboard');
-            window.location.reload();
         } catch (e) {
             handleError(e.response);
         }
@@ -63,7 +62,8 @@ const Login = () => {
     }
 
     const setTenant = () => {
-
+        SetCurrentTenant(currentTenant.value);
+        window.location.reload();
     }
 
     return (
@@ -87,8 +87,6 @@ const Login = () => {
                     <div className="text-center">
                         <button onClick={setTenant} className="btn px-8 btn-success text-white mt-4">ورود</button>
                     </div>
-
-
                 </Card>
                     : <Card withBorder={false} padding="p-4" className=" rounded-xl shadow-xl w-full mx-8 md:mx-0 md:w-1/3 lg:w-1/4">
                         <h2 className="text-center mb-4">ورود به مدیریت</h2>

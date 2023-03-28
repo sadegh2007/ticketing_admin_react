@@ -12,7 +12,7 @@ export const SetToken = (token) => {
     localStorage.setItem('token', token);
 }
 
-export const SetTenant = (tenant) => {
+export const SetCurrentTenant = (tenant) => {
     localStorage.setItem('tenant', tenant);
 }
 
@@ -36,7 +36,7 @@ export const LoginUser = async (mobile, password) => {
         }
 
         if (userData.tenants.length === 1) {
-            SetTenant(userData.tenants[0].id);
+            SetCurrentTenant(userData.tenants[0].id);
         }
 
         SetToken(token);
