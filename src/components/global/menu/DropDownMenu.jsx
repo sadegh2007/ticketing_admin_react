@@ -1,14 +1,21 @@
 import {useState} from "react";
 import {ReactSVG} from "react-svg";
+import {CurrentUserPermissions} from "../../../services/AuthService.js";
 
-const DropDownMenu = (props) => {
+const DropDownMenu = ({hasPermissions = [], icon, title, children}) => {
     const [showMenu, setShowMenu] = useState(false);
+
+    const permissions = CurrentUserPermissions();
+
+    if (permissions.filter(x => hasPermissions.includes(x)).length === 0) {
+        return undefined;
+    }
 
     return (
         <li className={`w-60 font-semibold ${showMenu ? 'bg-gray-100 rounded-lg' : ''}`}>
             <div className="flex items-center" onClick={() => setShowMenu(!showMenu)}>
-                {props.icon ? <ReactSVG className="menu-svg" src={props.icon}/> : null}
-                {props.title}
+                {icon ? <ReactSVG className="menu-svg" src={icon}/> : null}
+                {title}
                 <svg style={{fill: 'rgba(107, 114, 128, 1)'}} xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                      className={`mr-auto dropdown-menu ${showMenu ? 'rotate-90' : ''}`} viewBox="0 0 24 24">
                     <path fill="none" d="M0 0h24v24H0V0z"/>
@@ -17,7 +24,7 @@ const DropDownMenu = (props) => {
             </div>
             <ul style={{display: 'flex', position: 'relative', right: 0}}
                 className={`dropdown-menu menu w-60 bg-gray-50 overflow-hidden ${showMenu ? 'h-auto': 'h-0'}`}>
-                {props.children}
+                {children}
             </ul>
         </li>
     )

@@ -10,7 +10,7 @@ import Card from "../../components/global/Card.jsx";
 import ApiConstants from "../../general/ApiConstants.js";
 import Input from "../../components/global/Form/Input.jsx";
 import SelectCategoryModal from "../../components/ticketing/SelectCategoryModal.jsx";
-import {CurrentUser, GetTenant} from "../../services/AuthService.js";
+import {CurrentUser, CurrentUserPermissions, GetTenant} from "../../services/AuthService.js";
 import {DeleteTicket} from "../../services/TicketingApiService.js";
 import {notify} from "../../utilities/index.js";
 import {handleError} from "../../services/GlobalService.js";
@@ -33,9 +33,12 @@ const Ticketing = () => {
     const [departmentFilter, setDepartmentFilter] = useState(null);
     const [priorityFilter, setPriorityFilter] = useState();
     const [statusNameFilter, setStatusNameFilter] = useState();
+    const [categoryFilter, setCategoryFilter] = useState();
 
     const currentTenant = GetTenant();
     const datatable = useRef(null);
+
+    const permissions = CurrentUserPermissions();
 
     const assignCategory = (ticket) => {
         setCurrentTicket(ticket);
@@ -114,7 +117,7 @@ const Ticketing = () => {
                 return (
                     <>
                         {
-                            info.row.original.creator.id === CurrentUser().user.id
+                            (permissions.includes('DeleteTicket') && info.row.original.creator.id === CurrentUser().user.id)
                                 ? <button onClick={() => deleteTicket(info.row.original)} className="rounded btn-error table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                                     <ReactSVG src="/src/assets/svgs/trash.svg" />
                                 </button>
@@ -177,6 +180,10 @@ const Ticketing = () => {
             filters['statusName'] = statusNameFilter.value;
         }
 
+        if (categoryFilter) {
+            filters['categoryId'] = categoryFilter.value;
+        }
+
         if (usersFilter && usersFilter.length > 0) {
             filters['users'] = usersFilter.map((user) => user.value);
         }
@@ -193,6 +200,7 @@ const Ticketing = () => {
         setDepartmentFilter(null);
         setPriorityFilter(null);
         setStatusNameFilter(null);
+        setCategoryFilter(null);
 
         let newFilters = {...filters}
 
@@ -202,6 +210,7 @@ const Ticketing = () => {
         delete newFilters['number'];
         delete newFilters['priority'];
         delete newFilters['statusName'];
+        delete newFilters['categoryId'];
 
         setFilters({...newFilters});
     }
@@ -228,12 +237,15 @@ const Ticketing = () => {
         <>
             <Breadcrumb items={[{to: `/${currentTenant}/admin/ticketing`, title: 'فهرست تیکت ها'}]}/>
             <Card title="تیکت ها" icon="/src/assets/svgs/inbox.svg">
-                <div className="flex justify-end">
-                    <Link to={`${currentTenant}/admin/ticketing/create`} className="btn btn-sm rounded btn-svg">
-                        <ReactSVG src="/src/assets/svgs/plus.svg" />
-                        <span className="mr-1">ایجاد تیکت</span>
-                    </Link>
-                </div>
+                {
+                    permissions.includes('CreateTicket') ? <div className="flex justify-end">
+                        <Link to={`${currentTenant}/admin/ticketing/create`} className="btn btn-sm rounded btn-svg">
+                            <ReactSVG src="/src/assets/svgs/plus.svg" />
+                            <span className="mr-1">ایجاد تیکت</span>
+                        </Link>
+                    </div> : undefined
+                }
+
                 <form onSubmit={onFilterSubmit} action="#">
                     <div className="grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
                         <Input
@@ -275,6 +287,20 @@ const Ticketing = () => {
                                 method={'POST'}
                                 onSelect={setDepartmentFilter}
                                 value={departmentFilter}
+                                formatData={formatDepartmentSelect}
+                            />
+                        </div>
+
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">دسته بندی</span>
+                            </label>
+                            <ServerSideSelect
+                                placeholder="انتخاب دسته بندی..."
+                                url={ApiConstants.Categories.List}
+                                method={'POST'}
+                                onSelect={setCategoryFilter}
+                                value={categoryFilter}
                                 formatData={formatDepartmentSelect}
                             />
                         </div>

@@ -63,7 +63,7 @@ const Sidebar = () => {
 
                 {/* Users */}
 
-                <DropDownMenu title="کاربران" icon="/src/assets/svgs/users.svg">
+                <DropDownMenu hasPermissions={['UsersList', 'RolesList', 'PermissionsList']} title="کاربران" icon="/src/assets/svgs/users.svg">
                     {
                         permissions.includes('UsersList') ?
                             <li>
@@ -102,7 +102,7 @@ const Sidebar = () => {
 
                 {/* Ticketing */}
 
-                <DropDownMenu title="تیکتینگ" icon="/src/assets/svgs/inbox.svg">
+                <DropDownMenu hasPermissions={['CategoriesList', 'DepartmentsList', 'CreateTicket', 'TicketsList']} title="تیکتینگ" icon="/src/assets/svgs/inbox.svg">
                     {
                         permissions.includes('CategoriesList') ?
                             <li>
