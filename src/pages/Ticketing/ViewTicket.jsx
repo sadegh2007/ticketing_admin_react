@@ -22,6 +22,7 @@ import SelectCategoryModal from "../../components/ticketing/SelectCategoryModal.
 import SelectDepartmentModal from "../../components/ticketing/SelectDepartmentModal.jsx";
 import TicketHistoryModal from "../../components/ticketing/TicketHistoryModal.jsx";
 import {ConfirmAlert} from "../../services/AlertService.js";
+import TicketUserHistoryComment from "../../components/ticketing/TicketUserHistoryComment.jsx";
 
 const ViewTicket = () => {
     const {ticketId} = useParams();
@@ -254,6 +255,14 @@ const ViewTicket = () => {
                         <div id="messages" className="flex flex-col space-y-4 p-1 md:p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                             {
                                 ticket?.comments.map((comment, index) => {
+                                    if (comment.type !== 'comment') {
+                                        return <TicketUserHistoryComment
+                                            id={comment.id}
+                                            key={comment.id}
+                                            comment={comment}
+                                        />
+                                    }
+
                                     const isCurrentUser = comment.creator.id === currentUser.user.id;
                                     return <TicketComment
                                         ticket={ticket}
