@@ -5,6 +5,10 @@ export const DepartmentList = async () => {
     return await ApiRequest(ApiConstants.Departments.List, 'POST');
 }
 
+export const GetDepartmentById = async (departmentId) => {
+    return await ApiRequest(ApiConstants.Departments.Get(departmentId), 'GET');
+}
+
 export const CreateDepartment = async (data) => {
     return await ApiRequest(ApiConstants.Departments.Create, 'POST', data);
 }
