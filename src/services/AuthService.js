@@ -20,9 +20,9 @@ export const GetTenant = () => {
     return localStorage.getItem('tenant');
 }
 
-export const LoginUser = async (mobile, password) => {
+export const LoginUser = async (mobile, password, rememberMe) => {
 
-    const result = await LoginUserApi(mobile, password);
+    const result = await LoginUserApi(mobile, password, rememberMe);
 
     if (result.status === 200) {
         const token = result.data['accessToken'];

@@ -59,11 +59,12 @@ export const PostApiRequest = async (url, data) => {
     return response.data;
 }
 
-export const LoginUserApi = (mobile, password) => {
+export const LoginUserApi = (mobile, password, rememberMe) => {
     const url = `${baseUrl}/api/Account/otp-verify`;
     return axios.post(url, {
         mobile: mobile,
         password: password,
+        rememberMe: rememberMe,
         code: "000000"
     }, {
         headers: {

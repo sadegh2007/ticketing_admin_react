@@ -636,3 +636,12 @@ input[required] {
 {
 	--tw-rotate: -45deg;
 }
+
+.login-side {
+	//background: #dfebe9;
+
+	svg {
+		width: 600px;
+		max-width: 600px;
+	}
+}
