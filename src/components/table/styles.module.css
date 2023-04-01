@@ -36,7 +36,7 @@ td:first-child, th:first-child {
 thead {
     background: lightgray;
     margin: 0;
-    position: sticky;
+    /*position: sticky;*/
     top: 0;
 }
 

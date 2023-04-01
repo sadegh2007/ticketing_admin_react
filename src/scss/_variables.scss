@@ -5,4 +5,9 @@ $gap: 12px;
 $green: green;
 $danger: red;
 
-$ticketing-height: calc(100vh - (108px + 162px) - #{$main_header_height} - 80px);
+:root {
+  --app-height: 100vh;
+}
+
+//$ticketing-height: calc(100vh - (108px + 162px) - #{$main_header_height} - 84px);
+$ticketing-height: calc(var(--app-height) - (108px + 162px) - #{$main_header_height} - 96px);

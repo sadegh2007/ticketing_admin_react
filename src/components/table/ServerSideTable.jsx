@@ -88,7 +88,7 @@ const ServerSideTable = React.forwardRef((
 
     return (
         <>
-            <div style={{ minHeight: "360px" }}>
+            <div style={{ minHeight: "360px" }} className="relative">
                 <AppTable
                     columns={columns}
                     data={pageData.rowData}

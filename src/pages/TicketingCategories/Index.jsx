@@ -107,7 +107,7 @@ const TicketingCategories = () => {
                         {
                             permissions.includes('DeleteCategory')
                                 ? <button onClick={() => deleteCategory(info.row.original)}
-                                          className="mr-1 rounded btn-error  table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
+                                          className="mr-1 rounded btn-error table-action-button btn-square btn btn-sm btn-sm-svg btn-outline">
                                     <ReactSVG src="/src/assets/svgs/trash.svg"/>
                                 </button>
                                 : undefined
@@ -137,7 +137,7 @@ const TicketingCategories = () => {
     }
 
     const closeModal = (close) => {
-        setShowCreateModal(close);
+        setShowCreateModal(false);
         if (tableRef) {
             tableRef.current.reload();
         }

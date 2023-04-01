@@ -9,5 +9,7 @@ export const appContext = createContext({
     toggleUserDropDown: () => {
     },
     showMainLoader: false,
-    toggleMainLoader: () => {}
+    toggleMainLoader: () => {},
+    showNotification: false,
+    toggleNotification: () => {}
 });

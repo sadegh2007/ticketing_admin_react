@@ -198,7 +198,7 @@ const Dashboard = () => {
                 />
             </div>
 
-            <div className="mt-4 grid grid-flow-row-dense gap-3 lg:grid-cols-2 grid-rows-1 sm:grid-flow-row">
+            <div className="mt-4 w-full">
                 <div className="lg:col-span-2 sm:col-span-1 card rounded shadow bg-base-100 p-0">
                     <div className="text-center">
                         <p className="text-xs font-bold p-2 pt-4 pr-4 text-gray-500">کامنت های ۱۲ ماه گذشته</p>

@@ -1,12 +1,13 @@
 {
   "name": "admin_panel",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build --mode production",
+    "preview": "vite preview",
+    "host": "vite --host"
   },
   "dependencies": {
     "@microsoft/signalr": "^7.0.4",
@@ -35,6 +36,7 @@
     "postcss": "^8.4.21",
     "sass": "^1.58.3",
     "tailwindcss": "^3.2.7",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "vite-plugin-static-copy": "^0.13.1"
   }
 }

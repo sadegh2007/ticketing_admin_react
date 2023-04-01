@@ -21,6 +21,21 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.headers.post['x-tenant'] = GetTenant();
 
+if (window.innerHeight < 768) {
+    document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
+} else {
+    const appHeight = () => {
+        const doc = document.documentElement
+        doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+    }
+    window.addEventListener('resize', appHeight)
+}
+// const appHeight = () => {
+//     const doc = document.documentElement
+//     doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+// }
+// window.addEventListener('resize', appHeight)
+
 axios.interceptors.request.use(request => {
     // console.log(request);
     // Edit request config
@@ -42,8 +57,9 @@ function App() {
     }, []);
 
     const [showMainLoader, toggleMainLoader] = useState(false);
-    const [showSidebar, toggleSidebar] = useState(true);
+    const [showSidebar, toggleSidebar] = useState(window.innerHeight > 768);
     const [showUserDropDown, toggleUserDropDown] = useState(false);
+    const [showNotification, toggleNotification] = useState(false);
 
     return (<appContext.Provider value={{
             showSidebar,
@@ -51,7 +67,9 @@ function App() {
             showUserDropDown,
             toggleUserDropDown,
             showMainLoader,
-            toggleMainLoader
+            toggleMainLoader,
+            showNotification,
+            toggleNotification
         }}>
             <BrowserRouter>
                 <AppRouter/>

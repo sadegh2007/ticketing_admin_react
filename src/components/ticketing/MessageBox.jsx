@@ -58,14 +58,14 @@ const MessageBox = (
                 <div className="">
                     <button type="submit"
                             onClick={() => onSend(replyTo?.id)}
-                            className="rounded btn btn-svg btn-sm btn-success text-white leading-none">
+                            className="rounded btn btn-svg md:btn-sm btn-success text-white leading-none">
                         <ReactSVG src='/src/assets/svgs/send.svg'/>
                         <span className="pr-2">ارسال</span>
                     </button>
 
                     <button type="button"
                             onClick={attachFile}
-                            className="rounded btn btn-svg btn-sm text-white mr-2 leading-none"
+                            className="rounded btn btn-svg md:btn-sm text-white mr-2 leading-none"
                     >
                         <ReactSVG src='/src/assets/svgs/paperclip.svg'/>
                         <span className="pr-2">فایل ضمیمه</span>

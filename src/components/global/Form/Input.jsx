@@ -16,8 +16,8 @@ const Input = React.forwardRef(({ required = false, label, name, value, onChange
               onBlur={onBlur}
               onInput={onInput}
               onChange={onChange}
-              style={{height: '33.5px'}}
-              className={`input input-bordered rounded focus:outline-none text-sm w-full placeholder-gray-600 ${className ?? ''}`}
+              // style={{height: '33.5px'}}
+              className={`custom-input input input-bordered rounded focus:outline-none text-sm w-full placeholder-gray-600 ${className ?? ''}`}
           />
       </div>
   );

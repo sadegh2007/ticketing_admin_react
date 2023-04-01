@@ -216,33 +216,33 @@ const ViewTicket = () => {
 
                                 <div dir="ltr" className={`justify-end grid grid-cols-6 gap-1`}>
                                     <button onClick={loadTicket}
-                                            className="btn btn-xs border-gray-400 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-sm border-gray-400 rounded btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="رفرش" src="/src/assets/svgs/reload.svg"/>
                                     </button>
 
                                     <button onClick={() => setShowHistoryModal(true)}
-                                            className="btn btn-xs border-gray-400 text-gray-600 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-sm border-gray-400 text-gray-600 rounded btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="تاریخچه" src="/src/assets/svgs/history.svg"/>
                                     </button>
 
                                     <button onClick={copyLink}
-                                            className="btn btn-xs btn-success border-success-400 text-gray-600 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-sm btn-success border-success-400 text-gray-600 rounded btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="کپی لینک تیکت" src="/src/assets/svgs/link.svg"/>
                                     </button>
 
                                     <button onClick={() => setShowCategoriesModal(true)}
-                                            className="btn btn-xs border-info-400 text-gray-600 btn-info rounded md:btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-sm border-info-400 text-gray-600 btn-info rounded btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="دسته بندی ها" src="/src/assets/svgs/tags.svg"/>
                                     </button>
 
                                     <button onClick={() => setShowDepartmentModal(true)}
-                                            className="btn btn-xs btn-primary border-primary-400 text-gray-600 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
+                                            className="btn btn-sm btn-primary border-primary-400 text-gray-600 rounded btn-sm-svg btn-outline btn-square">
                                         <ReactSVG className="tooltip" data-tip="انتقال تیکت" src="/src/assets/svgs/sign-right.svg"/>
                                     </button>
 
                                     {
                                         (ticket && CurrentUser().user.id !== ticket.creator.id) ? <button onClick={leftTicket}
-                                                                                                          className="btn btn-xs btn-error border-red-400 rounded md:btn-sm btn-sm-svg btn-outline btn-square">
+                                                                                                          className="btn btn-sm btn-error border-red-400 rounded btn-sm-svg btn-outline btn-square">
                                             <ReactSVG className="tooltip" data-tip="خروج" src="/src/assets/svgs/logout.svg"/>
                                         </button> : null
                                     }

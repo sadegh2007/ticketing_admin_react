@@ -1,8 +1,8 @@
 export const constants = {
-    APP_TITLE: "تیکتینگ",
-    APP_BASE_URL: 'http://localhost:5173',
-    BASE_URL: "http://0.0.0.0:5292", // 10.5.50.200
-    SIGNALR_URL: "http://0.0.0.0:5292/messageHub", // 10.5.50.200
+    APP_TITLE: import.meta.env.VITE_APP_TITLE,
+    APP_BASE_URL: import.meta.env.VITE_APP_BASE_URL,//'https://localhost:5173', // https://ticketing.weezh.ir
+    BASE_URL: import.meta.env.VITE_BASE_URL, // https://ticketing-api.weezh.ir
+    SIGNALR_URL: import.meta.env.VITE_SIGNALR_URL, // https://ticketing-api.weezh.ir
     TABLE_PAGE_SIZE: 20,
     ADD_STATUS_CODE: 201,
     EDIT_STATUS_CODE_SUCCESS: 200,

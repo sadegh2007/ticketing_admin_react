@@ -12,7 +12,7 @@ const DropDownMenu = ({hasPermissions = [], icon, title, children}) => {
     }
 
     return (
-        <li className={`w-60 font-semibold ${showMenu ? 'bg-gray-100 rounded-lg' : ''}`}>
+        <li className={`mb-1 w-60 ${showMenu ? 'bg-gray-100 rounded-lg' : ''}`}>
             <div className="flex items-center" onClick={() => setShowMenu(!showMenu)}>
                 {icon ? <ReactSVG className="menu-svg" src={icon}/> : null}
                 {title}

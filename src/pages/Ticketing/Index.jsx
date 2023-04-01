@@ -239,7 +239,7 @@ const Ticketing = () => {
             <Card title="تیکت ها" icon="/src/assets/svgs/inbox.svg">
                 {
                     permissions.includes('CreateTicket') ? <div className="flex justify-end">
-                        <Link to={`${currentTenant}/admin/ticketing/create`} className="btn btn-sm rounded btn-svg">
+                        <Link to={`/${currentTenant}/admin/ticketing/create`} className="btn btn-sm rounded btn-svg">
                             <ReactSVG src="/src/assets/svgs/plus.svg" />
                             <span className="mr-1">ایجاد تیکت</span>
                         </Link>

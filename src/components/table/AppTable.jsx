@@ -95,7 +95,7 @@ const AppTable = ({ rowSelection = {}, setRowSelection, showSelection = false, s
                 </div> : undefined
             }
 
-            <div style={{minHeight: '360px'}} className="overflow-x-auto border-x">
+            <div style={{minHeight: '360px'}} className={`overflow-x-auto border-x ${isLoading ? 'blur-[2px]' : ''}`}>
                 <table
                     {...{
                         style: {

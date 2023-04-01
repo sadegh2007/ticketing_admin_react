@@ -63,14 +63,19 @@ const Login = () => {
             });
             // navigate('/admin/dashboard');
         } catch (e) {
-            handleError(e.response);
+            setLoading(false);
+            if (e.response) {
+                handleError(e.response);
+            } else {
+                handleError(e);
+            }
         }
 
         setLoading(false);
     }
 
     return (
-        <div className="flex" style={{height: '100vh', width: '100vw'}}>
+        <div className="login">
             <div className="flex bg-white items-center justify-center w-full md:w-1/3">
                 {
                     tenants.length > 1
@@ -81,8 +86,7 @@ const Login = () => {
                                 label: tenants[0].title,
                             }}
                         />
-                        :
-                        <div className="w-3/4">
+                        : <div className="w-3/4">
                             <h2 className="text-xl font-bold mb-4">ورود به مدیریت</h2>
 
                             <form onSubmit={handleSubmit(login)} action="#" method="post">
@@ -92,12 +96,12 @@ const Login = () => {
                                             موبایل <span className="text-red-600">*</span>
                                         </span>
                                     </label>
-                                    <input style={{height: '36px'}} value={mobile}
+                                    <input value={mobile}
                                            aria-invalid={errors.mobile ? "true" : "false"}
                                            {...register('mobile', { required: true, minLength: 11, maxLength: 11})}
                                            onInput={(e) => setMobile(e.target.value)} type="text"
                                            placeholder="موبایل خود را وارد کنید"
-                                           className={`input input-sm input-bordered rounded-md focus:outline-none placeholder-gray-500 ${errors.mobile && 'input-error'}`}/>
+                                           className={`input input-md input-bordered rounded-md focus:outline-none placeholder-gray-500 ${errors.mobile && 'input-error'}`}/>
 
                                     <span className="text-error text-xs mt-1 mr-1">
                                         {
@@ -118,12 +122,12 @@ const Login = () => {
                                             کلمه عبور <span className="text-red-600">*</span>
                                         </span>
                                     </label>
-                                    <input style={{height: '36px'}} value={password}
+                                    <input value={password}
                                            aria-invalid={errors.password ? "true" : "false"}
                                            {...register('password', {required: true, minLength: 6})}
                                            onInput={(e) => setPassword(e.target.value)} type="password"
                                            placeholder="کلمه عبور خود را وارد کنید"
-                                           className={`input input-sm input-bordered rounded-md focus:outline-none placeholder-gray-500 ${errors.mobile && 'input-error'}`}/>
+                                           className={`input input-md input-bordered rounded-md focus:outline-none placeholder-gray-500 ${errors.mobile && 'input-error'}`}/>
 
                                     <span className="text-error text-xs mt-1 mr-1">
                                         {
@@ -141,7 +145,7 @@ const Login = () => {
                                 <div className="form-control mt-4">
                                     <label className="cursor-pointer flex items-center">
                                         <input checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} type="checkbox" className="checkbox"/>
-                                        <span className="label-text mr-2">مرا بخاطر بسپار</span>
+                                        <span className="label-text mr-2">مرا به خاطر بسپار</span>
                                     </label>
                                 </div>
 
@@ -156,8 +160,7 @@ const Login = () => {
                         </div>
                 }
             </div>
-            <div
-                className="login-side p-4 text-gray-300 hidden md:flex items-center justify-center bg-neural-700 w-2/3 h-screen">
+            <div className="login-side p-4 text-gray-300 hidden md:flex items-center justify-center bg-neural-700 w-2/3">
                 <img src="/src/assets/characters/login-side.png"/>
             </div>
         </div>
@@ -177,8 +180,7 @@ const TenantSelector = (
     }
 
     return (
-        <Card withBorder={false} padding="p-4" className="rounded-xl shadow-xl w-full mx-8 md:mx-0 md:w-1/3 lg:w-1/4">
-
+        <div className="w-3/4">
             <div className="form-control">
                 <label className="label">
                     <span className="label-text">انتخاب سرور</span>
@@ -196,7 +198,7 @@ const TenantSelector = (
             <div className="text-center">
                 <button onClick={setTenant} className="btn px-8 btn-success text-white mt-4">ورود</button>
             </div>
-        </Card>
+        </div>
     )
 }
 

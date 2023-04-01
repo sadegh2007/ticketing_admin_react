@@ -1,12 +1,28 @@
 import axios from "axios";
 import { constants } from './../general/constants';
-import {GetTenant, IsLogin, Logout} from "./AuthService.js";
-import {notify} from "../utilities/index.js";
-import {toast} from "react-toastify";
+import {GetTenant, IsLogin} from "./AuthService.js";
 
 const baseUrl = constants.BASE_URL;
 
-export const ApiRequest = async (url, method = 'GET', formData = {}) => {
+const cachedData = {};
+
+const CacheKey = (url, method, formData = {}) => {
+    let cacheKey = `${url}?method=${method}`;
+
+    Object.keys(formData).forEach((key) => {
+        cacheKey += `&${key}=${formData[key]}`
+    });
+
+    return cacheKey;
+}
+
+export const ApiRequest = async (url, method = 'GET', formData = {}, useCache = false) => {
+    const cacheKey = CacheKey(url, method, formData);
+
+    if (useCache && cachedData[cacheKey]) {
+        return cachedData[cacheKey];
+    }
+
     let requestConfig = {
         baseURL: url,
         method: method,
@@ -30,6 +46,8 @@ export const ApiRequest = async (url, method = 'GET', formData = {}) => {
     }
 
     const { data } = await axios.request(requestConfig);
+    cachedData[cacheKey] = data;
+
     return data;
 }
 

@@ -1,25 +1,22 @@
-import react, {useState} from "react";
+import react, {useRef, useState} from "react";
 import {Link, Outlet} from "react-router-dom";
-import MainHeader from "../header/MainHeader.jsx";
 import Sidebar from "../global/Sidebar.jsx";
 import {useNavigate} from 'react-router-dom'
 import {CurrentUser, GetTenant, IsLogin, Logout} from '../../services/AuthService';
 import {useContext, useEffect} from "react"
 import {appContext} from "../../context/AppContext"
-import Footer from "../global/Footer.jsx";
 import MainLoader from "../global/MainLoader.jsx";
 import {constants} from "../../general/constants.js";
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import {notify} from "../../utilities/index.js";
 import {NotificationList} from "../../services/DashboardService.js";
 import {handleError} from "../../services/GlobalService.js";
-import {DeleteUser} from "../../services/UserService.js";
 import {confirmAlert} from "react-confirm-alert";
 import PersianDate from "../global/PersianDate.jsx";
 import {ReactSVG} from "react-svg";
 
 const DashboardLayout = (props) => {
-    const {showSidebar, toggleSidebar, toggleUserDropDown, showMainLoader, toggleMainLoader} = useContext(appContext);
+    const {showNotification, toggleNotification, showSidebar, toggleSidebar, toggleUserDropDown, showMainLoader, toggleMainLoader} = useContext(appContext);
     const [connection, setConnection] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [showNewNotification, setShowNewNotification] = useState(false);
@@ -28,8 +25,9 @@ const DashboardLayout = (props) => {
 
     const clickOnBody = () => {
         // close user dropdown when click outside
-        // toggleSidebar(true);
+        // toggleSidebar(false);
         // toggleUserDropDown(false);
+        toggleNotification(false);
     }
 
     const logout = () => {
@@ -63,6 +61,7 @@ const DashboardLayout = (props) => {
             .then(res => {
                 setNotifications(res.items);
                 toggleMainLoader(false);
+                toggleNotification(true);
             })
             .catch(err => {
                 toggleMainLoader(false);
@@ -82,6 +81,15 @@ const DashboardLayout = (props) => {
 
         setConnection(newConnection);
     }, []);
+
+    useEffect(() => {
+        if (showSidebar && window.innerWidth < 768) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+
+    }, [showSidebar])
 
     useEffect(() => {
         if (connection) {
@@ -107,7 +115,12 @@ const DashboardLayout = (props) => {
 
     return (
         <div
+            onClick={clickOnBody}
+            // style={{height: 'var(--app-height)'}}
             className={showSidebar ? "flex flex-row justify-between sidebar-open" : 'flex flex-row justify-between sidebar-close'}>
+            <div onClick={() => toggleSidebar(false)}
+                 className={`${!showSidebar ? 'hidden' : ''} sidebar-overlay opacity-10 md:hidden bg-black`}
+            />
             <Sidebar/>
 
             <div className="main-content">
@@ -138,9 +151,22 @@ const DashboardLayout = (props) => {
                                         }
                                     </div>
                                 </button>
-                                <ul tabIndex="0" className="notification-menu menu menu-compact inline-block dropdown-content mt-16 shadow bg-base-100 rounded w-72 md:w-96 h-96 overflow-y-scroll">
+                                <ul tabIndex="0" className={`${showNotification ? 'show-notification' : ''} notification-menu menu menu-compact inline-block dropdown-content mt-16 shadow bg-base-100 rounded w-72 md:w-96 max-h-96 overflow-y-scroll`}>
                                     {
-                                        notifications.map((notification) =>
+                                        notifications.length === 0 ?
+                                            <li className={`border-b`}>
+                                                <div className="hover:text-black flex items-center">
+                                                    <div className="hidden md:inline-block avatar placeholder">
+                                                        <div className="bg-neutral-100 rounded-full w-11 h-11">
+                                                            <span>T</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span>هیج پیامی برای شما ثبت نشده است.</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        : notifications.map((notification) =>
                                             <li className={`border-b ${!notification.readAt ? 'font-bold' : ''}`} key={notification.id}>
                                                 <Link className="hover:text-black flex items-center" to={`/${GetTenant()}/admin/ticketing/${notification.data.TicketId}`}>
                                                     <div className="hidden md:inline-block avatar placeholder">
@@ -169,11 +195,11 @@ const DashboardLayout = (props) => {
                                         </div>
                                     </div>
                                 </label>
-                                <ul tabIndex="0" className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                                    <li>
+                                <ul tabIndex="0" className="notification-menu menu menu-compact inline-block dropdown-content mt-16 shadow bg-base-100 rounded w-44 overflow-y-scroll">
+                                    <li className="border-b text-sm">
                                         <a href="">{CurrentUser()?.user?.fullName ?? CurrentUser()?.user?.userName}</a>
                                     </li>
-                                    <li>
+                                    <li className="text-sm">
                                         <a onClick={logout}>خروج</a>
                                     </li>
                                 </ul>

@@ -23,7 +23,9 @@ const CreateTicket = ({}) => {
     const {showMainLoader, toggleMainLoader} = useContext(appContext);
     const [users, setUsers] = useState(null);
     const [department, setDepartment] = useState(null);
-    const [priority, setPriority] = useState({ value: 0, label: 'کم' });
+    const [priority, setPriority] = useState({value: 0, label: 'کم'});
+    const [type, setType] = useState('department');
+    const [categories, setCategories] = useState();
 
     const navigate = useNavigate();
 
@@ -39,12 +41,17 @@ const CreateTicket = ({}) => {
         }
 
         if (!title || title.trim().length === 0) {
-            notify('لطفا عنواتیکت را وارد کنید.');
+            notify('لطفا عنوان تیکت را وارد کنید.');
             return;
         }
 
-        if (users.length === 0) {
+        if (type === 'users' && users.length === 0) {
             notify('حداقل یک کاربر را انتخاب کنید.');
+            return;
+        }
+
+        if (type === 'department' && !department) {
+            notify('لطفا دپارتمان مورد نظر انتخاب کنید.');
             return;
         }
 
@@ -53,6 +60,12 @@ const CreateTicket = ({}) => {
         const formData = new FormData();
         formData.set('message', message);
         formData.set('title', title);
+
+        if (categories && categories.length > 0) {
+            categories.forEach((category) => {
+                formData.append('categories', category.value);
+            });
+        }
 
         if (department) {
             formData.set('departmentId', department.value);
@@ -66,9 +79,11 @@ const CreateTicket = ({}) => {
             formData.append('files', file);
         });
 
-        users.forEach((userId) => {
-            formData.append('userIds', userId.value);
-        });
+        if (type === 'users') {
+            users.forEach((userId) => {
+                formData.append('userIds', userId.value);
+            });
+        }
 
         CreateNewTicket(formData).then(res => {
             toggleMainLoader(false);
@@ -103,21 +118,44 @@ const CreateTicket = ({}) => {
 
     return (
         <>
-            <Breadcrumb items={[{to: `/${currentTenant}/admin/ticketing`, title: 'فهرست تیکت ها'}, {title: 'ایجاد تیکت', to: '#'}]}/>
+            <Breadcrumb items={[{to: `/${currentTenant}/admin/ticketing`, title: 'فهرست تیکت ها'}, {
+                title: 'ایجاد تیکت',
+                to: '#'
+            }]}/>
             <Card title="ایجاد تیکت" icon="/src/assets/svgs/plus.svg">
-                    <div className="mb-4 grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
-                        <Input
-                            label="عنوان تیکت"
-                            placeholder="عنوان تیکت..."
-                            {...register('title', {required: true, min: 3})}
-                            register={register}
-                            required
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className={errors.title && 'input-error'}
-                        />
+                <div className="flex items-center mb-4">
+                    <div className="form-control flex justify-center">
+                        <label className="label cursor-pointer">
+                            <input onChange={(e) => setType(e.target.value)} value="department" type="radio" name="radio-10" className="radio"
+                                   checked={type === 'department'}
+                            />
+                            <span className="mr-2 label-text">دپارتمان</span>
+                        </label>
+                    </div>
+                    <div className="form-control mr-4">
+                        <label className="label cursor-pointer">
+                            <input onChange={(e) => setType(e.target.value)} value="users" type="radio" name="radio-10"
+                                   className="radio"
+                                   checked={type === 'users'}/>
+                            <span className="mr-2 label-text">کاربری</span>
+                        </label>
+                    </div>
+                </div>
 
-                        <div className="form-control">
+                <div className="mb-4 grid grid-cols-1 gap-1 md:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-4">
+                    <Input
+                        label="عنوان تیکت"
+                        placeholder="عنوان تیکت..."
+                        {...register('title', {required: true, min: 3})}
+                        register={register}
+                        required
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className={errors.title && 'input-error'}
+                    />
+
+                    {
+                        type === 'department' ? <div className="form-control">
                             <label className="label">
                                 <span className="label-text">دپارتمان</span>
                             </label>
@@ -130,46 +168,65 @@ const CreateTicket = ({}) => {
                                 formatData={formatDepartmentSelect}
                                 className={`required ${errors.users ? 'input-error' : ''}`}
                             />
-                        </div>
+                        </div> : undefined
+                    }
+                    {
+                        type === 'users'
+                            ? <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">کاربران</span>
+                                </label>
+                                <ServerSideSelect
+                                    required={true}
+                                    placeholder='کاربران تیکت...'
+                                    url={ApiConstants.Users.List}
+                                    value={users}
+                                    method={'POST'}
+                                    onSelect={setUsers}
+                                    multiple={true}
+                                    formatData={formatUserSelect}
+                                    className={`required ${errors.users ? 'input-error' : ''}`}
+                                />
+                            </div>
+                            : undefined
+                    }
 
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">کاربران</span>
-                            </label>
-                            <ServerSideSelect
-                                required={true}
-                                placeholder='کاربران تیکت...'
-                                url={ApiConstants.Users.List}
-                                value={users}
-                                method={'POST'}
-                                onSelect={setUsers}
-                                multiple={true}
-                                formatData={formatUserSelect}
-                                className={`required ${errors.users ? 'input-error' : ''}`}
-                            />
-                        </div>
-
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">اولویت</span>
-                            </label>
-                            <CustomSelect
-                                placeholder="انتخاب اولویت..."
-                                onSelect={setPriority}
-                                value={priority}
-                                options={[{ value: 0, label: 'کم' }, { value: 1, label: 'متوسط' }, { value: 2, label: 'زیاد' }]}
-                            />
-                        </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">دسته بندی ها</span>
+                        </label>
+                        <ServerSideSelect
+                            placeholder="انتخاب دسته بندی ها..."
+                            url={ApiConstants.Categories.List}
+                            method={'POST'}
+                            multiple={true}
+                            onSelect={setCategories}
+                            value={categories}
+                            formatData={formatDepartmentSelect}
+                        />
                     </div>
 
-                    <MessageBox
-                        height={300}
-                        message={message}
-                        setMessage={setMessage}
-                        files={files}
-                        setFiles={setFiles}
-                        onSend={createTicket}
-                    />
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">اولویت</span>
+                        </label>
+                        <CustomSelect
+                            placeholder="انتخاب اولویت..."
+                            onSelect={setPriority}
+                            value={priority}
+                            options={[{value: 0, label: 'کم'}, {value: 1, label: 'متوسط'}, {value: 2, label: 'زیاد'}]}
+                        />
+                    </div>
+                </div>
+
+                <MessageBox
+                    height={300}
+                    message={message}
+                    setMessage={setMessage}
+                    files={files}
+                    setFiles={setFiles}
+                    onSend={createTicket}
+                />
             </Card>
         </>
     );
