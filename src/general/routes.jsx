@@ -11,6 +11,7 @@ import UsersIndex from "../pages/Users/Index.jsx";
 import RolesIndex from "../pages/Roles/Index.jsx";
 import PermissionsIndex from "../pages/Permissions/Index.jsx";
 import DepartmentsIndex from "../pages/Departments/Index.jsx";
+import PrintTicket from "../pages/Ticketing/PrintTicket.jsx";
 
 export const AppRouter = () => {
     return (
@@ -32,6 +33,8 @@ export const AppRouter = () => {
               <Route path="users/roles" element={<RolesIndex />}/>
               <Route path="users/roles/permissions" element={<PermissionsIndex />}/>
           </Route>
+
+          <Route path=":tenant/admin/ticketing/:ticketId/print" element={<PrintTicket />}/>
 
           <Route path="*" element={<NotFound/>} />
       </Routes>

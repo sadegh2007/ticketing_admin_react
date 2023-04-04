@@ -240,6 +240,12 @@ const ViewTicket = () => {
                                         <ReactSVG className="tooltip" data-tip="انتقال تیکت" src="/src/assets/svgs/sign-right.svg"/>
                                     </button>
 
+                                    <a href={`/${currentTenant}/admin/ticketing/${ticketId}/print`}
+                                       className="btn btn-sm text-gray-600 rounded btn-sm-svg btn-outline btn-square"
+                                       target="_blank">
+                                        <ReactSVG className="tooltip" data-tip="پرینت تیکت" src="/src/assets/svgs/printer.svg"/>
+                                    </a>
+
                                     {
                                         (ticket && CurrentUser().user.id !== ticket.creator.id) ? <button onClick={leftTicket}
                                                                                                           className="btn btn-sm btn-error border-red-400 rounded btn-sm-svg btn-outline btn-square">

@@ -717,3 +717,21 @@ input[required] {
 		max-width: 600px;
 	}
 }
+
+.factor-print-page {
+	thead tr {
+		th {
+			height: 30px !important;
+			font-size: 10px !important;
+			padding: 4px !important;
+		}
+	}
+
+	td, th {
+		border-color: black;
+	}
+
+	td {
+		font-size: 12px !important;
+	}
+}
