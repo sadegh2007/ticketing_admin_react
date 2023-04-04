@@ -11,10 +11,14 @@ export const handleArrayErrors = (errors) => {
     });
 }
 
-export const handleError = ({type, errors, status, data}) => {
+export const handleError = (response = {}) => {
+    const type =  response && response.type;
+    const errors =  response && response.errors;
+    const status =  response ? response.status : 500;
+    const data =  response && response.data;
 
     // console.log(type)
-    // console.log(errors)
+    // console.log(status)
     // console.log(status)
 
     if (data && data.errors) {
@@ -29,7 +33,7 @@ export const handleError = ({type, errors, status, data}) => {
         return false;
     }
 
-    if (status === 500 && data.detail) {
+    if (status === 500 && data && data.detail) {
         toast.error(data.detail, {
             position: toast.POSITION.BOTTOM_LEFT
         });

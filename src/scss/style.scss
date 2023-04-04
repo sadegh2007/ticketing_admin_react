@@ -123,6 +123,7 @@ body {
 }
 
 .main-content {
+	background: $background_color;
 	transition: 250ms all;
 	min-height: var(--app-height);
 	//margin-right: auto;

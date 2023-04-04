@@ -138,7 +138,7 @@ const TicketingCategories = () => {
 
     const closeModal = (close) => {
         setShowCreateModal(false);
-        if (tableRef) {
+        if (tableRef && close) {
             tableRef.current.reload();
         }
     }

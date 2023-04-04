@@ -42,7 +42,7 @@ const UsersSidebar = ({ticket, loadTicket, toggleSide, showSide = false}) => {
                             .catch(e => {
                                 console.log(e);
                                 toggleMainLoader(false);
-                                handleError(e);
+                                handleError(e.response);
                             });
                     }
                 },

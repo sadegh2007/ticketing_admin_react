@@ -57,7 +57,7 @@ function App() {
     }, []);
 
     const [showMainLoader, toggleMainLoader] = useState(false);
-    const [showSidebar, toggleSidebar] = useState(window.innerHeight > 768);
+    const [showSidebar, toggleSidebar] = useState(window.innerWidth > 768);
     const [showUserDropDown, toggleUserDropDown] = useState(false);
     const [showNotification, toggleNotification] = useState(false);
 

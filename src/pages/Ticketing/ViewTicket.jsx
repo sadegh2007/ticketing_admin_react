@@ -96,7 +96,7 @@ const ViewTicket = () => {
         })
         .catch(e => {
             toggleMainLoader(false);
-            handleError(e);
+            handleError(e.response);
         });
     }
 

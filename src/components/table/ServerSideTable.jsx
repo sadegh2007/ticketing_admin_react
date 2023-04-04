@@ -3,6 +3,7 @@ import AppTable from "./AppTable.jsx";
 import ReactPaginate from 'react-paginate';
 import {appContext} from "../../context/AppContext.js";
 import axios from "axios";
+import {handleError} from "../../services/GlobalService.js";
 
 const ServerSideTable = React.forwardRef((
     {
@@ -58,11 +59,14 @@ const ServerSideTable = React.forwardRef((
             requestConfig['data'] = filters;
         }
 
-        const response = await axios.request(requestConfig);
-
-        toggleMainLoader(false);
-
-        return await response.data;
+        try {
+            const response = await axios.request(requestConfig);
+            toggleMainLoader(false);
+            return await response.data;
+        } catch (e) {
+            toggleMainLoader(false);
+            handleError(e.response);
+        }
     };
 
     useEffect(() => {
